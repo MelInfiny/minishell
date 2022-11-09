@@ -49,11 +49,3 @@ int	get_infile(char *file, int status)
 	}
 	return (0);
 }
-
-int	main(int ac, char **argv)
-{
-	(void) ac;
-	get_infile(argv[1], 0);
-	get_outfile(argv[2], 0);
-	return (0);
-}
