@@ -26,3 +26,9 @@ void	test_pwd(void)
 {
 	ft_pwd();
 }
+
+int	main(int ac, char **argv)
+{
+	(void) ac;
+	ft_export(argv[1]);
+}

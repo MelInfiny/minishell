@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 14:42:06 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/28 15:00:24 by enolbas          ###   ########.fr       */
+/*   Updated: 2022/11/10 20:36:25 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void			*ft_calloc(size_t n, size_t size);
 void			ft_bzero(void *s, size_t n);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putendl_fd(char *s, int fd);
-void			ft_putstr_fd(char *s, int fd);
+void			ft_putstr_fd(const char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 void			ft_striteri(char *s, void (*f)(unsigned int, char*));
 char			*ft_itoa(int n);
