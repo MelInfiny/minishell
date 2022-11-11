@@ -17,7 +17,9 @@ SRCS_BASE	=	\
 			ft_echo		\
 			ft_cd		\
 			ft_pwd		\
+			ft_env		\
 			ft_export	\
+			ft_unset	\
 			tester		\
 			
 			

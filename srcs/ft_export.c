@@ -1,17 +1,46 @@
 #include "minishell.h"
 #include "libft.h"
 
-int	ft_export(const char *var)
+size_t	ft_strdlen(char **strd)
 {
-	int	fd;
+	int	count;
 
-	fd = open("$HOME/.bashrc", O_WRONLY | O_CREAT | O_APPEND, 0766);
-	if (fd < 0)
+	count = 0;
+	while (strd[count])
+		count ++;
+	return (count);
+}
+
+static	char **ft_strdjoin(char **strd, char *s)
+{
+	char	**newstr;
+	int		i;
+
+	newstr = (char **) calloc(ft_strdlen(strd) + 2, sizeof(char *));
+	if (!newstr)
+		return (NULL);
+	i = 0;
+	while (strd[i])
 	{
-		perror(".bashrc");
+		newstr[i] = strd[i];
+		i++;
+	}
+	newstr[i++] = s;
+	newstr[i] = NULL;
+	return (newstr);
+}
+
+int	ft_export(char *var, char ***env)
+{
+	char	**newenv;
+
+	newenv = ft_strdjoin(*env, var);
+	if (!newenv)
+	{
+		perror("export");
 		return (1);
 	}
-	ft_putstr_fd(var, fd);
-	close(fd);
+	free(*env);
+	*env = newenv;
 	return (0);
 }

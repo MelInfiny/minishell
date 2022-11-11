@@ -27,8 +27,14 @@ void	test_pwd(void)
 	ft_pwd();
 }
 
-int	main(int ac, char **argv)
+int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
-	ft_export(argv[1]);
+	(void) argv;
+	char	**myenv = ft_strdcpy(env);
+
+	ft_export(argv[1], &myenv);
+	ft_unset(argv[2], &myenv);
+	ft_env(myenv);
+	free(myenv);
 }
