@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "libft.h"
 
 void	ft_strdfree(char **strd)
 {

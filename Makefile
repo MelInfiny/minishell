@@ -4,10 +4,9 @@ SRCS_FOLDER	=	srcs
 OBJS_FOLDER	=	objs
 INC_FOLDER	=	includes
 LIB_FOLDER	=	libft
-PRINTF_FOLDER = ft_printf
 
 CC		:=	cc
-CFLAGS		:=	-Werror -Wextra -Wall -I$(INC_FOLDER) -I$(LIB_FOLDER) -I$(PRINTF_FOLDER)
+CFLAGS		:=	-Werror -Wextra -Wall -I$(INC_FOLDER) -I$(LIB_FOLDER)
 LDFLAGS		:=	-fsanitize=address -g -fsanitize=leak
 VFLAGS		:=	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --tool=helgrind
 
@@ -32,17 +31,14 @@ $(OBJS_FOLDER)/%.o:		$(SRCS_FOLDER)/%.c
 
 $(NAME):			$(OBJS)
 				make -C $(LIB_FOLDER) --silent
-				make -C $(PRINTF_FOLDER) --silent
-				$(CC)  -o $(NAME) $(OBJS) -lreadline -L $(LIB_FOLDER) -lft -L $(PRINTF_FOLDER) -lftprintf
+				$(CC)  -o $(NAME) $(OBJS) -lreadline -L $(LIB_FOLDER) -lft
 
 clean:
 		make -C $(LIB_FOLDER) clean --silent
-		make -C $(PRINTF_FOLDER) clean --silent
 		rm -rf $(OBJS_FOLDER)
 
 fclean:		clean
 		make -C $(LIB_FOLDER)	fclean --silent
-		make -C $(PRINTF_FOLDER)	fclean --silent
 		rm $(NAME)
 
 all:		$(NAME)

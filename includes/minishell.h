@@ -13,12 +13,7 @@
 
 # include "libft.h"
 # include "ft_printf.h"
-
-typedef struct s_readline {
-	char	*buffer;
-	char	**history;
-	int	fd;	
-}	t_readline;
+# include "utils.h"
 
 int	ft_prompt(void);
 
@@ -26,11 +21,9 @@ int	redirect(char *file);
 int	ft_export(char *var, char ***env);
 int	ft_unset(const char *var, char ***env);
 int	ft_echo(const char *str, int status);
+int	ft_exit(char ***env);
 int	ft_env(char **env);
 int	ft_cd(const char *path);
 int	ft_pwd(void);
 
-void	ft_strdfree(char **strd);
-size_t	ft_strdlen(char **strd);
-char	**ft_strdcpy(char **strd);
 #endif

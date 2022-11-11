@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "libft.h"
 
 size_t	ft_strdlen(char **strd)
 {
