@@ -6,7 +6,7 @@
 #    By: enolbas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/04 17:16:17 by enolbas           #+#    #+#              #
-#    Updated: 2022/11/11 21:05:50 by enolbas          ###   ########.fr        #
+#    Updated: 2022/11/11 23:29:07 by enolbas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,8 @@ SRCS = \
 	ft_putnbr_base_u.c		\
 	print_char.c	print_hexa.c	print_nbr.c		print_perc.c	\
 	print_str.c		print_ptr.c		print_nbr_u.c					\
+	get_next_line_bonus.c	\
+	get_next_line_utils_bonus.c	\
 
 OBJS = $(SRCS:.c=.o)
 
