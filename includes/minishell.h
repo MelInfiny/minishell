@@ -19,7 +19,6 @@
 // ****************** BUILTINS ********************
 
 int	redirect(char *file);
-int	ft_readline(void);
 int	ft_export(char *var, char ***env);
 int	ft_unset(const char *var, char ***env);
 int	ft_echo(const char *str, int status);
@@ -31,6 +30,8 @@ int	ft_pwd(void);
 
 // ****************** READLINE ********************
 void	init_readline(t_readline *prompt);
+int		ft_readline(t_readline *prompt);
+int		get_line(t_readline *prompt);
 
 // ****************** HISTORY *********************
 void	load_history(t_readline *prompt);

@@ -4,6 +4,7 @@
 typedef struct s_readline {
 	char	*line;
 	char	*last;
+	char	*buff;
 	char	*history[500];
 	int		index;
 	int		fd_hisotry;
