@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+/** 
+ * pair is true if we need to interprete between the quote s*/
 static void	single_quote(t_quote *q, int s, int e)
 {
 	if (e - s > 1)
@@ -18,7 +20,7 @@ static void	single_quote(t_quote *q, int s, int e)
 }
 
 /**
- * Return NULL if there is a single quote open*/
+ * Return 1 if there is a single quote open*/
 int	find_quotes(t_quote *q, char *line, char c)
 {
 	int	status;
@@ -48,6 +50,13 @@ int	find_quotes(t_quote *q, char *line, char c)
 /*
 int	break_line(t_input *input)
 {
+	int	res_single;
+
+	res_single = find_quotes(&input->q, &input->line, '\'');
+	if (res_single > 0)
+		print_error("single quote open\n");
+	if (input->q.index == ft_strlen(input->line) && !input->q.pair)
+		return (0);
 	input->raw = ft_split(raw, " ");
 	return (0);
 

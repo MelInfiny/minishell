@@ -33,7 +33,8 @@ void	test_readline(void)
 	reverse_history(&rl);
 }
 
-void	test_singleq(int ac, char **argv)
+//void	test_singleq(int ac, char **argv)
+int	main(int ac, char **argv)
 {
 	(void) ac;
 	char	*line = argv[1];
@@ -44,6 +45,8 @@ void	test_singleq(int ac, char **argv)
 	q.index = 0;
 	q.pair = false;
 	
+	printf("res %d\n", find_quotes(&q, line, '\''));
+	printf("%d : start = %d	 end = %d  index = %d\n", q.pair, q.start, q.end, q.index);
 	printf("res %d\n", find_quotes(&q, line, '\''));
 	printf("%d : start = %d	 end = %d  index = %d\n", q.pair, q.start, q.end, q.index);
 }
