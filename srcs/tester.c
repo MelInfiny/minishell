@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	test_commoners(void)
+void	test_main(void)
 {
 	char	*line;
 	
@@ -13,7 +13,7 @@ void	test_commoners(void)
 	}
 }
 
-int	main(void)
+void	test_readline(void)
 {
 	t_readline rl;
 
@@ -31,4 +31,19 @@ int	main(void)
 	}
 	free(rl.line);
 	reverse_history(&rl);
+}
+
+void	test_singleq(int ac, char **argv)
+{
+	(void) ac;
+	char	*line = argv[1];
+	t_quote q;
+	
+	q.start = 0;
+	q.end = 0;
+	q.index = 0;
+	q.pair = false;
+	
+	printf("res %d\n", find_quotes(&q, line, '\''));
+	printf("%d : start = %d	 end = %d  index = %d\n", q.pair, q.start, q.end, q.index);
 }

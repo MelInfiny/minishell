@@ -20,6 +20,7 @@ SRCS_BASE	=	\
 			ft_export	\
 			ft_unset	\
 			ft_history	\
+			ft_lexer	\
 			tester		\
 			
 			

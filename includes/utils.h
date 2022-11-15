@@ -1,6 +1,36 @@
 #ifndef UTILS_H
 # define UTILS_H
 
+typedef enum {
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}	e_builtins;
+
+typedef enum {
+	ET,
+	OU,
+	PIPE
+} e_delim;
+
+typedef struct s_quotes {
+	int	start;
+	int	end;
+	int	index;
+	bool	pair;
+}	t_quote;
+
+typedef struct s_input {
+	t_quote		squote;
+	t_quote		dquote;
+	e_builtins	builtins;
+	e_delim		delim;
+}	t_input;
+
 typedef struct s_readline {
 	char	*line;
 	char	*last;
@@ -10,6 +40,7 @@ typedef struct s_readline {
 	int		fd_hisotry;
 	int		size_history;
 }	t_readline;
+
 
 bool	ft_equalstr(char *str, char *find);
 bool	ft_findstr(char *str, const char *find);

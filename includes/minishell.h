@@ -39,4 +39,7 @@ void	reverse_history(t_readline *prompt);
 int		ft_add_history(t_readline *prompt);
 int		last_history(t_readline *prompt);
 
+
+// ******************* LEXER *********************
+int	find_quotes(t_quote *q, char *line, char c);
 #endif
