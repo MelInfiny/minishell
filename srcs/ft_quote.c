@@ -41,14 +41,14 @@ int	handle_quotes(t_input *input, char *line, int index)
 	t_quote	q;
 
 	c = line[index];
-	res = search_c(line, index, c);
+	res = search_c(line, index + 1, c);
 	if (res < 0)
 	{
 		ft_putstr_fd("Error : single quote open\n", 2);
 		exit(0);
 	}
 	set_quote(&q, index, res);
-	if (q.pair == true && find_dollar(&q, line))
+	if (find_dollar(&q, line))
 		input->line = find_varenv(input, &q, line);
 	return (res);
 }
@@ -62,7 +62,9 @@ int	quotes_finder(t_input *input, char *line)
 	{
 		if (line[count] == '\'' ||  line[count] == '\"')
 			count = handle_quotes(input, line, count);
-		if (input->line)
+		else
+			printf("%c", line[count]);
+		if (input->line != NULL)
 		{
 			printf("%s", input->line);
 			free(input->line);

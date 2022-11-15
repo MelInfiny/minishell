@@ -32,6 +32,19 @@ void	test_readline(void)
 	free(rl.line);
 	reverse_history(&rl);
 }
+
+void	test_varshell(void)
+{
+	char	*s = "PATH_=BON+JOUR";
+	for (size_t i = 0; i < ft_strlen(s); i++)
+	{
+		if (is_varshell(s[i]))
+			printf("ok %c\n", s[i]);
+		else
+			printf("non ok %c\n", s[i]);
+	}
+}
+
 int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
@@ -42,7 +55,9 @@ int	main(int ac, char **argv, char **env)
 	init_input(&input, readline("minishell: "), env);
 	init_quote(&q);
 
-	ft_printf("dol : %d\n", find_dollar(&q, input.raw));
-	ft_printf(" %s\n", find_varenv(&input, &q, input.raw));
+//	printf("%d : ", find_dollar(&q, input.raw));
+//	printf("%s ", find_varenv(&input, &q, input.raw));
 	
+	quotes_finder(&input, input.raw);
+	printf("\n");
 }
