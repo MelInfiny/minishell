@@ -8,13 +8,13 @@ typedef enum {
 	EXPORT,
 	UNSET,
 	ENV,
-	EXIT
+	EXIT,
 }	e_builtins;
 
 typedef enum {
 	ET,
 	OU,
-	PIPE
+	PIPE,
 } e_delim;
 
 typedef struct s_quotes {
@@ -25,10 +25,11 @@ typedef struct s_quotes {
 }	t_quote;
 
 typedef struct s_input {
-	t_quote		squote;
-	t_quote		dquote;
 	e_builtins	builtins;
 	e_delim		delim;
+	char		**env;
+	char		*raw;
+	char		*line;
 }	t_input;
 
 typedef struct s_readline {

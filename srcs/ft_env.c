@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 18:28:30 by enolbas           #+#    #+#             */
+/*   Updated: 2022/11/15 19:02:48 by enolbas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_strdfree(char **strd)
@@ -42,4 +54,25 @@ int	ft_env(char **env)
 		count ++;
 	}
 	return (0);
+}
+
+char	*find_varenv(t_input *input, t_quote *q, char *line)
+{
+	int		count;
+	char	*varenv;
+	char	*buff;
+
+	count = 0;
+	buff = ft_substr(line, q->start + 1, q->end);
+	while (input->env[count])
+	{
+		if (ft_findstr(input->env[count], buff))
+		{
+			varenv = ft_substr(input->env[count], ft_strlen(buff) + 1, ft_strlen(input->env[count]));
+			break;
+		}
+		count ++;
+	}
+	free(buff);
+	return (varenv);
 }

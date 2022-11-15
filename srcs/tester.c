@@ -32,21 +32,17 @@ void	test_readline(void)
 	free(rl.line);
 	reverse_history(&rl);
 }
-
-//void	test_singleq(int ac, char **argv)
-int	main(int ac, char **argv)
+int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
-	char	*line = argv[1];
-	t_quote q;
+	t_input	input;
+	t_quote	q;
+
+	init_input(&input, argv[1], env);
+	init_quote(&q);
+
+	printf("dollar : %d\n", find_dollar(&q, input.line));
+	printf("%s\n", find_varenv(&input, &q, input.line));
+	ft_strdfree(input.env);
 	
-	q.start = 0;
-	q.end = 0;
-	q.index = 0;
-	q.pair = false;
-	
-	printf("res %d\n", find_quotes(&q, line, '\''));
-	printf("%d : start = %d	 end = %d  index = %d\n", q.pair, q.start, q.end, q.index);
-	printf("res %d\n", find_quotes(&q, line, '\''));
-	printf("%d : start = %d	 end = %d  index = %d\n", q.pair, q.start, q.end, q.index);
 }

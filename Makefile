@@ -11,6 +11,7 @@ LDFLAGS		:=	-fsanitize=address -g -fsanitize=leak
 VFLAGS		:=	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --tool=helgrind
 
 SRCS_BASE	=	\
+			init		\
 			ft_readline	\
 			ft_redirect	\
 			ft_echo		\
@@ -20,7 +21,8 @@ SRCS_BASE	=	\
 			ft_export	\
 			ft_unset	\
 			ft_history	\
-			ft_lexer	\
+			ft_quote	\
+			ft_dollar	\
 			tester		\
 			
 			
