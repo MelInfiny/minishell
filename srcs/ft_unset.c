@@ -18,23 +18,14 @@ bool	ft_equalstr(char *str, char *find)
 
 bool	ft_findstr(char *str, const char *find)
 {
-	int	i;
-	int	j;
+	size_t	len;
 
-	i = 0;
-	while (str[i])
-	{
-		j = 0;
-		if (str[i] == find[j])
-		{
-			while (str[i + j] == find[j])
-				j++;
-			if (find[j] == '\0')
-				return (1);
-		}
-		i++;
-	}
-	return (0);
+	len = ft_strlen(find);
+	if (ft_strncmp(str, find, len))
+		return (false);
+	if (str[len] != '=')
+		return (false);
+	return (true);
 }
 
 static char	**ft_strdel(const char *var, char **env)

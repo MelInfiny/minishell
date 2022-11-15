@@ -35,14 +35,14 @@ void	test_readline(void)
 int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
+	(void) argv;
 	t_input	input;
 	t_quote	q;
 
-	init_input(&input, argv[1], env);
+	init_input(&input, readline("minishell: "), env);
 	init_quote(&q);
 
-	printf("dollar : %d\n", find_dollar(&q, input.line));
-	printf("%s\n", find_varenv(&input, &q, input.line));
-	ft_strdfree(input.env);
+	ft_printf("dol : %d\n", find_dollar(&q, input.raw));
+	ft_printf(" %s\n", find_varenv(&input, &q, input.raw));
 	
 }
