@@ -34,53 +34,49 @@ int	search_c(char *line, int start, char c)
 	return (-1);
 }
 
-int	handle_quotes(t_input *input, char *line, int index)
+static char	*handle_quotes(t_input *input, char *line, int *index)
 {
 	int		res;
 	char		*tmp;
 	t_quote		q;
 
-	res = search_c(line, index + 1, line[index]);
+	res = search_c(line, *index + 1, line[*index]);
 	if (res < 0)
 	{
 		ft_putstr_fd("Error : single quote open\n", 2);
 		exit(0);
 	}
-	set_quote(&q, index, res);
+	set_quote(&q, *index, res);
 	if (q.pair == true)
 		tmp = ft_substr(line, q.start, q.end);
 	else
 		tmp = ft_strdup("");
-	if (line[index] == '\'')
+	if (line[*index] == '\"' && q.pair)
 	{
-		ft_addmap(&input->squotes, ft_mapnew(tmp));
-		printf("%s", (char *) ft_maplast(input->squotes)->content);
+		tmp = find_dollar(input, q, tmp);
 	}
-	else
-	{
-		if (find_dollar(&q, tmp))
-			replace_dollar(q, tmp, find_varenv(input, q, line));
-		ft_addmap(&input->dquotes, ft_mapnew(tmp));
-		printf("%s", (char *) ft_maplast(input->dquotes)->content);
-	}
-	free(tmp);
-	return (res);
+	*index = res;
+	return (tmp);
 }
 
-int	quotes_finder(t_input *input, char *line)
+char	*find_quotes(t_input *input, char *line)
 {
 	int		count;
+	char		*tmp;
+	char		*newline;
 
 	count = 0;
 	while (line[count])
 	{
 		if (line[count] == '\'' ||  line[count] == '\"')
 		{
-			count += handle_quotes(input, line, count);
+			tmp = handle_quotes(input, line, &count);
+			newline = ft_strjoin2(newline, tmp);
+			free(tmp);
 		}
 		else
-			printf("%c", line[count]);
+			newline = ft_strjoin2(newline, &line[count]);
 		count ++;
 	}
-	return (0);
+	return (newline);
 }

@@ -53,6 +53,8 @@ typedef struct s_readline {
 
 bool	ft_equalstr(char *str, char *find);
 bool	ft_findstr(char *str, const char *find);
+void	ft_strisert(char *newline, char *add, size_t len);
+
 void	ft_strdfree(char **strd);
 size_t	ft_strdlen(char **strd);
 char	**ft_strdcpy(char **strd);

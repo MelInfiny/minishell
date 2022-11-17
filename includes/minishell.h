@@ -46,8 +46,8 @@ void	init_quote(t_quote *quote);
 
 int		is_varshell(char c);
 int		search_c(char *line, int start, char c);
-int		quotes_finder(t_input *input, char *line);
-int		find_dollar(t_quote *q, char *line);
 char		*replace_dollar(t_quote q, char *line, char *varenv);
-char	*find_varenv(t_input *input, t_quote q, char *line);
+char		*find_dollar(t_input *input, t_quote q, char *line);
+char		*find_quotes(t_input *input, char *line);
+char		*find_varenv(t_input *input, t_quote *q, char *line);
 #endif

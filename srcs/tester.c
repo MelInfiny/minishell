@@ -55,11 +55,7 @@ void	test_alias(int ac, char **argv, char **env)
 	init_input(&input, readline("minishell : "), env);
 	init_quote(&q);
 
-	for (size_t i = 0; i < ft_strlen(input.raw); i++)
-	{
-		if (find_dollar(&q, input.raw))
-			input.raw = replace_dollar(q, input.raw, find_varenv(&input, q, input.raw));
-	}
+	find_dollar(&input, q, input.raw);
 	printf("%s\n", input.raw);
 	free(input.raw);
 	free(input.env);
@@ -76,7 +72,9 @@ int	main(int ac, char **argv, char **env)
 	init_input(&input, readline("minishell : "), env);
 	init_quote(&q);
 	
-	quotes_finder(&input, input.raw);
+	input.line = find_quotes(&input, input.raw);
+	printf("%s\n", input.line);
+	free(input.line);
 	free(input.raw);
 	free(input.env);
 	printf("\n");

@@ -7,15 +7,15 @@ int	is_varshell(char c)
 	return (0);
 }
 
-int	find_dollar(t_quote *q, char *line)
+int	search_dollar(t_quote *q, char *line, int index)
 {
 	int		count;
 
 	q->end = 0;
-	q->start = search_c(line, 0, '$');
+	q->start = search_c(line, index, '$');
 	if (q->start < 0)
 		return (0);
-	count = q->start;
+	count = q->start + 1;
 	while (is_varshell(line[count++]))
 		q->end++;
 	return (1);
@@ -46,4 +46,30 @@ char	*replace_dollar(t_quote q, char *line, char *varenv)
 	free(varenv);
 	free(line);
 	return (newline);
+}
+
+char	*find_dollar(t_input *input, t_quote q, char *line)
+{
+	char	*tmp;
+	int	count;
+
+	count = -1;
+	while (line[++count])
+	{
+		if (line[count] == '$')
+		{
+			q.start = count;
+			q.end = 0;
+			while (is_varshell(line[++q.start]))
+				q.end ++;
+			q.start = count;
+			if (q.end == 0)
+				continue;
+			tmp = find_varenv(input, &q, line);
+			if (q.pair)
+				count += ft_strlen(tmp);
+			line = replace_dollar(q, line, tmp);
+		}
+	}
+	return (line);
 }

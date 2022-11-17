@@ -12,6 +12,8 @@
 
 #include "get_next_line.h"
 
+void	*ft_calloc(size_t n, size_t size);
+
 size_t	ft_strlen2(const char *s)
 {
 	size_t	count;
@@ -36,10 +38,9 @@ char	*ft_strjoin2(char *s1, char const *s2)
 	len = ft_strlen2(s1);
 	if (!s1 && !s2)
 		return (NULL);
-	all = (char *) malloc(sizeof(char) * (len + ft_strlen2(s2)) + 1);
+	all = (char *) ft_calloc(len + ft_strlen2(s2) + 1, sizeof(char));
 	if (!all)
 		return (NULL);
-	all[0] = '\0';
 	while (count < len)
 		all[copy++] = s1[count++];
 	count = 0;
@@ -65,7 +66,7 @@ char	*ft_substr2(const char *s, unsigned int start, size_t len)
 	size = ft_strlen2(s);
 	if (tmp > size)
 		return (ft_strjoin2("", ""));
-	str = (char *) malloc (sizeof(char) * (len + 1));
+	str = (char *) ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);
 	while (count < len && tmp < size)
