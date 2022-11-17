@@ -56,23 +56,24 @@ int	ft_env(char **env)
 	return (0);
 }
 
-char	*find_varenv(t_input *input, t_quote *q, char *line)
+char	*find_varenv(t_input *input, t_quote q, char *line)
 {
 	int		count;
 	char	*varenv;
 	char	*buff;
 
 	count = 0;
-	buff = ft_substr(line, q->start + 1, q->end);
+	buff = ft_substr(line, q.start + 1, q.end);
 	while (input->env[count])
 	{
 		if (ft_findstr(input->env[count], buff))
 		{
 			varenv = ft_substr(input->env[count], ft_strlen(buff) + 1, ft_strlen(input->env[count]));
-			break;
+			free(buff);
+			return (varenv);
 		}
 		count ++;
 	}
 	free(buff);
-	return (varenv);
+	return (ft_strdup(""));
 }

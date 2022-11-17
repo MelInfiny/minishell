@@ -45,6 +45,27 @@ void	test_varshell(void)
 	}
 }
 
+void	test_alias(int ac, char **argv, char **env)
+{
+	(void) ac;
+	(void) argv;
+	t_input	input;
+	t_quote	q;
+	
+	init_input(&input, readline("minishell : "), env);
+	init_quote(&q);
+
+	for (size_t i = 0; i < ft_strlen(input.raw); i++)
+	{
+		if (find_dollar(&q, input.raw))
+			input.raw = replace_dollar(q, input.raw, find_varenv(&input, q, input.raw));
+	}
+	printf("%s\n", input.raw);
+	free(input.raw);
+	free(input.env);
+	printf("\n");
+}
+
 int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
@@ -52,12 +73,11 @@ int	main(int ac, char **argv, char **env)
 	t_input	input;
 	t_quote	q;
 
-	init_input(&input, readline("minishell: "), env);
+	init_input(&input, readline("minishell : "), env);
 	init_quote(&q);
-
-//	printf("%d : ", find_dollar(&q, input.raw));
-//	printf("%s ", find_varenv(&input, &q, input.raw));
 	
 	quotes_finder(&input, input.raw);
+	free(input.raw);
+	free(input.env);
 	printf("\n");
 }
