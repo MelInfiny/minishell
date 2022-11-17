@@ -21,7 +21,19 @@ int	search_dollar(t_quote *q, char *line, int index)
 	return (1);
 }
 */
-char	*replace_dollar(t_quote q, char *line, char *varenv)
+
+void	set_dollar(t_quote *q, char *line, int start)
+{
+	int	count;
+
+	count = start;
+	q->end = 0;
+	while (is_varshell(line[++count]))
+		q->end ++;
+	q->start = start + 1;
+}
+
+char	*ft_strinsert(t_quote q, char *line, char *varenv)
 {
 	char	*newline;
 	int	count;
@@ -36,9 +48,9 @@ char	*replace_dollar(t_quote q, char *line, char *varenv)
 		ft_putstr_fd("Error : Alloc for alias\n", 2);
 		exit(0);
 	}
-	while (++i < q.start)
+	while (++i < q.start - 1)
 		newline[i] = line[i];
-	count = i + q.end + 1;
+	count = q.start + q.end;
 	while (varenv[j])
 		newline[i++] = varenv[j++];
 	while (line[count])
@@ -48,28 +60,26 @@ char	*replace_dollar(t_quote q, char *line, char *varenv)
 	return (newline);
 }
 
-char	*find_dollar(t_input *input, t_quote q, char *line)
+char	*find_dollar(t_input *input, char *line)
 {
 	char	*tmp;
 	int	count;
+	t_quote	q;
 
 	count = -1;
 	while (line[++count])
 	{
 		if (line[count] == '$')
 		{
-			q.start = count;
-			q.end = 0;
-			while (is_varshell(line[++q.start]))
-				q.end ++;
-			q.start = count;
+			set_dollar(&q, line, count);
 			if (q.end == 0)
 				continue;
 			tmp = find_varenv(input, &q, line);
 			if (q.pair)
 				count += ft_strlen(tmp);
-			line = replace_dollar(q, line, tmp);
+			line = ft_strinsert(q, line, tmp);
 		}
 	}
+	printf("replace %s\n", line);
 	return (line);
 }

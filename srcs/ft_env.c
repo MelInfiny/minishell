@@ -63,7 +63,7 @@ char	*find_varenv(t_input *input, t_quote *q, char *line)
 	char	*buff;
 
 	count = 0;
-	buff = ft_substr(line, q->start + 1, q->end);
+	buff = ft_substr(line, q->start, q->end);
 	while (input->env[count])
 	{
 		if (ft_findstr(input->env[count], buff))

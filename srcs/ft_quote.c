@@ -2,12 +2,12 @@
 
 /** 
  * pair is true if we need to interprete between the quote s*/
-static void	set_quote(t_quote *q, int s, int e)
+void	det_quote(t_quote *q, int s, int e)
 {
 	if (e - s > 1)
 	{
 		q->start = s + 1;
-		q->end = e - 1;
+		q->end = e;
 		q->pair = true;
 	}
 	else
@@ -34,28 +34,47 @@ int	search_c(char *line, int start, char c)
 	return (-1);
 }
 
+static int	set_quote(t_quote *q, char *line, int start, char c)
+{
+	int	count;
+
+	count = start;
+	q->end = 0;
+	printf("count %d\n", count);
+	while (line[++count] != c)
+		q->end ++;
+	if (line[count] != c)
+		return (0);
+	if (q->end > 0)
+		q->pair = true;
+	else
+		q->pair = false;
+	q->start = start + 1;
+	return (1);
+}
+
 static char	*handle_quotes(t_input *input, char *line, int *index)
 {
-	int		res;
+	char		c;
 	char		*tmp;
 	t_quote		q;
 
-	res = search_c(line, *index + 1, line[*index]);
-	if (res < 0)
+	c = line[*index];
+	init_quote(&q);
+	if (!set_quote(&q, line, *index, c))
 	{
 		ft_putstr_fd("Error : single quote open\n", 2);
 		exit(0);
 	}
-	set_quote(&q, *index, res);
+	*index += q.end +1 ;
 	if (q.pair == true)
+	{
 		tmp = ft_substr(line, q.start, q.end);
+		if (c == '\"')
+			tmp = find_dollar(input, tmp);
+	}
 	else
 		tmp = ft_strdup("");
-	if (line[*index] == '\"' && q.pair)
-	{
-		tmp = find_dollar(input, q, tmp);
-	}
-	*index = res;
 	return (tmp);
 }
 
@@ -70,11 +89,12 @@ char	*find_quotes(t_input *input, char *line)
 	newline = ft_strdup("");
 	while (line[count])
 	{
+		printf("c %c\n", line[count]);
 		if (line[count] == '\'' ||  line[count] == '\"')
 		{
 			index = count;
 			tmp = handle_quotes(input, line, &count);
-			if (count - 1 > index)
+			if (count > index)
 				newline = ft_strjoin2(newline, tmp);
 			free(tmp);
 		}
@@ -84,3 +104,5 @@ char	*find_quotes(t_input *input, char *line)
 	}
 	return (newline);
 }
+
+char	*replace_quote(t_input *input, char *line, int *index);

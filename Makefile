@@ -44,7 +44,7 @@ clean:
 
 fclean:		clean
 		make -C $(LIB_FOLDER)	fclean --silent
-		rm $(NAME)
+		rm -f $(NAME)
 
 all:		$(NAME)
 
