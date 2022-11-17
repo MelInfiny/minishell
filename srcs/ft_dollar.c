@@ -6,7 +6,7 @@ int	is_varshell(char c)
 		return (1);
 	return (0);
 }
-
+/*
 int	search_dollar(t_quote *q, char *line, int index)
 {
 	int		count;
@@ -20,7 +20,7 @@ int	search_dollar(t_quote *q, char *line, int index)
 		q->end++;
 	return (1);
 }
-
+*/
 char	*replace_dollar(t_quote q, char *line, char *varenv)
 {
 	char	*newline;

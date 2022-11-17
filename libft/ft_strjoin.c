@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "libft.h"
 
+size_t	ft_strlen2(char *str);
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	count;
@@ -31,5 +32,28 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (count < ft_strlen(s2))
 		all[copy++] = s2[count++];
 	all[copy] = '\0';
+	return (all);
+}
+
+char	*ft_charjoin(char *s1, char c)
+{
+	size_t	count;
+	size_t	len;
+	char	*all;
+
+	count = 0;
+	if (!s1)
+		len = 0;
+	else
+		len = ft_strlen2(s1);
+	all = (char *) ft_calloc(len + 2, sizeof(char));
+	while (s1[count])
+	{
+		all[count] = s1[count];
+		count ++;
+	}
+	all[count] = c;
+	if (len > 0)
+		free(s1);
 	return (all);
 }

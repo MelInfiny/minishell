@@ -52,6 +52,7 @@ char			*ft_strrchr(const char *s, int caractere);
 char			*ft_strnstr(const char *s, const char *find, size_t size);
 char			*ft_strdup(const char *s);
 char			*ft_strjoin(const char *s1, const char *s2);
+char			*ft_charjoin(char *s1, char c);
 char			*ft_strmapi(const char *s, char (*f) (unsigned int, char));
 char			**ft_split(const char *s, char c);
 size_t			ft_strlen(const char *s);

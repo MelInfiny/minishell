@@ -62,20 +62,24 @@ static char	*handle_quotes(t_input *input, char *line, int *index)
 char	*find_quotes(t_input *input, char *line)
 {
 	int		count;
+	int		index;
 	char		*tmp;
 	char		*newline;
 
 	count = 0;
+	newline = ft_strdup("");
 	while (line[count])
 	{
 		if (line[count] == '\'' ||  line[count] == '\"')
 		{
+			index = count;
 			tmp = handle_quotes(input, line, &count);
-			newline = ft_strjoin2(newline, tmp);
+			if (count - 1 > index)
+				newline = ft_strjoin2(newline, tmp);
 			free(tmp);
 		}
 		else
-			newline = ft_strjoin2(newline, &line[count]);
+			newline = ft_charjoin(newline, line[count]);
 		count ++;
 	}
 	return (newline);
