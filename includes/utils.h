@@ -3,7 +3,8 @@
 
 typedef enum {
 	WORD,
-	OPERATOR,
+	SQUOTE,
+	DQUOTE
 }	e_type;
 
 typedef struct s_quotes {
@@ -15,7 +16,7 @@ typedef struct s_quotes {
 
 typedef struct s_map {
 	int			key;
-	void		*content;
+	char		*content;
 	e_type		type;
 	struct s_map	*next;
 } t_map;
@@ -48,7 +49,7 @@ char	**ft_strdcpy(char **strd);
 
 // ******************** MAP **************************
 t_map	*ft_getmap(t_map *map, int key);
-t_map	*ft_mapnew(void *content, e_type type);
+t_map	*ft_mapnew(char *content, e_type type);
 t_map	*ft_maplast(t_map *map);
 void	ft_addmap(t_map **map, t_map *newmap);
 void	ft_mapdelone(t_map *map, void (*del)(void *));

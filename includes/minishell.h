@@ -42,7 +42,10 @@ int		last_history(t_readline *prompt);
 
 // ******************* LEXER *********************
 void	init_input(t_input *input, char *line, char **env);
+void	free_input(t_input *input);
 void	init_quote(t_quote *quote);
+void	ft_lexer(t_input *input, char *line);
+
 char	*first_detector(t_input *input, char *line);
 
 int		is_varshell(char c);

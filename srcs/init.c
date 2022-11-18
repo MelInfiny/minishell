@@ -14,3 +14,12 @@ void	init_input(t_input *input, char *line, char **env)
 	input->lexer = NULL;
 	input->line = NULL;
 }
+
+void	free_input(t_input *input)
+{
+	free(input->env);
+	free(input->raw);
+	ft_mapclear(&input->lexer, free);
+	if (input->line)
+		free(input->line);
+}
