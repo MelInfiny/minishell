@@ -77,7 +77,6 @@ char	*replace_dollar(t_input *input, char *line, int *index)
 	if (q.end == 0)
 		return (ft_strdup("$"));
 	tmp = find_varenv(input, &q, line);
-	if (q.pair)
-		*index += q.end;
+	*index += q.end;
 	return (tmp);
 }
