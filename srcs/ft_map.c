@@ -11,7 +11,7 @@ t_map	*ft_getmap(t_map *lst, int key)
 	return (NULL);
 }
 
-t_map	*ft_mapnew(void *content)
+t_map	*ft_mapnew(void *content, e_type type)
 {
         t_map  *lstnew;
 
@@ -19,6 +19,7 @@ t_map	*ft_mapnew(void *content)
         if (!lstnew)
                 return (NULL);
         lstnew->content = content;
+		lstnew->type = type;
         lstnew->next = NULL;
         return (lstnew);
 }
@@ -35,7 +36,7 @@ t_map  *ft_maplast(t_map *lst)
         }
         return (lst);
 }
-    
+
 void    ft_addmap(t_map **alst, t_map *new)
 {
         t_map  *tmp;
@@ -45,12 +46,12 @@ void    ft_addmap(t_map **alst, t_map *new)
         if (!*alst)
         {
                 *alst = new;
-		(*alst)->key = 0;
+				(*alst)->key = 0;
                 return ;
         }
         tmp = ft_maplast(*alst);
         tmp->next = new;
-	tmp->next->key = tmp->key + 1;
+		tmp->next->key = tmp->key + 1;
 }
 
 void    ft_mapdelone(t_map *lst, void (*del)(void*))

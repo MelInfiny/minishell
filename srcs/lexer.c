@@ -1,31 +1,34 @@
 #include "minishell.h"
 
-char	*first_detector(t_input *input, char *line)
+void	ft_lexer(t_input *input, char *line)
 {
-	char	*newline;
-	char	*tmp;
-	int	count;
+	int		count;
+	char	c;
 
 	count = 0;
-	newline = "";
 	while (line[count])
 	{
-		if (line[count] == '\'' || line[count] == '\"')
-		{
-			tmp = replace_quote(input, line, &count);
-			newline = ft_strjoin2(newline, tmp);
-			free(tmp);
-		}
-		else if (line[count] == '$')
-		{
-			tmp = replace_dollar(input, line, &count);
-			newline = ft_strjoin2(newline, tmp);
-			free(tmp);
-		}
+		c = line[count];
+		if (c == '>' || c == '<' || c == '|' || c == '&' || c == '\n')
+			ft_addmap(&input->lexer, ft_mapnew(&line[count], OPERATOR));
 		else
-			newline = ft_charjoin(newline, line[count]);
+			ft_addmap(&input->lexer, ft_mapnew(&line[count], WORD));
 		count ++;
 	}
 	free(line);
-	return (newline);
 }
+
+int	extract_word(t_input *input, int start)
+{
+	t_map	*tmp;
+
+	tmp = ft_getmap(input->lexer, start);
+	while (tmp->type != OPERATOR)
+		tmp = tmp->next;
+	if (tmp->type == OPERATOR)
+		return (tmp->key);
+	return (-1);
+}
+
+
+

@@ -25,8 +25,8 @@ SRCS_BASE	=	\
 			ft_history	\
 			ft_quote	\
 			ft_dollar	\
+			ft_builtin	\
 			tester		\
-			
 			
 SRCS		=	$(addsuffix .c, $(addprefix $(SRCS_FOLDER)/, $(SRCS_BASE)))
 OBJS		=	$(addsuffix .o, $(addprefix $(OBJS_FOLDER)/, $(SRCS_BASE)))

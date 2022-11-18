@@ -20,6 +20,7 @@ int	get_outfile(char *file, int status)
 {
 	int	fd;
 
+	fd = -1;
 	if (status == 0)
 		fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (status == 1)
@@ -38,6 +39,7 @@ int	get_infile(char *file, int status)
 {
 	int	fd;
 
+	fd = -1;
 	if (status == 0)
 		fd = open(file, O_CREAT | O_RDONLY, 0644);
 	if (fd != -1)

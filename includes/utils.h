@@ -2,20 +2,9 @@
 # define UTILS_H
 
 typedef enum {
-	ECHO,
-	CD,
-	PWD,
-	EXPORT,
-	UNSET,
-	ENV,
-	EXIT,
-}	e_builtins;
-
-typedef enum {
-	ET,
-	OU,
-	PIPE,
-} e_delim;
+	WORD,
+	OPERATOR,
+}	e_type;
 
 typedef struct s_quotes {
 	int	start;
@@ -25,19 +14,17 @@ typedef struct s_quotes {
 }	t_quote;
 
 typedef struct s_map {
-	int		key;
+	int			key;
 	void		*content;
+	e_type		type;
 	struct s_map	*next;
 } t_map;
 
 typedef struct s_input {
-	e_builtins	builtins;
-	e_delim		delim;
 	char		**env;
 	char		*raw;
 	char		*line;
-	t_map		*squotes;
-	t_map		*dquotes;
+	t_map		*lexer;
 }	t_input;
 
 typedef struct s_readline {
@@ -59,12 +46,14 @@ void	ft_strdfree(char **strd);
 size_t	ft_strdlen(char **strd);
 char	**ft_strdcpy(char **strd);
 
-t_map	*getmap(t_map *map, int key);
-t_map	*ft_mapnew(void *content);
+// ******************** MAP **************************
+t_map	*ft_getmap(t_map *map, int key);
+t_map	*ft_mapnew(void *content, e_type type);
 t_map	*ft_maplast(t_map *map);
 void	ft_addmap(t_map **map, t_map *newmap);
 void	ft_mapdelone(t_map *map, void (*del)(void *));
 void	ft_mapclear(t_map **map, void (*del)(void *));
-int	ft_mapsize(t_map *map);
+int		ft_mapsize(t_map *map);
+// ***************************************************
 
 #endif
