@@ -40,7 +40,6 @@ static int	set_quote(t_quote *q, char *line, int start, char c)
 
 	count = start;
 	q->end = 0;
-	printf("count %d\n", count);
 	while (line[++count] != c)
 		q->end ++;
 	if (line[count] != c)
@@ -53,7 +52,7 @@ static int	set_quote(t_quote *q, char *line, int start, char c)
 	return (1);
 }
 
-static char	*handle_quotes(t_input *input, char *line, int *index)
+char	*replace_quote(t_input *input, char *line, int *index)
 {
 	char		c;
 	char		*tmp;
@@ -89,11 +88,10 @@ char	*find_quotes(t_input *input, char *line)
 	newline = ft_strdup("");
 	while (line[count])
 	{
-		printf("c %c\n", line[count]);
 		if (line[count] == '\'' ||  line[count] == '\"')
 		{
 			index = count;
-			tmp = handle_quotes(input, line, &count);
+			tmp = replace_quote(input, line, &count);
 			if (count > index)
 				newline = ft_strjoin2(newline, tmp);
 			free(tmp);
@@ -104,5 +102,3 @@ char	*find_quotes(t_input *input, char *line)
 	}
 	return (newline);
 }
-
-char	*replace_quote(t_input *input, char *line, int *index);

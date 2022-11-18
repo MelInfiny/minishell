@@ -43,10 +43,12 @@ int		last_history(t_readline *prompt);
 // ******************* LEXER *********************
 void	init_input(t_input *input, char *line, char **env);
 void	init_quote(t_quote *quote);
+char	*first_detector(t_input *input, char *line);
 
 int		is_varshell(char c);
 int		search_c(char *line, int start, char c);
-char		*replace_dollar(t_quote q, char *line, char *varenv);
+char		*replace_quote(t_input *input, char *line, int *index);
+char		*replace_dollar(t_input *input, char *line, int *index);
 char		*find_dollar(t_input *input, char *line);
 char		*find_quotes(t_input *input, char *line);
 char		*find_varenv(t_input *input, t_quote *q, char *line);
