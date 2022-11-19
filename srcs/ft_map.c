@@ -11,7 +11,7 @@ t_map	*ft_getmap(t_map *lst, int key)
 	return (NULL);
 }
 
-t_map	*ft_mapnew(void *content, e_type type)
+t_map	*ft_mapnew(char *content, e_type type)
 {
         t_map  *lstnew;
 
