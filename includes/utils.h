@@ -4,7 +4,9 @@
 typedef enum {
 	WORD,
 	SQUOTE,
-	DQUOTE
+	DQUOTE,
+	CMD,
+	DELIM
 }	e_type;
 
 typedef struct s_quotes {

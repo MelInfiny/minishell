@@ -23,6 +23,13 @@ static char	*search(char *line, int *start)
 	return (s);
 }
 
+bool	is_delim(char c)
+{
+	if (c == ' ' || c == '\n' || c == '|' || c == '<' || c == '>' || c == '$')
+		return (true);
+	return (false);
+}
+
 void	ft_lexer(t_input *input, char *line)
 {
 	int		count;
@@ -34,6 +41,12 @@ void	ft_lexer(t_input *input, char *line)
 	while (line[count])
 	{
 		c = line[count];
+		if (is_delim(c))
+		{
+			ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, start, count - start, WORD)));
+			ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, count, 1, DELIM)));
+			start = count + 1;
+		}
 		if (c == '\'' || c == '\"')
 		{
 			if (count - start > 0)
