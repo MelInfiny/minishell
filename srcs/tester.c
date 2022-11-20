@@ -1,5 +1,30 @@
 #include "minishell.h"
 
+void	print_type(e_type type)
+{
+	printf("\n\n");
+	if (type == WORD)
+		printf("WORD");
+	if (type == DQUOTE)
+		printf("DQUOTE");
+	if (type == SQUOTE)
+		printf("SQUOTE");
+	if (type == DOLLAR)
+		printf("DOLLAR");
+	if (type == ESPACE)
+		printf("ESPACE");
+	if (type == PIPE)
+		printf("PIPELINE");
+	if (type == GREDIR)
+		printf("GREDIR");
+	if (type == DREDIR)
+		printf("DREDIR");
+	if (type == GRREDIR)
+		printf("GRREDIR");
+	if (type == DRREDIR)
+		printf("DRREDIR");
+}
+
 void	print_map(t_map *map)
 {
 	t_map	*tmp;
@@ -7,11 +32,9 @@ void	print_map(t_map *map)
 	tmp = map;
 	while (tmp)
 	{
-		printf("%d:", tmp->key);
-		if (ft_equalstr(tmp->content, "\n"))
-			printf("X");
-		else
-			printf("%s\n", tmp->content);
+		print_type(tmp->type);
+		printf(" %d: ", tmp->key);
+		printf("%s", tmp->content);
 		tmp = tmp->next;
 	}
 }

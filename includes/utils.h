@@ -6,7 +6,12 @@ typedef enum {
 	SQUOTE,
 	DQUOTE,
 	DOLLAR,
-	DELIM
+	PIPE,
+	ESPACE,
+	DREDIR,
+	DRREDIR,
+	GREDIR,
+	GRREDIR
 }	e_type;
 
 typedef struct s_quotes {
@@ -55,6 +60,7 @@ t_map	*ft_mapnew(char *content, e_type type);
 t_map	*ft_maplast(t_map *map);
 void	ft_addmap(t_map **map, t_map *newmap);
 void	ft_mapdelone(t_map *map, void (*del)(void *));
+void	ft_mapreplace(t_map **map, t_map *newmap);
 void	ft_mapclear(t_map **map, void (*del)(void *));
 int		ft_mapsize(t_map *map);
 // ***************************************************

@@ -8,9 +8,41 @@ e_type	switch_type(char c)
 		return (SQUOTE);
 	if (c == '$' )
 		return (DOLLAR);
-	if (c == ' ' || c == '\n' || c == '|' || c == '<' || c == '>')
-		return (DELIM);
+	if (c == ' ')
+	       return (ESPACE);
+	if (c == '|')
+	       return (PIPE);
+	if (c == '<')
+	       return (GREDIR);
+	if (c == '>')
+		return (DREDIR);
 	return (WORD);
+}
+
+static int	split_redir(t_input *input, char *line, int index, e_type *type)
+{
+	int	status;
+	int	count;
+
+	status = 0;
+	count = index;
+	while (line[count] && line[++count] == line[index])
+		status ++;
+	if (status > 1)
+	{
+		printf("error syntaxe unexpected token : \" %c \"", line[index]);
+		exit (0);
+	}
+	if (status > 0)
+	{
+		free(ft_maplast(input->lexer)->content);
+		if (*type == GREDIR)
+			ft_maplast(input->lexer)->type = GRREDIR;
+		if (*type == DREDIR)
+			ft_maplast(input->lexer)->type = DRREDIR;
+		ft_maplast(input->lexer)->content = ft_substr(line, index, 2);
+	}
+	return (status);
 }
 
 static void	split_delim(t_input *input, int *start, int index, e_type type)
@@ -22,7 +54,8 @@ static void	split_delim(t_input *input, int *start, int index, e_type type)
 	line = input->raw;
 	if (r > 0)
 		ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, *start, r), WORD));
-	ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, index, 1), type));
+	if (type != ESPACE)
+		ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, index, 1), type));
 	*start = index + 1;
 }
 
@@ -43,9 +76,8 @@ static int	split_quote(t_input *input, char *line, int index, e_type type)
 	}
 	if (line[index] != c)
 	{
-		ft_putstr_fd("Error : unclosed quote\n", 2);
+		printf("error syntaxe unexpected token : \" %c \"", c);
 		exit(0);
-	
 	}
 	split_delim(input, &start, index, type);
 	return (index);
@@ -65,11 +97,11 @@ void	ft_lexer(t_input *input, char *line)
 		if (type != WORD)
 		{
 			split_delim(input, &start, count, type);
+			if (type == GREDIR || type == DREDIR)
+				count += split_redir(input, line, count, &type);
 			if (type == SQUOTE || type == DQUOTE)
-			{
 				count = split_quote(input, line, count, type);
-				start = count + 1;
-			}
+			start = count + 1;
 		}
 		count ++;
 	}
