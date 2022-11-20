@@ -1,62 +1,78 @@
 #include "minishell.h"
 
-static char	*search(char *line, int *start)
+e_type	switch_type(char c)
 {
-	int		count;
-	char	*s;
+	if (c == '\"')
+		return (DQUOTE);
+	if (c == '\'')
+		return (SQUOTE);
+	if (c == '$' )
+		return (DOLLAR);
+	if (c == ' ' || c == '\n' || c == '|' || c == '<' || c == '>')
+		return (DELIM);
+	return (WORD);
+}
+
+static void	split_delim(t_input *input, int *start, int index, e_type type)
+{
+	int	r;
+	char	*line;
+
+	r = index - *start;
+	line = input->raw;
+	if (r > 0)
+		ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, *start, r), WORD));
+	ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, index, 1), type));
+	*start = index + 1;
+}
+
+static int	split_quote(t_input *input, char *line, int index, e_type type)
+{
+	int	start;
 	char	c;
 
-	count = *start;
-	c = line[*start];
-	while (line[++count])
+	c = line[index];
+	start = index + 1;
+	while (line[index] && line[++index] != c)
 	{
-		if (c == line[count])
-			break;
+		if (c == '\"')
+		{
+			if (line[index] == '$')
+				split_delim(input, &start, index, DOLLAR);
+		}
 	}
-	if (line[count] != c)
+	if (line[index] != c)
 	{
 		ft_putstr_fd("Error : unclosed quote\n", 2);
 		exit(0);
+	
 	}
-	s = ft_substr(line, *start, count - *start + 1);
-	*start = count;
-	return (s);
-}
-
-bool	is_delim(char c)
-{
-	if (c == ' ' || c == '\n' || c == '|' || c == '<' || c == '>' || c == '$')
-		return (true);
-	return (false);
+	split_delim(input, &start, index, type);
+	return (index);
 }
 
 void	ft_lexer(t_input *input, char *line)
 {
 	int		count;
 	int		start;
-	char	c;
+	e_type		type;
 
 	count = 0;
 	start = 0;
 	while (line[count])
 	{
-		c = line[count];
-		if (is_delim(c))
+		type = switch_type(line[count]);
+		if (type != WORD)
 		{
-			ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, start, count - start, WORD)));
-			ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, count, 1, DELIM)));
-			start = count + 1;
-		}
-		if (c == '\'' || c == '\"')
-		{
-			if (count - start > 0)
-				ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, start, count - start), WORD));
-			if (c == '\'')
-				ft_addmap(&input->lexer, ft_mapnew(search(line, &count), SQUOTE));
-			else if (c == '\"')
-				ft_addmap(&input->lexer, ft_mapnew(search(line, &count), DQUOTE));
-			start = count + 1;
+			split_delim(input, &start, count, type);
+			if (type == SQUOTE || type == DQUOTE)
+			{
+				count = split_quote(input, line, count, type);
+				start = count + 1;
+			}
 		}
 		count ++;
 	}
+	if (count > start)
+		ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, start, count), WORD));
 }

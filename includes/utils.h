@@ -5,7 +5,7 @@ typedef enum {
 	WORD,
 	SQUOTE,
 	DQUOTE,
-	CMD,
+	DOLLAR,
 	DELIM
 }	e_type;
 

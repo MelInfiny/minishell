@@ -8,7 +8,10 @@ void	print_map(t_map *map)
 	while (tmp)
 	{
 		printf("%d:", tmp->key);
-		printf("%s\n", tmp->content);
+		if (ft_equalstr(tmp->content, "\n"))
+			printf("X");
+		else
+			printf("%s\n", tmp->content);
 		tmp = tmp->next;
 	}
 }
