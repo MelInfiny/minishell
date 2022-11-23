@@ -34,6 +34,7 @@ void	print_map(t_map *map)
 	{
 		print_type(tmp->type);
 		printf(" %d: ", tmp->key);
+		printf(" len = %ld: ", ft_strlen(tmp->content));
 		printf("%s", tmp->content);
 		tmp = tmp->next;
 	}

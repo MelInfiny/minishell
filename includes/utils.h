@@ -14,6 +14,7 @@ typedef enum {
 	GRREDIR
 }	e_type;
 
+
 typedef struct s_quotes {
 	int	start;
 	int	end;
@@ -28,11 +29,24 @@ typedef struct s_map {
 	struct s_map	*next;
 } t_map;
 
+typedef	struct	s_token {
+	int	fin;
+	int	fout;
+	int	type;
+	char	*cmd;
+	char	**option;
+	char	**args;
+	struct s_token *next;
+} t_token;
+
 typedef struct s_input {
 	char		**env;
 	char		*raw;
 	char		*line;
+	int		fdin;
+	int		fdout;
 	t_map		*lexer;
+	t_token		*parser;
 }	t_input;
 
 typedef struct s_readline {

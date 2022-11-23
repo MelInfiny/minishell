@@ -72,6 +72,7 @@ static int	split_quote(t_input *input, char *line, int index, e_type type)
 		{
 			if (line[index] == '$')
 				split_delim(input, &start, index, DOLLAR);
+
 		}
 	}
 	if (line[index] != c)
