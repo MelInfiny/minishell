@@ -1,17 +1,13 @@
 #include "minishell.h"
 
-e_type	switch_type(char c, char next)
+e_type	switch_type(char c)
 {
 	if (c == '\"')
 		return (DQUOTE);
 	if (c == '\'')
 		return (SQUOTE);
 	if (c == '$')
-	{
-		if (next == ' ' || next == '\n')
-			return (WORD);
 		return (DOLLAR);
-	}
 	if (c == ' ')
 	       return (ESPACE);
 	if (c == '|')
@@ -63,6 +59,24 @@ static void	split_delim(t_input *input, int *start, int index, e_type type)
 	*start = index + 1;
 }
 
+static int	split_dollar(t_input *input, char *line, int *start, int index)
+{
+	int	r;
+	int	count;
+
+	count = index + 1;
+	while (line[count] && line[count] != ' ')
+		count ++;
+	if (line[count] == ' ')
+	{
+		r = count - *start;
+		ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, *start, r), WORD));
+		*start = count;
+		return (count);
+	}
+	return (index);	
+}
+
 static int	split_quote(t_input *input, char *line, int index, e_type type)
 {
 	int	start;
@@ -74,13 +88,16 @@ static int	split_quote(t_input *input, char *line, int index, e_type type)
 	{
 		if (c == '\"')
 		{
-			if (switch_type(line[index], line[index+1]) == DOLLAR)
+			if (line[index] == '$')
+			{
 				split_delim(input, &start, index, DOLLAR);
+				index = split_dollar(input, line, &start, index);
+			}
 		}
 	}
 	if (line[index] != c)
 	{
-		printf("error syntaxe unexpected token : \" %c \"", c);
+		printf("error syntaxe unexpected token : ` %c ", c);
 		exit(0);
 	}
 	split_delim(input, &start, index, type);
@@ -97,10 +114,12 @@ void	ft_lexer(t_input *input, char *line)
 	start = 0;
 	while (line[count])
 	{
-		type = switch_type(line[count], line[count+1]);
+		type = switch_type(line[count]);
 		if (type != WORD)
 		{
 			split_delim(input, &start, count, type);
+			if (type == DOLLAR)
+				count = split_dollar(input, line, &start, count);
 			if (type == GREDIR || type == DREDIR)
 				count += split_redir(input, line, count, &type);
 			if (type == SQUOTE || type == DQUOTE)
