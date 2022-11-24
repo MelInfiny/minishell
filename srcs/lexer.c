@@ -1,13 +1,17 @@
 #include "minishell.h"
 
-e_type	switch_type(char c)
+e_type	switch_type(char c, char next)
 {
 	if (c == '\"')
 		return (DQUOTE);
 	if (c == '\'')
 		return (SQUOTE);
-	if (c == '$' )
+	if (c == '$')
+	{
+		if (next == ' ' || next == '\n')
+			return (WORD);
 		return (DOLLAR);
+	}
 	if (c == ' ')
 	       return (ESPACE);
 	if (c == '|')
@@ -70,9 +74,8 @@ static int	split_quote(t_input *input, char *line, int index, e_type type)
 	{
 		if (c == '\"')
 		{
-			if (line[index] == '$')
+			if (switch_type(line[index], line[index+1]) == DOLLAR)
 				split_delim(input, &start, index, DOLLAR);
-
 		}
 	}
 	if (line[index] != c)
@@ -94,7 +97,7 @@ void	ft_lexer(t_input *input, char *line)
 	start = 0;
 	while (line[count])
 	{
-		type = switch_type(line[count]);
+		type = switch_type(line[count], line[count+1]);
 		if (type != WORD)
 		{
 			split_delim(input, &start, count, type);

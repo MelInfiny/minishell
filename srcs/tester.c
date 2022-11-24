@@ -50,6 +50,7 @@ int	main(int ac, char **argv, char **env)
 	init_input(&input, readline("minishell: "), env);
 	ft_lexer(&input, input.raw);
 	print_map(input.lexer);
+	printf("\n");
 	free_input(&input);
 	return (0);
 }

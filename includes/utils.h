@@ -29,6 +29,13 @@ typedef struct s_map {
 	struct s_map	*next;
 } t_map;
 
+typedef struct s_dup {
+	int	fin;
+	int	fout;
+	int	file;
+	e_type	type;
+} t_dup;
+
 typedef	struct	s_token {
 	int	fin;
 	int	fout;
@@ -36,7 +43,6 @@ typedef	struct	s_token {
 	char	*cmd;
 	char	**option;
 	char	**args;
-	struct s_token *next;
 } t_token;
 
 typedef struct s_input {
@@ -46,8 +52,13 @@ typedef struct s_input {
 	int		fdin;
 	int		fdout;
 	t_map		*lexer;
-	t_token		*parser;
+	t_list		*parser;
 }	t_input;
+
+typedef struct s_parser {
+	t_list	*cmds;
+	t_list	*redir;
+} t_parser;
 
 typedef struct s_readline {
 	char	*line;
@@ -67,6 +78,8 @@ void	ft_strisert(char *newline, char *add, size_t len);
 void	ft_strdfree(char **strd);
 size_t	ft_strdlen(char **strd);
 char	**ft_strdcpy(char **strd);
+char	**ft_strdjoin(char **strd, char *s);
+char	**ft_strsplit(char *s, char c);
 
 // ******************** MAP **************************
 t_map	*ft_getmap(t_map *map, int key);
@@ -77,6 +90,12 @@ void	ft_mapdelone(t_map *map, void (*del)(void *));
 void	ft_mapreplace(t_map **map, t_map *newmap);
 void	ft_mapclear(t_map **map, void (*del)(void *));
 int		ft_mapsize(t_map *map);
-// ***************************************************
+// *****************************************************
+// ********************* PARSER ************************
+
+t_list	*ft_newcmd(char **infos);
+t_list	*ft_newredir(char **infos);
+
+
 
 #endif

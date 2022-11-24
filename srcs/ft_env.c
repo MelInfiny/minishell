@@ -79,3 +79,17 @@ char	*find_varenv(t_input *input, t_quote *q, char *line)
 	q->pair = false;
 	return (ft_strdup(""));
 }
+
+char	*ft_expand_env(char **env, char *var)
+{
+	int		count;
+
+	count = 0;
+	while (env[count])
+	{
+		if (ft_findstr(env[count], var))
+			return (ft_substr(env[count], ft_strlen(var) + 1, ft_strlen(env[count])));
+		count ++;
+	}
+	return (ft_strdup(""));
+}

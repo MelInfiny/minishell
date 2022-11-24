@@ -5,12 +5,12 @@ size_t	ft_strdlen(char **strd)
 	int	count;
 
 	count = 0;
-	while (strd[count])
+	while (strd && strd[count])
 		count ++;
 	return (count);
 }
 
-static	char **ft_strdjoin(char **strd, char *s)
+char	**ft_strdjoin(char **strd, char *s)
 {
 	char	**newstr;
 	int		i;

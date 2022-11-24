@@ -27,7 +27,8 @@ t_token	*parse_first(t_input *input, int key)
 	return (-1);
 }
 
-char	*parse_quote(t_map *map, e_type type)
+
+char	*parse_quote(t_map **map, e_type type, env)
 {
 	t_map	*tmp;
 	char	*s;
@@ -40,50 +41,85 @@ char	*parse_quote(t_map *map, e_type type)
 		if (tmp->type == type)
 			break;
 		if (tmp->type == DOLLAR)
-		{
-			tmp = tmp->next;
-			expand = ft_expand_env(tmp->conent);
-			s = ft_strjoin2(s, expand[0]);
-			s = ft_strjoin2(s, expand[1]);
-			free_strd(expand);
-		}
+			s = ft_strjoin2(s, parse_dollar(&tmp, env, 1));
 		else
 			s = ft_strjoin2(s, tmp->content);
 
 		tmp = tmp->next;
 	}
+	*map = tmp;
 	return (s);
 }
 
-char	*parse_lexer(t_input *input, t_map *cmd)
+char	*parse_dollar(t_map **map, char **env, int status)
 {
-	char	*cmd;
+	char	**tmp;
+	char	*var;
+
+	*map = map->next;
+	if (!status)
+		return (ft_expand_env(*map->content, env));
+	tmp = ft_strsplit(*map->content, ' ');
+	var = ft_expand_env(tmp[0]);
+	if (tmp[1])
+		var = ft_strjoin2(var, tmp[1]);
+	ft_strdfree(tmp);
+	return (var);
+}
+
+char	**parse_lexer(t_map **commande, char **env)
+{
+	char	**cmd;
 	t_map	*tmp;
 
-	tmp = cmd;
+	tmp = *commande
 	while (!is_redir(tmp_type) && tmp_type != PIPE)
 	{
 		if (tmp->type == WORD)
-			cmd = tmp->content;
-		if (tmp->type == SQUOTE || tmp->type == DQUOTE)
-		{
-			cmd = parse_quote(tmp, tmp->type);
-		}
-		
+			cmd = strdjoin(cmd, tmp->content);
+		else if (tmp->type == DOLLAR)
+			cmd = strdjoin(cmd, parse_dollar(&mp, env, 0));
+		else if (tmp->type == SQUOTE || tmp->type == DQUOTE)
+			cmd = strdjoin(cmd, parse_quote(&tmp, tmp->type, env));
 		tmp = tmp->next;
 	}
+	*commande = tmp;
+	return (cmd);
 }
 
-void	parser(t_input *input, char *line)
+void	parser(t_input *input, t_map *lexer)
 {
-	int	res;
-	t_map	*parser;
+	char	**res;
+	int	status;
 
-	res = parse_first(input, 1);
-	if (res)
+	tmp = lexer;
+	status = -1;
+	while (tmp)
 	{
-		
-	}
-		
-
+		if (is_redir(tmp->type))
+		{
+			res = parse_redir(&tmp, tmp_type);
+			ft_lst_add(input->parser->redir, ft_newredir(res));
+		}
+		else if (tmp->type == PIPE)
+		{
+			res = parse_pipe(&tmp);
+			ft_lst_add(input->parser->redir, ft_newredir(res));
+			status = -1
+		}
+		else if (status < 0)
+		{
+			res = parse_lexer(&tmp, input->env);
+			ft_lst_add(input->parser->cmds, ft_newcmd(res));
+			status = -1;
+		}
+		else
+		{
+			res = parse_lexer(&tmp, input->env);
+			ft_strdjoin(input->parser->cdms, res);
+		}	
+		tmp = tmp->next;
+	}	
 }
+
+void	check_symbols(void);
