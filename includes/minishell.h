@@ -50,6 +50,7 @@ void	check_syntax(t_input *input);
 
 char	*first_detector(t_input *input, char *line);
 
+int		is_break(e_type type);
 int		is_varshell(char c);
 int		search_c(char *line, int start, char c);
 char		*replace_quote(t_input *input, char *line, int *index);
@@ -57,4 +58,7 @@ char		*replace_dollar(t_input *input, char *line, int *index);
 char		*find_dollar(t_input *input, char *line);
 char		*find_quotes(t_input *input, char *line);
 char		*find_varenv(t_input *input, t_quote *q, char *line);
+
+char		*expand_dollar(t_input *input, t_map *map);
+char		*find_in_env(char **env, char *var);
 #endif

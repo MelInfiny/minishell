@@ -14,6 +14,7 @@ SRCS_BASE	=	\
 			init		\
 			lexer		\
 			1parser		\
+			expand		\
 			ft_map		\
 			ft_readline	\
 			ft_redirect	\

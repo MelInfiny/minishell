@@ -66,6 +66,7 @@ static int	split_dollar(t_input *input, char *line, int *start, int index)
 {
 	int	r;
 	int	count;
+	e_type	type;
 
 	count = index + 1;
 	while (line[count] && line[count] != ' ')
@@ -73,7 +74,10 @@ static int	split_dollar(t_input *input, char *line, int *start, int index)
 	if (line[count] == ' ')
 	{
 		r = count - *start;
-		ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, *start, r), WORD));
+		type = switch_type(line[count - 1]);
+		if (!is_break(type))
+			type = WORD;
+		ft_addmap(&input->lexer, ft_mapnew(ft_substr(line, *start, r), type));
 		*start = count;
 		return (count);
 	}

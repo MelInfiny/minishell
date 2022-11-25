@@ -40,6 +40,17 @@ void	print_map(t_map *map)
 	}
 }
 
+void	test_expand(t_input *input)
+{
+	t_map	*tmp = input->lexer;
+	while (tmp)
+	{
+		if (tmp->type == DOLLAR)
+			printf("%s\n", expand_dollar(input, tmp));
+		tmp = tmp->next;
+	}
+}
+
 int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
@@ -55,3 +66,5 @@ int	main(int ac, char **argv, char **env)
 	free_input(&input);
 	return (0);
 }
+
+
