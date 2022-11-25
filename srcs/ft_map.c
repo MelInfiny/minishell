@@ -58,7 +58,8 @@ void    ft_mapdelone(t_map *lst, void (*del)(void*))
 {
         if (!del || !lst)
                 return ;
-        del(lst->content);
+	if (lst->content)
+        	del(lst->content);
         free(lst);
 }
 

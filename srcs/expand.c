@@ -14,13 +14,14 @@ char    *find_in_env(char **env, char *var)
         return (ft_strdup(""));
 }
 
-char	*expand_dollar(t_input *input, t_map *map)
+char	*expand_dollar(t_input *input, t_map **map)
 {
 	t_map	*tmp;
 
-	tmp = map->next;
+	tmp = (*map)->next;
 	if (tmp)
 	{
+		*map = tmp;
 		if (tmp->type == WORD && ft_strlen(tmp->content) > 0)
 			return (find_in_env(input->env, tmp->content));
 		if (is_break(tmp->type))

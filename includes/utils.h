@@ -29,21 +29,13 @@ typedef struct s_map {
 	struct s_map	*next;
 } t_map;
 
-typedef struct s_dup {
-	int	fin;
-	int	fout;
-	int	file;
+typedef struct s_node {
+	bool	status;
 	e_type	type;
-} t_dup;
-
-typedef	struct	s_token {
-	int	fin;
-	int	fout;
-	int	type;
-	char	*cmd;
-	char	**option;
+	bool	left;
+	bool	right;
 	char	**args;
-} t_token;
+} t_node;
 
 typedef struct s_input {
 	char		**env;
@@ -52,13 +44,9 @@ typedef struct s_input {
 	int		fdin;
 	int		fdout;
 	t_map		*lexer;
-	t_list		*parser;
+	t_map		*parser;
+	t_list		*ast;
 }	t_input;
-
-typedef struct s_parser {
-	t_list	*cmds;
-	t_list	*redir;
-} t_parser;
 
 typedef struct s_readline {
 	char	*line;

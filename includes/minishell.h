@@ -47,6 +47,7 @@ void	init_quote(t_quote *quote);
 void	ft_lexer(t_input *input, char *line);
 
 void	check_syntax(t_input *input);
+void	check_expand(t_input *input);
 
 char	*first_detector(t_input *input, char *line);
 
@@ -59,6 +60,7 @@ char		*find_dollar(t_input *input, char *line);
 char		*find_quotes(t_input *input, char *line);
 char		*find_varenv(t_input *input, t_quote *q, char *line);
 
-char		*expand_dollar(t_input *input, t_map *map);
+//char		*remove_quote(t_input *input, t_map *map, e_type type);
+char		*expand_dollar(t_input *input, t_map **map);
 char		*find_in_env(char **env, char *var);
 #endif

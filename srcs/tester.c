@@ -57,11 +57,13 @@ int	main(int ac, char **argv, char **env)
 	(void) argv;
 	t_input input;
 	
-	printf("HELLO WORLD !\n");
 	init_input(&input, readline("minishell: "), env);
+	
 	ft_lexer(&input, input.raw);
 	check_syntax(&input);
-	print_map(input.lexer);
+	check_expand(&input);
+	
+	print_map(input.parser);
 	printf("\n");
 	free_input(&input);
 	return (0);
