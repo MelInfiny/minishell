@@ -40,6 +40,9 @@ $(NAME):			$(OBJS)
 				make -C $(LIB_FOLDER) --silent
 				$(CC)  -o $(NAME) $(OBJS) -lreadline -L $(LIB_FOLDER) -lft
 
+valgrind:
+		valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_leaks ./$(NAME)
+
 clean:
 		make -C $(LIB_FOLDER) clean --silent
 		rm -rf $(OBJS_FOLDER)

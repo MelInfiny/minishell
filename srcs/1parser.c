@@ -1,22 +1,22 @@
 #include "minishell.h"
 
-void	lexer_str_error(t_map **map, char *message, char *content)
+void	lexer_str_error(t_input *input, char *message, char *content)
 {
 	printf("%s", message);
 	if (content)
 		printf("%s", content);
 	printf("\n");
-	ft_mapclear(map, free);
+	free_input(input);
 	exit(0);
 }
 
-void	lexer_char_error(t_map **map, char *message, char content)
+void	lexer_char_error(t_input *input, char *message, char content)
 {
 	printf("%s", message);
 	if (content)
 		printf("%c", content);
 	printf("\n");
-	ft_mapclear(map, free);
+	free_input(input);
 	exit(0);
 }
 
@@ -27,11 +27,11 @@ int	is_break(e_type type)
 	return (0);
 }
 
-void	check_syntax(t_map **map)
+void	check_syntax(t_input *input)
 {
 	t_map	*tmp;
 
-	tmp = *map;
+	tmp = input->lexer;
 	while (tmp)
 	{
 		if (is_break(tmp->type))
@@ -39,10 +39,10 @@ void	check_syntax(t_map **map)
 			if (tmp->next)
 			{
 				if (tmp->next->type != WORD)
-					lexer_str_error(map, "error : unexpeted token : ` ", tmp->next->content);
+					lexer_str_error(input, "error : unexpeted token : ` ", tmp->next->content);
 			}
 			else
-					lexer_str_error(map, "error : unexpeted token : << newline >>", NULL);
+					lexer_str_error(input, "error : unexpeted token : << newline >>", NULL);
 		}
 		tmp = tmp->next;
 	}

@@ -36,10 +36,9 @@ char	**ft_strdcpy(char **strd)
 	count = 0;
 	while (strd[count])
 	{
-		newstrd[count] = strd[count];
+		newstrd[count] = ft_strdup(strd[count]);
 		count ++;
 	}
-	newstrd[count] = NULL;
 	return (newstrd);
 }
 

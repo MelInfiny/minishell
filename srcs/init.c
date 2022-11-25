@@ -17,7 +17,7 @@ void	init_input(t_input *input, char *line, char **env)
 
 void	free_input(t_input *input)
 {
-	free(input->env);
+	ft_strdfree(input->env);
 	free(input->raw);
 	ft_mapclear(&input->lexer, free);
 	if (input->line)

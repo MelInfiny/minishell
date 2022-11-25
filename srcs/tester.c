@@ -49,7 +49,7 @@ int	main(int ac, char **argv, char **env)
 	printf("HELLO WORLD !\n");
 	init_input(&input, readline("minishell: "), env);
 	ft_lexer(&input, input.raw);
-	check_syntax(&input.lexer);
+	check_syntax(&input);
 	print_map(input.lexer);
 	printf("\n");
 	free_input(&input);
