@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+void	lexer_char_error(t_map **map, char *message, char content);
+
 e_type	switch_type(char c)
 {
 	if (c == '\"')
@@ -30,7 +32,8 @@ static int	split_redir(t_input *input, char *line, int index, e_type *type)
 		status ++;
 	if (status > 1)
 	{
-		printf("error syntaxe unexpected token : \" %c \"", line[index]);
+		lexer_char_error(&input->lexer, "error syntaxe unexpected token : `, ", line[index]);
+		//printf("error syntaxe unexpected token : ` %c \"", line[index]);
 		exit (0);
 	}
 	if (status > 0)
@@ -97,8 +100,7 @@ static int	split_quote(t_input *input, char *line, int index, e_type type)
 	}
 	if (line[index] != c)
 	{
-		printf("error syntaxe unexpected token : ` %c ", c);
-		exit(0);
+		lexer_char_error(&input->lexer, "error syntaxe unexpected token : `, ", c);
 	}
 	split_delim(input, &start, index, type);
 	return (index);
