@@ -12,8 +12,10 @@ VFLAGS		:=	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 
 SRCS_BASE	=	\
 			init		\
+			utils		\
 			lexer		\
 			1parser		\
+			2parser		\
 			expand		\
 			ft_map		\
 			ft_readline	\

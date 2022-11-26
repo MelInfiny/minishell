@@ -21,41 +21,61 @@ t_node	*new_node(t_map *map, char *content)
 {
 	t_node	*node;
 
-	node = (node *) ft_calloc(1, sizeof(node));
+	node = (t_node *) ft_calloc(1, sizeof(t_node));
 	if (!node)
 		return (NULL);
 	node->status = parse_status(map->type);
+	if (node->status == -1)
+		exit(0);
 	node->args = (char **) ft_calloc(1, sizeof(char));
 	if (!node->args)
 		return (NULL);
-	node->args[0] = ft_strdup(content);
+	if (content)
+		node->args[0] = ft_strdup(content);
 	return (node);
 }
 
-t_list	*parser_ast(t_input *input, t_map **lexer)
+t_list	*ft_lstlast_word(t_list *lst)
+{
+	int	size;
+	int	count;
+	//t_node	*node;
+
+	count = 0;
+	size = ft_lstsize(lst);
+	printf("size = %d\n", size);
+	while (lst && count < size - 1)
+	{
+		lst = lst->next;
+	}/*
+	node = lst->next->content;
+	if (node->status == 0)
+		lst = lst->next;
+		*/
+	return (lst);
+}
+
+void	ft_parser(t_input *input)
 {
 	t_map	*tmp;
+	int		status;
 	t_node	*node;
-	int	status
 
 	tmp = input->lexer;
 	status = 0;
 	while (tmp)
 	{
+		printf("\ntype = %d: ", parse_status(tmp->type));
 		if (is_break(tmp->type))
 		{
 			if (tmp->type == PIPE)
 			{
-				ft_lstadd(&input->ast, new_node(tmp, NULL));
+				ft_lstadd_back(&input->ast, ft_lstnew(new_node(tmp, NULL)));
 				status = 0;
-			}	// fin PIPE
+			}
 			else
 			{
-				if (ft_lstlast(&input->ast) && ft_lstlast(&input->ast)->type == WORD)
-					status = 1;
-				else
-					status = 0;
-				ft_lstadd(&input->ast, new_node(tmp, tmp->next->content));
+				ft_lstadd_back(&input->ast, ft_lstnew(new_node(tmp, tmp->next->content)));
 				tmp = tmp->next;
 			}
 		}
@@ -63,12 +83,16 @@ t_list	*parser_ast(t_input *input, t_map **lexer)
 		{
 			if (status == 0)
 			{
-				ft_lstadd(&input->ast, new_node(tmp, tmp->content));
+				ft_lstadd_back(&input->ast, ft_lstnew(new_node(tmp, tmp->content)));
 				status = 1;
 			}
 			else
-				ft_lstlast(&input->ast)->args = ft_strdjoin(ft_lstlast(&input->ast)->args, tmp->content);
+			{
+				node = ft_lstlast_word(input->ast)->content;
+				node->args = ft_strdjoin(node->args, ft_strdup(tmp->content));
+			}
 		}
+		tmp = tmp->next;
 	}
 }
 

@@ -66,7 +66,9 @@ void    ft_mapdelone(t_map *lst, void (*del)(void*))
 void    ft_mapclear(t_map **lst, void (*del)(void *))
 {
         t_map  *tmp;
-
+		
+		if (!*lst)
+			return ;
         while (*lst)
         {
                 tmp = (*lst)->next;

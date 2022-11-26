@@ -22,6 +22,8 @@ void	free_input(t_input *input)
 	free(input->raw);
 	ft_mapclear(&input->lexer, free);
 	ft_mapclear(&input->parser, free);
+	ft_lstiter(input->ast, &ft_freenode);
+	ft_lstclear(&input->ast, free);
 	if (input->line)
 		free(input->line);
 }

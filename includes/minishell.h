@@ -45,10 +45,12 @@ void	init_input(t_input *input, char *line, char **env);
 void	free_input(t_input *input);
 void	init_quote(t_quote *quote);
 void	ft_lexer(t_input *input, char *line);
+void	ft_parser(t_input *input);
 
 void	check_syntax(t_input *input);
 void	check_expand(t_input *input);
 
+void	ft_freenode(void *node);
 char	*first_detector(t_input *input, char *line);
 
 int		is_break(e_type type);

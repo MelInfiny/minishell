@@ -6,7 +6,7 @@
 #    By: enolbas <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/04 17:16:17 by enolbas           #+#    #+#              #
-#    Updated: 2022/11/11 23:29:07 by enolbas          ###   ########.fr        #
+#    Updated: 2022/11/26 21:05:30 by enolbas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,12 +26,11 @@ SRCS = \
 	print_str.c		print_ptr.c		print_nbr_u.c					\
 	get_next_line_bonus.c	\
 	get_next_line_utils_bonus.c	\
+	ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c	\
+	ft_lstdelone.c ft_lstiter.c ft_lstlast.c	\
+	ft_lstmap.c ft_lstnew.c ft_lstsize.c		\
 
 OBJS = $(SRCS:.c=.o)
-
-BONUS = ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c \
-					ft_lstdelone.c ft_lstiter.c ft_lstlast.c \
-					ft_lstmap.c ft_lstnew.c ft_lstsize.c
 
 BONUS_OBJS = $(BONUS:.c=.o)
 

@@ -31,8 +31,6 @@ typedef struct s_map {
 
 typedef struct s_node {
 	int	status;
-	bool	left;
-	bool	right;
 	char	**args;
 } t_node;
 

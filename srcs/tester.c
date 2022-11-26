@@ -40,6 +40,24 @@ void	print_map(t_map *map)
 	}
 }
 
+void	print_ast(t_list *ast)
+{
+	t_list	*tmp;
+	t_node	*node;
+
+	tmp = ast;
+	while (tmp)
+	{
+		node = tmp->content;
+		printf("%d :", node->status);
+		for (size_t i = 0; node->args[i]; i++)
+		{
+				printf(" %s\n", node->args[i]);
+		}
+		tmp = tmp->next;
+	}
+}
+
 void	test_expand(t_input *input)
 {
 	t_map	*tmp = input->lexer;
@@ -51,6 +69,20 @@ void	test_expand(t_input *input)
 	}
 }
 
+void	test_lexer(t_input *input)
+{
+	ft_lexer(input, input->raw);
+	check_syntax(input);
+	check_expand(input);
+	//print_map(input->parser);
+}
+
+void	test_ast(t_input *input)
+{
+	ft_parser(input);
+	print_ast(input->ast);
+}
+
 int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
@@ -58,12 +90,10 @@ int	main(int ac, char **argv, char **env)
 	t_input input;
 	
 	init_input(&input, readline("minishell: "), env);
+
+	test_lexer(&input);
+	test_ast(&input);
 	
-	ft_lexer(&input, input.raw);
-	check_syntax(&input);
-	check_expand(&input);
-	
-	print_map(input.parser);
 	printf("\n");
 	free_input(&input);
 	return (0);
