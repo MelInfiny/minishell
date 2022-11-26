@@ -60,7 +60,6 @@ char		*find_dollar(t_input *input, char *line);
 char		*find_quotes(t_input *input, char *line);
 char		*find_varenv(t_input *input, t_quote *q, char *line);
 
-//char		*remove_quote(t_input *input, t_map *map, e_type type);
 char		*expand_dollar(t_input *input, t_map **map);
 char		*find_in_env(char **env, char *var);
 #endif

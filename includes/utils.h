@@ -30,8 +30,7 @@ typedef struct s_map {
 } t_map;
 
 typedef struct s_node {
-	bool	status;
-	e_type	type;
+	int	status;
 	bool	left;
 	bool	right;
 	char	**args;
