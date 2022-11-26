@@ -46,7 +46,7 @@ void	test_expand(t_input *input)
 	while (tmp)
 	{
 		if (tmp->type == DOLLAR)
-			printf("%s\n", expand_dollar(input, tmp));
+			printf("%s\n", expand_dollar(input, &tmp));
 		tmp = tmp->next;
 	}
 }
