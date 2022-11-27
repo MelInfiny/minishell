@@ -31,6 +31,7 @@ typedef struct s_map {
 
 typedef struct s_node {
 	int	status;
+	char	*file;
 	char	**args;
 } t_node;
 
@@ -66,6 +67,7 @@ char	**ft_strdcpy(char **strd);
 char	**ft_strdjoin(char **strd, char *s);
 char	**ft_strsplit(char *s, char c);
 
+char	*ft_streplace(char *s, char *newstr);
 // ******************** MAP **************************
 t_map	*ft_getmap(t_map *map, int key);
 t_map	*ft_mapnew(char *content, e_type type);

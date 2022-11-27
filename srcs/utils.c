@@ -6,39 +6,32 @@ char	**ft_strdjoin(char **strd, char *s)
 	int		strdlen;
 	int		count;
 
-	strdlen = ft_strdlen(strd);
-	newd = ft_calloc(strdlen+ 1, sizeof(char *));
+	strdlen = 0;
+	if (strd)
+		strdlen = ft_strdlen(strd);
+	newd = ft_calloc(strdlen + 2, sizeof(char *));
 	if (!newd)
 		return (NULL);
-	count = -1;
-	while (strd[++count])
+	count = 0;
+	while (strd && strd[count])
+	{
 		newd[count] = ft_strdup(strd[count]);
+		count ++;
+	}
 	newd[count] = ft_strdup(s);
 	if (strd)
 		ft_strdfree(strd);
 	return (newd);
 }
-/*
-char	**ft_strsplit(char *s, char c)
-{
-	int		count;
-	char	**strd;
 
-	count = -1;
-	strd = (char **) ft_calloc(3, sizeof(char *));
-	if (!strd)
-		return (NULL);
-	while (s[++count])
-	{
-		if (s[count] == c)
-			break;
-	}
-	strd[0] = ft_substr(s, 0, count);
-	if (s[count] == c)
-		strd[1] == ft_substr(s, count, ft_strlen(s) - count);
-	return (strd);
+char	*ft_streplace(char *oldstr, char *newstr)
+{
+	if (oldstr)
+		free(oldstr);
+	oldstr = NULL;
+	return (newstr);
 }
-*/
+
 void	ft_freenode(void *n)
 {
 	int		count;
@@ -46,8 +39,10 @@ void	ft_freenode(void *n)
 
 	count = 0;
 	node = (t_node *) n;
-	while (node->args[count])
+	if (node->file)
+		free(node->file);
+	while (node->args && node->args[count])
 		free(node->args[count++]);
-	free(n);
+	free(node->args);
 }
 

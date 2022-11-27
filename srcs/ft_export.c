@@ -5,6 +5,8 @@ size_t	ft_strdlen(char **strd)
 	int	count;
 
 	count = 0;
+	if (!strd || !strd[0])
+		return (0);
 	while (strd && strd[count])
 		count ++;
 	return (count);

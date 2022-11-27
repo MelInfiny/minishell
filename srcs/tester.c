@@ -49,7 +49,7 @@ void	print_ast(t_list *ast)
 	while (tmp)
 	{
 		node = tmp->content;
-		printf("%d :", node->status);
+		printf("NEW COMMAND\n");
 		for (size_t i = 0; node->args[i]; i++)
 		{
 				printf(" %s\n", node->args[i]);
