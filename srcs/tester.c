@@ -2,7 +2,7 @@
 
 void	print_type(e_type type)
 {
-	printf("\n\n");
+	printf("\n");
 	if (type == WORD)
 		printf("WORD");
 	if (type == DQUOTE)
@@ -35,7 +35,7 @@ void	print_map(t_map *map)
 		print_type(tmp->type);
 		printf(" %d: ", tmp->key);
 		printf(" len = %ld: ", ft_strlen(tmp->content));
-		printf("%s", tmp->content);
+		printf("%s\n", tmp->content);
 		tmp = tmp->next;
 	}
 }
@@ -48,11 +48,11 @@ void	print_ast(t_list *ast)
 	tmp = ast;
 	while (tmp)
 	{
-		node = tmp->content;
 		printf("NEW COMMAND\n");
+		node = tmp->content;
 		for (size_t i = 0; node->args[i]; i++)
 		{
-				printf(" %s\n", node->args[i]);
+				printf("%ld: %s\n", i, node->args[i]);
 		}
 		tmp = tmp->next;
 	}
@@ -74,7 +74,7 @@ void	test_lexer(t_input *input)
 	ft_lexer(input, input->raw);
 	check_syntax(input);
 	check_expand(input);
-	//print_map(input->parser);
+//	print_map(input->parser);
 }
 
 void	test_ast(t_input *input)

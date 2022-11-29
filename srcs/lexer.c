@@ -33,7 +33,6 @@ static int	split_redir(t_input *input, char *line, int index, e_type *type)
 	if (status > 1)
 	{
 		lexer_char_error(input, "error syntaxe unexpected token : `, ", line[index]);
-		//printf("error syntaxe unexpected token : ` %c \"", line[index]);
 		exit (0);
 	}
 	if (status > 0)
@@ -118,7 +117,7 @@ void	ft_lexer(t_input *input, char *line)
 
 	count = 0;
 	start = 0;
-	while (line[count])
+	while (line[count] && line[count] != '\n')
 	{
 		type = switch_type(line[count]);
 		if (type != WORD)

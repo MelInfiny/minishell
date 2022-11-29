@@ -29,7 +29,7 @@ void	ft_parser(t_input *input)
 	t_map	*tmp;
 	t_node	*node;
 
-	tmp = input->lexer;
+	tmp = input->parser;
 	ft_lstadd_back(&input->ast, ft_lstnew(new_node()));
 	while (tmp)
 	{
