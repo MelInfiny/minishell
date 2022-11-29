@@ -1,6 +1,25 @@
 #include "minishell.h"
 
-int	set_redir(e_type type)
+e_type	switch_type(char c)
+{
+	if (c == '\"')
+		return (DQUOTE);
+	if (c == '\'')
+		return (SQUOTE);
+	if (c == '$')
+		return (DOLLAR);
+	if (c == ' ')
+	       return (ESPACE);
+	if (c == '|')
+	       return (PIPE);
+	if (c == '<')
+	       return (GREDIR);
+	if (c == '>')
+		return (DREDIR);
+	return (WORD);
+}
+
+static int	set_redir(e_type type)
 {
 	if (type == GREDIR)
 		return (1);
@@ -13,7 +32,7 @@ int	set_redir(e_type type)
 	return (0);
 }
 
-t_node	*new_node(void)
+static t_node	*new_node(void)
 {
 	t_node	*node;
 
@@ -50,4 +69,3 @@ void	ft_parser(t_input *input)
 		tmp = tmp->next;
 	}
 }
-

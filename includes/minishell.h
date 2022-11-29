@@ -39,29 +39,14 @@ void	reverse_history(t_readline *prompt);
 int		ft_add_history(t_readline *prompt);
 int		last_history(t_readline *prompt);
 
-
 // ******************* LEXER *********************
 void	init_input(t_input *input, char *line, char **env);
 void	free_input(t_input *input);
-void	init_quote(t_quote *quote);
 void	ft_lexer(t_input *input, char *line);
 void	ft_parser(t_input *input);
-
 void	check_syntax(t_input *input);
 void	check_expand(t_input *input);
-
 void	ft_freenode(void *node);
-char	*first_detector(t_input *input, char *line);
-
-int		is_break(e_type type);
-int		is_varshell(char c);
-int		search_c(char *line, int start, char c);
-char		*replace_quote(t_input *input, char *line, int *index);
-char		*replace_dollar(t_input *input, char *line, int *index);
-char		*find_dollar(t_input *input, char *line);
-char		*find_quotes(t_input *input, char *line);
-char		*find_varenv(t_input *input, t_quote *q, char *line);
-
-char		*expand_dollar(t_input *input, t_map **map);
-char		*find_in_env(char **env, char *var);
+int	is_break(e_type type);
+char	*expand_dollar(t_input *input, t_map **map);
 #endif

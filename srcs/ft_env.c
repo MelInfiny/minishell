@@ -12,36 +12,6 @@
 
 #include "minishell.h"
 
-void	ft_strdfree(char **strd)
-{
-	int	count;
-
-	count = 0;
-	while (strd[count])
-	{
-		free(strd[count]);
-		count ++;
-	}
-	free(strd);
-}
-
-char	**ft_strdcpy(char **strd)
-{
-	char	**newstrd;
-	int		count;
-
-	newstrd = (char **) calloc(ft_strdlen(strd) + 1, sizeof(char *));
-	if (!strd)
-		return (NULL);
-	count = 0;
-	while (strd[count])
-	{
-		newstrd[count] = ft_strdup(strd[count]);
-		count ++;
-	}
-	return (newstrd);
-}
-
 int	ft_env(char **env)
 {
 	int	count;
@@ -55,40 +25,32 @@ int	ft_env(char **env)
 	return (0);
 }
 
-char	*find_varenv(t_input *input, t_quote *q, char *line)
+char    *find_in_env(char **env, char *var)
 {
-	int		count;
-	char	*varenv;
-	char	*buff;
+        int             count;
 
-	count = 0;
-	buff = ft_substr(line, q->start, q->end);
-	while (input->env[count])
-	{
-		if (ft_findstr(input->env[count], buff))
-		{
-			varenv = ft_substr(input->env[count], ft_strlen(buff) + 1, ft_strlen(input->env[count]));
-			free(buff);
-			q->pair = true;
-			return (varenv);
-		}
-		count ++;
-	}
-	free(buff);
-	q->pair = false;
-	return (ft_strdup(""));
+        count = 0;
+        while (env[count])
+        {
+                if (ft_findstr(env[count], var))
+                        return (ft_substr(env[count], ft_strlen(var) + 1, ft_strlen(env[count])));
+                count ++;
+        }
+        return (ft_strdup(""));
 }
 
-char	*ft_expand_env(char **env, char *var)
+char	*expand_dollar(t_input *input, t_map **map)
 {
-	int		count;
+	t_map	*tmp;
 
-	count = 0;
-	while (env[count])
+	tmp = (*map)->next;
+	if (tmp)
 	{
-		if (ft_findstr(env[count], var))
-			return (ft_substr(env[count], ft_strlen(var) + 1, ft_strlen(env[count])));
-		count ++;
+		*map = tmp;
+		if (tmp->type == WORD && ft_strlen(tmp->content) > 0)
+			return (find_in_env(input->env, tmp->content));
+		if (is_break(tmp->type))
+			return (ft_strjoin("$", tmp->content));
 	}
-	return (ft_strdup(""));
+	return (ft_strdup("$"));
 }

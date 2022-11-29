@@ -1,34 +1,6 @@
 #include "minishell.h"
 
-bool	ft_equalstr(char *str, char *find)
-{
-	int	count;
-
-	count = 0;
-	if (ft_strlen(str) != ft_strlen(find))
-		return (0);
-	while (str[count] && find[count])
-	{
-		if (str[count] != find[count])
-			return (0);
-		count ++;
-	}
-	return (1);
-}
-
-bool	ft_findstr(char *str, const char *find)
-{
-	size_t	len;
-
-	len = ft_strlen(find);
-	if (ft_strncmp(str, find, len))
-		return (false);
-	if (str[len] != '=')
-		return (false);
-	return (true);
-}
-
-static char	**ft_strdel(const char *var, char **env)
+static char	**del_in_env(const char *var, char **env)
 {
 	char	**newstrd;
 	int		i;
@@ -53,7 +25,7 @@ int	ft_unset(const char *var, char ***env)
 {
 	char	**newstrd;
 
-	newstrd = ft_strdel(var, *env);
+	newstrd = del_in_env(var, *env);
 	if (!newstrd)
 	{
 		perror("unset");
@@ -63,5 +35,3 @@ int	ft_unset(const char *var, char ***env)
 	*env = newstrd;
 	return (0);
 }
-
-

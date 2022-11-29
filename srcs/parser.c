@@ -1,66 +1,101 @@
 #include "minishell.h"
 
-bool	is_delim(char c)
+void	lexer_char_error(t_input *input, char *message, char content)
 {
-	if (c == ' ' || c == '\n' || c == '|' || c == '<' || c == '>')
-		return (true);
-	return (false);
+	printf("%s", message);
+	if (content)
+		printf("%c", content);
+	printf("\n");
+	free_input(input);
+	exit(0);
 }
 
-int	search_d(char *line, int index)
+static void	lexer_str_error(t_input *input, char *message, char *content)
 {
-	int	count;
-
-	count = index;
-	while (line[count] == line[index])
-		count ++;
-	return (count);
+	printf("%s", message);
+	if (content)
+		printf("%s", content);
+	printf("\n");
+	free_input(input);
+	exit(0);
 }
 
-void	find_delim(t_input *input, char *line)
+int	is_break(e_type type)
 {
-	int	count;
-
-	count = 0;
-	index = 0;
-	while (line[count])
-	{
-		if (is_delim(c))
-		{
-			ft_addmap(input->parser, ft_mapnew(ft_substr(tmp->content, index, count), CMD);
-			cmd = ft_substr(tmp->content, index, ft_strlen(tmp->content) - count);
-			ft_addmap(input->parser, ft_mapnew(cmd, ARG));
-			
-
-			ft_addmap(input->parser, ft_mapnew(ft_substr(line, index, count - index + 1), ));
-			index = search_d(line, count);
-			ft_substr(line, count, index - count);
-			count = index;
-		}
-		else
-			count ++;
-	}
+	if (type == PIPE || type == GREDIR || type == GRREDIR || type == DREDIR || type == DRREDIR)
+		return (1);
+	return (0);
 }
 
-t_map	*parser_first(t_input *input)
+void	check_syntax(t_input *input)
 {
 	t_map	*tmp;
-	char	*cmd;
 
 	tmp = input->lexer;
-	if (tmp->type == SQUOTE || tmp->type == DQUOTE)
+	while (tmp)
 	{
-		cmd = ft_substr(tmp->content, 1, ft_strlen(tmp->content) - 1);
-		ft_addmap(input->parser, ft_mapnew(cmd, CMD));
+		if (is_break(tmp->type))
+		{
+			if (tmp->next)
+			{
+				if (tmp->next->type != WORD)
+					lexer_str_error(input, "error : unexpeted token : ` ", tmp->next->content);
+			}
+			else
+					lexer_str_error(input, "error : unexpeted token : << newline >>", NULL);
+		}
+		tmp = tmp->next;
 	}
-	else (tmp->type == WORD)
-	{
-		while (tmp->content[count] && !is_delim(tmp->content[count]))
-			count ++;
-		cmd = ft_substr(tmp->content, count, ft_strlen(tmp->content) - count);
-		ft_addmap(input->parser, ft_mapnew(ft_substr(tmp->content, 0, count), CMD);
-		ft_addmap(input->parser, ft_mapnew(cmd, ARG));
+}
 
+static char	*remove_quote(t_input *input, t_map **map, e_type type)
+{
+	t_map	*tmp;
+	char	*s;
+	char	*d;
+
+	tmp = (*map)->next;
+	s = NULL;
+	while (tmp && tmp->type != type)
+	{
+		if (tmp->type == DOLLAR)
+		{
+			if (tmp->next && tmp->next->type == type)
+				d = ft_strdup("$");
+			else
+				d = expand_dollar(input, &tmp);
+			s = ft_strjoin2(s, d);
+			free(d);
+		}
+		else
+			s = ft_strjoin2(s, tmp->content);
+		tmp = tmp->next;
 	}
-	free(cmd);
+	*map = tmp;
+	return (s);
+}
+
+void	check_expand(t_input *input)
+{
+	t_map	*tmp;
+	char	*s;
+
+	tmp = input->lexer;
+	while (tmp)
+	{
+		if (tmp->type == WORD || is_break(tmp->type))
+		{
+			s = ft_strdup(tmp->content);
+			ft_addmap(&input->parser, ft_mapnew(s, tmp->type));
+		}
+		else
+		{
+			if (tmp->type == DOLLAR)
+				s = expand_dollar(input, &tmp);
+			if (tmp->type == SQUOTE || tmp->type == DQUOTE)
+				s = remove_quote(input, &tmp, tmp->type);
+			ft_addmap(&input->parser, ft_mapnew(s, WORD));
+		}
+		tmp = tmp->next;
+	}
 }

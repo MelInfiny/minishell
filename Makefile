@@ -11,25 +11,19 @@ LDFLAGS		:=	-fsanitize=address -g -fsanitize=leak
 VFLAGS		:=	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --tool=helgrind
 
 SRCS_BASE	=	\
-			init		\
-			utils		\
+			ft_init		\
+			ft_free		\
 			lexer		\
-			1parser		\
-			2parser		\
-			expand		\
+			parser		\
+			ast		\
+			ft_str		\
+			ft_strd		\
 			ft_map		\
-			ft_readline	\
-			ft_redirect	\
 			ft_echo		\
-			ft_cd		\
 			ft_pwd		\
 			ft_env		\
-			ft_export	\
 			ft_unset	\
-			ft_history	\
-			ft_quote	\
-			ft_dollar	\
-			ft_builtin	\
+			ft_pipe		\
 			tester		\
 			
 SRCS		=	$(addsuffix .c, $(addprefix $(SRCS_FOLDER)/, $(SRCS_BASE)))

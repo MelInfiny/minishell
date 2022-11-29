@@ -1,20 +1,17 @@
 #include "minishell.h"
 
-void	init_quote(t_quote *q)
+void	ft_freenode(void *n)
 {
-	q->start = 0;
-	q->end = 0;
-	q->pair = false;
-}
+	int		count;
+	t_node	*node;
 
-void	init_input(t_input *input, char *line, char **env)
-{
-	input->env = ft_strdcpy(env);
-	input->raw = line;
-	input->lexer = NULL;
-	input->parser = NULL;
-	input->ast = NULL;
-	input->line = NULL;
+	count = 0;
+	node = (t_node *) n;
+	if (node->file)
+		free(node->file);
+	while (node->args && node->args[count])
+		free(node->args[count++]);
+	free(node->args);
 }
 
 void	free_input(t_input *input)

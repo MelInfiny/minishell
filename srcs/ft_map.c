@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-t_map	*ft_getmap(t_map *lst, int key)
-{
-	while (lst != NULL)
-	{
-		if (lst->key == key)
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
-}
-
 t_map	*ft_mapnew(char *content, e_type type)
 {
         t_map  *lstnew;
@@ -76,18 +65,5 @@ void    ft_mapclear(t_map **lst, void (*del)(void *))
                 *lst = tmp;
         }
         *lst = NULL;
-}
-
-int     ft_mapsize(t_map *lst)
-{
-        int     count;
-
-        count = 0;
-        while (lst != NULL)
-        {
-                lst = lst->next;
-                count++;
-        }
-        return (count);
 }
 
