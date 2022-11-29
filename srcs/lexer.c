@@ -43,15 +43,20 @@ static void	split_delim(t_input *input, int *start, int index, e_type type)
 	*start = index + 1;
 }
 
-static int	split_dollar(t_input *input, char *line, int *start, int index)
+static int	split_dollar(t_input *input, int *start, int index, e_type type)
 {
 	int	r;
 	int	count;
-	e_type	type;
+	char	*line;
 
 	count = index + 1;
+	line = input->raw;
 	while (line[count] && line[count] != ' ')
+	{
+		if (switch_type(line[count]) == type)
+			return (index);
 		count ++;
+	}
 	if (line[count] == ' ')
 	{
 		r = count - *start;
@@ -79,7 +84,7 @@ static int	split_quote(t_input *input, char *line, int index, e_type type)
 			if (line[index] == '$')
 			{
 				split_delim(input, &start, index, DOLLAR);
-				index = split_dollar(input, line, &start, index);
+				index = split_dollar(input, &start, index, type);
 			}
 		}
 	}
@@ -106,7 +111,7 @@ void	ft_lexer(t_input *input, char *line)
 		{
 			split_delim(input, &start, count, type);
 			if (type == DOLLAR)
-				count = split_dollar(input, line, &start, count);
+				count = split_dollar(input, &start, count, type);
 			if (type == GREDIR || type == DREDIR)
 				count += split_redir(input, line, count, &type);
 			if (type == SQUOTE || type == DQUOTE)
