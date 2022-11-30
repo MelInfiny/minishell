@@ -104,7 +104,7 @@ void	ft_lexer(t_input *input, char *line)
 
 	count = 0;
 	start = 0;
-	while (line[count] && line[count] != '\n')
+	while (line[count])
 	{
 		type = switch_type(line[count]);
 		if (type != WORD)

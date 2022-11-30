@@ -46,6 +46,8 @@ void	print_ast(t_list *ast)
 	t_node	*node;
 
 	tmp = ast;
+	if (!ast)
+		return ;
 	while (tmp)
 	{
 		printf("NEW COMMAND\n");
@@ -74,7 +76,7 @@ void	test_lexer(t_input *input)
 	ft_lexer(input, input->raw);
 	check_syntax(input);
 	check_expand(input);
-//	print_map(input->parser);
+	print_map(input->parser);
 }
 
 void	test_ast(t_input *input)
@@ -88,14 +90,18 @@ int	main(int ac, char **argv, char **env)
 	(void) ac;
 	(void) argv;
 	t_input input;
-	
-	init_input(&input, readline("minishell: "), env);
 
-	test_lexer(&input);
-	test_ast(&input);
-	
-	printf("\n");
-	free_input(&input);
+	while (1)
+	{	
+		init_input(&input, readline("minishell: "), env);
+		if (ft_strlen(input.raw) > 0)
+		{
+			test_lexer(&input);
+			test_ast(&input);
+			printf("\n");
+		}
+		free_input(&input);
+	}
 	return (0);
 }
 
