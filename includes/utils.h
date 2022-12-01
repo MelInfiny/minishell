@@ -30,6 +30,7 @@ typedef struct s_node {
 
 typedef struct s_input {
 	char		**env;
+	char		**paths;
 	char		*raw;
 	char		*line;
 	int		fdin;

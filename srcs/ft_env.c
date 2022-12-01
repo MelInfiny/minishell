@@ -25,6 +25,20 @@ int	ft_env(char **env)
 	return (0);
 }
 
+char	**ft_path(char **env)
+{
+	int	count;
+
+	count = 0;
+	while (env[count])
+	{
+		if (!ft_strncmp(env[count], "PATH=", 5))
+			return (ft_split(env[count] + 5, ':'));
+		count ++;
+	}
+	return (NULL);
+}
+
 char    *find_in_env(char **env, char *var)
 {
         int             count;

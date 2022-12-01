@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+void	ft_cmd_error(t_input *input, t_list *cmd, char *message)
+{
+	t_node	*node;
+	if (cmd)
+	{
+		node = cmd->content;
+		printf("%s", node->args[0]);
+	}
+	if (message)
+		perror(message);
+	free_input(input);
+	exit(0);
+}
+
 void	ft_freenode(void *n)
 {
 	int		count;
@@ -24,4 +38,6 @@ void	free_input(t_input *input)
 	ft_lstclear(&input->ast, free);
 	if (input->line)
 		free(input->line);
+	if (input->paths)
+		ft_strdfree(input->paths);
 }

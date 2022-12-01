@@ -91,17 +91,15 @@ int	main(int ac, char **argv, char **env)
 	(void) argv;
 	t_input input;
 
-	while (1)
-	{	
 		init_input(&input, readline("minishell: "), env);
+		
 		if (ft_strlen(input.raw) > 0)
 		{
 			test_lexer(&input);
-			test_ast(&input);
+		//	test_ast(&input);
 			printf("\n");
 		}
-		free_input(&input);
-	}
+		//free_input(&input);
 	return (0);
 }
 
