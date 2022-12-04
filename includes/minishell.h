@@ -50,10 +50,11 @@ char	*expand_dollar(t_input *input, t_map **map);
 
 // ******************** EXEC ********************
 void	ft_pipe(t_input *input);
+int	ft_redirect(t_input *input, t_list *cmd);
 char	**ft_path(char **env);
 
 // **************** ERROR ************************
 void	free_input(t_input *input);
 void	ft_freenode(void *node);
-void	ft_cmd_error(t_input *input, t_list *cmd, char *message);
+int	ft_cmd_error(t_input *input, t_list *cmd, char *message);
 #endif

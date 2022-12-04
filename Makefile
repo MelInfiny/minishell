@@ -24,6 +24,7 @@ SRCS_BASE	=	\
 			ft_env		\
 			ft_unset	\
 			ft_exec		\
+			ft_redir	\
 			tester		\
 			
 SRCS		=	$(addsuffix .c, $(addprefix $(SRCS_FOLDER)/, $(SRCS_BASE)))

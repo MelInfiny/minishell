@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_cmd_error(t_input *input, t_list *cmd, char *message)
+int	ft_cmd_error(t_input *input, t_list *cmd, char *message)
 {
 	t_node	*node;
 	if (cmd)
@@ -10,8 +10,8 @@ void	ft_cmd_error(t_input *input, t_list *cmd, char *message)
 	}
 	if (message)
 		perror(message);
-	free_input(input);
-	exit(0);
+	(void) input;
+	return (0);
 }
 
 void	ft_freenode(void *n)
