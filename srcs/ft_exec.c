@@ -8,6 +8,10 @@ static int	execute(t_input *input, t_list *cmds)
 
 	count = 0;
 	node = cmds->content;
+	if (!ft_redirect(input, cmds))
+		return (0);
+	if (!node->args || !node->args[0])
+		return (0);
 	while (input->paths[count])
 	{
 		command = ft_strjoin(input->paths[count++], "/");
@@ -47,13 +51,31 @@ static int	create_pipe(t_input *input, t_list *cmds)
 			return (ft_cmd_error(input, cmds, "dup_stdout"));
 		close(fd[0]);
 		waitpid(pid, NULL, 0);
-		// kill(pid, SIGTERM);
 	}
 	else
 		return (0);
 	return (1);
 }
-
+/*
+static int	last_exec(t_input *input, t_list *cmds)
+{
+	int	pid;
+	
+	pid = fork();
+	if (pid == 0)
+	{
+		execute(input, cmds);
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, NULL, 0);
+		kill(pid, SIGTERM);
+	}
+	else
+		return (ft_cmd_error(input, cmds, "exec"));
+	return (1);
+}
+*/
 void	ft_pipe(t_input *input)
 {
 	t_list	*tmp;
@@ -68,8 +90,6 @@ void	ft_pipe(t_input *input)
 	}
 	while (count-- > 1)
 	{
-		if (!ft_redirect(input, tmp))
-			return ;
 		if (!create_pipe(input, tmp))
 			return ;
 		tmp = tmp->next;

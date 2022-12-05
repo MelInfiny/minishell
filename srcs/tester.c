@@ -52,6 +52,8 @@ void	print_ast(t_list *ast)
 	{
 		printf("NEW COMMAND\n");
 		node = tmp->content;
+		printf("status = %d\n", node->status);
+		printf("file = %s\n", node->file);
 		for (size_t i = 0; node->args[i]; i++)
 		{
 				printf("%ld: %s\n", i, node->args[i]);
@@ -76,13 +78,13 @@ void	test_lexer(t_input *input)
 	ft_lexer(input, input->raw);
 	check_syntax(input);
 	check_expand(input);
-	print_map(input->parser);
+//	print_map(input->parser);
 }
 
 void	test_ast(t_input *input)
 {
 	ft_parser(input);
-	print_ast(input->ast);
+//	print_ast(input->ast);
 }
 
 int	main(int ac, char **argv, char **env)
