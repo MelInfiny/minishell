@@ -76,7 +76,7 @@ void	test_lexer(t_input *input)
 	ft_lexer(input, input->raw);
 	check_syntax(input);
 	check_expand(input);
-//	print_map(input->parser);
+	print_map(input->parser);
 }
 
 void	test_ast(t_input *input)

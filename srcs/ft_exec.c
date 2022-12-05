@@ -4,21 +4,17 @@ static int	execute(t_input *input, t_list *cmds)
 {
 	int	count;
 	char	*command;
-	char	*path;
 	t_node	*node;
 
 	count = 0;
 	node = cmds->content;
 	while (input->paths[count])
 	{
-		if (command)
-			free(command);
-		path = ft_strjoin(input->paths[count++], "/");
-		command = ft_strjoin2(path, node->args[0]);
-		if (access(command, F_OK) == 0)
+		command = ft_strjoin(input->paths[count++], "/");
+		command = ft_strjoin2(command, node->args[0]);
+		if (access(command, F_OK | X_OK) == 0)
 		{
-			free(command);
-			if (execve(node->args[0], node->args, NULL) == -1)
+			if (execve(command, node->args, NULL) == -1)
 				return (ft_cmd_error(input, cmds, node->args[0]));
 		}
 	}
@@ -39,7 +35,7 @@ static int	create_pipe(t_input *input, t_list *cmds)
 	if (pid == 0)
 	{
 		close(fd[0]);
-		if (dup2(fd[1], input->fdin) == -1)
+		if (dup2(fd[1], input->fdout) == -1)
 			return (ft_cmd_error(input, cmds, "dup_stdin"));
 		close(fd[1]);
 		execute(input, cmds);
@@ -47,11 +43,14 @@ static int	create_pipe(t_input *input, t_list *cmds)
 	else if (pid > 0)
 	{
 		close(fd[1]);
-		if (dup2(fd[0], input->fdout) == -1)
+		if (dup2(fd[0], input->fdin) == -1)
 			return (ft_cmd_error(input, cmds, "dup_stdout"));
 		close(fd[0]);
 		waitpid(pid, NULL, 0);
+		// kill(pid, SIGTERM);
 	}
+	else
+		return (0);
 	return (1);
 }
 
