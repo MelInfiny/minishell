@@ -22,10 +22,14 @@ typedef struct s_map {
 	struct s_map	*next;
 } t_map;
 
-typedef struct s_node {
-	int	status;
+typedef struct s_redir {
+	int	type;
 	char	*file;
+} t_redir;
+
+typedef struct s_node {
 	char	**args;
+	t_list	*redir;
 } t_node;
 
 typedef struct s_input {

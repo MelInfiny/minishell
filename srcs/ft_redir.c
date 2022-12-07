@@ -1,9 +1,11 @@
 #include "minishell.h"
 
-static void	ft_heredoc(int heredoc, char *limit)
+static void	ft_heredoc(char *file, char *limit)
 {
 	char	*input;
+	int	heredoc;
 
+	heredoc = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	while (1)
 	{
 		write(1, "> ", 2);
@@ -14,28 +16,25 @@ static void	ft_heredoc(int heredoc, char *limit)
 		free(input);
 	}
 	free(input);
+	close(heredoc);
 }
 
-static int	g_redir(t_input *input, t_node *node, int status)
+static int	g_redir(t_input *input, t_redir *redir, int status)
 {
 	int	infile;
-	char	*file;
 
+	infile = -1;
 	if (status)
 	{
-		file = ft_strdup(".heredoc");
-		infile = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		ft_heredoc(infile, node->file);
+		ft_heredoc(".heredoc", redir->file);
+		infile = open(".heredoc", O_RDONLY);
 	}
 	else
-	{
-		infile = open(file, O_RDONLY);
-		file = node->file;
-	}
+		infile = open(redir->file, O_RDONLY);
 	if (infile == -1)
 		return (0);
-	if (ft_strdlen(node->args) == 1)
-		node->args = ft_strdjoin(node->args, file);
+	if (dup2(infile, input->fdin) == -1)
+	       return (0);
 	(void) input;
 	close(infile);
 	return (1);
@@ -53,30 +52,35 @@ static int	d_redir(t_input *input, char *file, int status)
 		return (0);
 	if (dup2(outfile, input->fdout) == -1)
 	       return (0);
+	close(outfile);
 	return (1);
 }
 
-int	ft_redirect(t_input *input, t_list *cmd)
+int	ft_redirect(t_input *input, t_node *node)
 {
-	t_node	*node;
-	int	redir;
+	t_redir	*redir;
+	t_list	*r;
 	int	res;
 
-	node = cmd->content;
-	redir = node->status;
 	res = 1;
-	if (redir == 1)
-		res = g_redir(input, node, 0);
-	if (redir == 11)
-		res = g_redir(input, node, 1);
-	if (redir == 2)
-		res = d_redir(input, node->file, 0);
-	if (redir == 22)
-		res = d_redir(input, node->file, 1);
-	if (res != 1)
+	r = node->redir;
+	while (r)
 	{
-		perror("redirection ");
-		return (0);
+		redir = r->content;
+		if (redir->type == 1)
+			res = g_redir(input, redir, 0);
+		if (redir->type == 11)
+			res = g_redir(input, redir, 1);
+		if (redir->type == 2)
+			res = d_redir(input, redir->file, 0);
+		if (redir->type == 22)
+			res = d_redir(input, redir->file, 1);
+		if (res != 1)
+		{
+			perror("redirection ");
+			return (0);
+		}
+		r = r->next;
 	}
 	return (1);
 }

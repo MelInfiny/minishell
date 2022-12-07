@@ -39,8 +39,20 @@ static t_node	*new_node(void)
 	node = (t_node *) ft_calloc(1, sizeof(t_node));
 	if (!node)
 		return (NULL);
-	node->status = 0;
+	node->redir = NULL;
 	return (node);
+}
+
+static t_redir	*new_redir(int status, char *file)
+{
+	t_redir	*redir;
+
+	redir = (t_redir *) ft_calloc(1, sizeof(t_redir));
+	if (!redir)
+		return (NULL);
+	redir->type = status;
+	redir->file = file;
+	return (redir);
 }
 
 void	ft_parser(t_input *input)
@@ -62,8 +74,7 @@ void	ft_parser(t_input *input)
 		else if (is_break(tmp->type))
 		{
 			node = ft_lstlast(input->ast)->content;
-			node->status = set_redir(tmp->type);
-			node->file = ft_streplace(node->file, ft_strdup(tmp->next->content));
+			ft_lstadd_back(&node->redir, ft_lstnew(new_redir(set_redir(tmp->type), ft_strdup(tmp->next->content))));
 			tmp = tmp->next;
 		}
 		tmp = tmp->next;

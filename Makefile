@@ -6,8 +6,8 @@ INC_FOLDER	=	includes
 LIB_FOLDER	=	libft
 
 CC		:=	cc
-CFLAGS		:=	-Werror -Wextra -Wall -I$(INC_FOLDER) -I$(LIB_FOLDER)
-LDFLAGS		:=	-fsanitize=address -g -fsanitize=leak
+CFLAGS		:=	-Werror -Wextra -Wall -I$(INC_FOLDER) -I$(LIB_FOLDER) $(LDFLAGS)
+LDFLAGS		:=	-g3 -ggdb
 VFLAGS		:=	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --tool=helgrind
 
 SRCS_BASE	=	\
@@ -32,11 +32,11 @@ OBJS		=	$(addsuffix .o, $(addprefix $(OBJS_FOLDER)/, $(SRCS_BASE)))
 
 $(OBJS_FOLDER)/%.o:		$(SRCS_FOLDER)/%.c
 				mkdir -p $(dir $@)
-				$(CC) $(CFLAGS) -c -o $@ $<
+				$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
 
 $(NAME):			$(OBJS)
-				make -C $(LIB_FOLDER) --silent
-				$(CC)  -o $(NAME) $(OBJS) -lreadline -L $(LIB_FOLDER) -lft
+				make -C $(LIB_FOLDER) --silent 
+				$(CC)  -o $(NAME) $(OBJS) -lreadline -L $(LIB_FOLDER) -lft $(LDFLAGS)
 
 valgrind:
 		valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_leaks ./$(NAME)

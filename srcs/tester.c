@@ -43,6 +43,8 @@ void	print_map(t_map *map)
 void	print_ast(t_list *ast)
 {
 	t_list	*tmp;
+	t_list	*r;
+	t_redir	*redir;
 	t_node	*node;
 
 	tmp = ast;
@@ -52,12 +54,16 @@ void	print_ast(t_list *ast)
 	{
 		printf("NEW COMMAND\n");
 		node = tmp->content;
-		printf("status = %d\n", node->status);
-		printf("file = %s\n", node->file);
-		for (size_t i = 0; node->args[i]; i++)
+		r = node->redir;
+		while (r)
 		{
-				printf("%ld: %s\n", i, node->args[i]);
+			redir = r->content;
+			printf("redir : %d ", redir->type);
+			printf("%s\n", redir->file);
+			r = r->next;
 		}
+		for (size_t i = 0; node->args[i]; i++)
+				printf("%ld: %s\n", i, node->args[i]);
 		tmp = tmp->next;
 	}
 }
@@ -87,23 +93,31 @@ void	test_ast(t_input *input)
 //	print_ast(input->ast);
 }
 
+void	print_break(void)
+{
+	printf("ici");
+}
+
 int	main(int ac, char **argv, char **env)
 {
 	(void) ac;
 	(void) argv;
 	t_input input;
+	char	*line;
 	while (1)
 	{
-		init_input(&input, readline("minishell: "), env);
-		
-		if (ft_strlen(input.raw) > 0)
+		line = readline("minishell: ");
+		if (ft_strlen2(line) > 0)
 		{
+			init_input(&input, line, env);
 			test_lexer(&input);
 			test_ast(&input);
 			ft_pipe(&input);
-			printf("\n");
+			free_input(&input);
 		}
-		free_input(&input);
+		else
+			free(line);
+		line = NULL;
 	}
 	return (0);
 }

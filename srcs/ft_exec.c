@@ -8,7 +8,7 @@ static int	execute(t_input *input, t_list *cmds)
 
 	count = 0;
 	node = cmds->content;
-	if (!ft_redirect(input, cmds))
+	if (!ft_redirect(input, node))
 		return (0);
 	if (!node->args || !node->args[0])
 		return (0);
@@ -17,13 +17,13 @@ static int	execute(t_input *input, t_list *cmds)
 		command = ft_strjoin(input->paths[count++], "/");
 		command = ft_strjoin2(command, node->args[0]);
 		if (access(command, F_OK | X_OK) == 0)
-		{
+		{	
 			if (execve(command, node->args, NULL) == -1)
-				return (ft_cmd_error(input, cmds, node->args[0]));
+				return (ft_cmd_error(input, NULL, node->args[0]));
 		}
 	}
 	if (access(command, F_OK) != 0)
-		return (ft_cmd_error(input, cmds, "exec_cmd"));
+		return (ft_cmd_error(input, NULL, node->args[0]));
 	free(command);
 	return (1);
 }

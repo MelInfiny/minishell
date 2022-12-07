@@ -14,6 +14,16 @@ int	ft_cmd_error(t_input *input, t_list *cmd, char *message)
 	return (0);
 }
 
+void	ft_freeredir(void *r)
+{
+	t_redir	*redir;
+
+	redir = (t_redir *) r;
+	if (redir->file)
+		free(redir->file);
+	redir->file = NULL;
+}
+
 void	ft_freenode(void *n)
 {
 	int		count;
@@ -21,11 +31,11 @@ void	ft_freenode(void *n)
 
 	count = 0;
 	node = (t_node *) n;
-	if (node->file)
-		free(node->file);
 	while (node->args && node->args[count])
 		free(node->args[count++]);
 	free(node->args);
+	ft_lstiter(node->redir, &ft_freeredir);
+	ft_lstclear(&node->redir, free);
 }
 
 void	free_input(t_input *input)
@@ -36,8 +46,8 @@ void	free_input(t_input *input)
 	ft_mapclear(&input->parser, free);
 	ft_lstiter(input->ast, &ft_freenode);
 	ft_lstclear(&input->ast, free);
-	if (input->line)
-		free(input->line);
 	if (input->paths)
 		ft_strdfree(input->paths);
+	//close(input->fdin);
+	//close(input->fdout);
 }
