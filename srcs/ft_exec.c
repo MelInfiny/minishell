@@ -8,8 +8,6 @@ static int	execute(t_input *input, t_list *cmds)
 
 	count = 0;
 	node = cmds->content;
-	if (!ft_redirect(input, node))
-		return (0);
 	if (!node->args || !node->args[0])
 		return (0);
 	while (input->paths[count])

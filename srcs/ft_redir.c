@@ -19,7 +19,7 @@ static void	ft_heredoc(char *file, char *limit)
 	close(heredoc);
 }
 
-static int	g_redir(t_input *input, t_redir *redir, int status)
+static int	g_redir(t_input *input, t_redir *redir, int status, int todup)
 {
 	int	infile;
 
@@ -33,14 +33,17 @@ static int	g_redir(t_input *input, t_redir *redir, int status)
 		infile = open(redir->file, O_RDONLY);
 	if (infile == -1)
 		return (0);
-	if (dup2(infile, input->fdin) == -1)
-	       return (0);
-	(void) input;
+	if (todup)
+	{
+		if (dup2(infile, input->fdin) == -1)
+		       return (0);
+	}
 	close(infile);
+	(void) input;
 	return (1);
 }
 
-static int	d_redir(t_input *input, char *file, int status)
+static int	d_redir(t_input *input, char *file, int status, int todup)
 {
 	int	outfile;
 	
@@ -50,13 +53,16 @@ static int	d_redir(t_input *input, char *file, int status)
 		outfile = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (outfile == -1)
 		return (0);
-	if (dup2(outfile, input->fdout) == -1)
-	       return (0);
+	if (todup)
+	{
+		if (dup2(outfile, input->fdout) == -1)
+	    	   return (0);
+	}
 	close(outfile);
 	return (1);
 }
 
-int	ft_redirect(t_input *input, t_node *node)
+static int	ft_redirect(t_input *input, t_node *node, int todup)
 {
 	t_redir	*redir;
 	t_list	*r;
@@ -68,13 +74,13 @@ int	ft_redirect(t_input *input, t_node *node)
 	{
 		redir = r->content;
 		if (redir->type == 1)
-			res = g_redir(input, redir, 0);
+			res = g_redir(input, redir, 0, todup);
 		if (redir->type == 11)
-			res = g_redir(input, redir, 1);
+			res = g_redir(input, redir, 1, todup);
 		if (redir->type == 2)
-			res = d_redir(input, redir->file, 0);
+			res = d_redir(input, redir->file, 0, todup);
 		if (redir->type == 22)
-			res = d_redir(input, redir->file, 1);
+			res = d_redir(input, redir->file, 1, todup);
 		if (res != 1)
 		{
 			perror("redirection ");
@@ -83,4 +89,23 @@ int	ft_redirect(t_input *input, t_node *node)
 		r = r->next;
 	}
 	return (1);
+}
+
+void	ft_redir(t_input *input)
+{
+	t_list	*ast;
+	t_node	*node;
+	int		todup;
+
+	ast = input->ast;
+	todup = 1;
+	while (ast)
+	{
+		node = ast->content;
+		if (!node->args || !node->args[0])
+			todup = 0;
+		if (!ft_redirect(input, node, todup))
+			return ;
+		ast = ast->next;
+	}
 }

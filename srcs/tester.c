@@ -93,9 +93,9 @@ void	test_ast(t_input *input)
 //	print_ast(input->ast);
 }
 
-void	print_break(void)
+void	print_break(t_input *input)
 {
-	printf("ici");
+	(void) input;
 }
 
 int	main(int ac, char **argv, char **env)
@@ -112,6 +112,7 @@ int	main(int ac, char **argv, char **env)
 			init_input(&input, line, env);
 			test_lexer(&input);
 			test_ast(&input);
+			ft_redir(&input);
 			ft_pipe(&input);
 			free_input(&input);
 		}
