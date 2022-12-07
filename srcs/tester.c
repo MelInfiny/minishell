@@ -84,13 +84,13 @@ void	test_lexer(t_input *input)
 	ft_lexer(input, input->raw);
 	check_syntax(input);
 	check_expand(input);
-//	print_map(input->parser);
+//	print_map(input->lexer);
 }
 
 void	test_ast(t_input *input)
 {
 	ft_parser(input);
-//	print_ast(input->ast);
+	print_ast(input->ast);
 }
 
 void	print_break(t_input *input)

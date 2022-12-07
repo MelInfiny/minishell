@@ -89,9 +89,9 @@ static int	split_quote(t_input *input, char *line, int index, e_type type)
 		}
 	}
 	if (line[index] != c)
-	{
 		lexer_char_error(input, "error syntaxe unexpected token : ` ", c);
-	}
+	if (index == start)
+		ft_addmap(&input->lexer, ft_mapnew(ft_strdup(""), WORD));
 	split_delim(input, &start, index, type);
 	return (index);
 }
