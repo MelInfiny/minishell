@@ -90,7 +90,7 @@ void	test_lexer(t_input *input)
 void	test_ast(t_input *input)
 {
 	ft_parser(input);
-	print_ast(input->ast);
+//	print_ast(input->ast);
 }
 
 void	print_break(t_input *input)

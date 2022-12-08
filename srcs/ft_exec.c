@@ -35,10 +35,12 @@ static void	create_pipe(t_input *input, t_list *cmds, int fd[2])
 	{
 		if (fd)
 		{
-			close(fd[1]);
-			if (dup2(input->fdin, fd[0]) == -1)
-				return ;
 			close(fd[0]);
+			print_break(input);
+			if (dup2(STDOUT_FILENO, fd[1]) == -1)
+				return ;
+			print_break(input);
+			close(fd[1]);
 		}
 		execute(input, cmds);
 	}
@@ -46,10 +48,12 @@ static void	create_pipe(t_input *input, t_list *cmds, int fd[2])
 	{
 		if (fd)
 		{
-			close(fd[0]);
-			if (dup2(input->fdout, fd[1]) == -1)
-				return ;
 			close(fd[1]);
+			print_break(input);
+			if (dup2(STDIN_FILENO, fd[0]) == -1)
+				return ;
+			print_break(input);
+			close(fd[0]);
 		}
 		waitpid(pid, NULL, 0);
 		//wait(&status);

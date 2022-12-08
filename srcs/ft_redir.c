@@ -10,7 +10,7 @@ static void	ft_heredoc(char *file, char *limit)
 	{
 		write(1, "> ", 2);
 		input = get_next_line(0);
-		if (!ft_strncmp(input, limit, ft_strlen(limit)) || !input)
+		if (!input || !ft_strncmp(input, limit, ft_strlen(limit) + 1))
 			break;
 		write(heredoc, input, ft_strlen(input));
 		free(input);
