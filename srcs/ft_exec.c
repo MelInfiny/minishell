@@ -26,58 +26,41 @@ static int	execute(t_input *input, t_list *cmds)
 	return (1);
 }
 
-static int	create_pipe(t_input *input, t_list *cmds)
+static void	create_pipe(t_input *input, t_list *cmds, int fd[2])
 {
-	int	fd[2];
 	int	pid;
 
-	if (pipe(fd) < 0)
-		return (ft_cmd_error(input, cmds, "pipeline"));
 	pid = fork();
 	if (pid == 0)
 	{
-		close(fd[0]);
-		if (dup2(fd[1], input->fdout) == -1)
-			return (ft_cmd_error(input, cmds, "dup_stdin"));
-		close(fd[1]);
+		if (fd)
+		{
+			close(fd[1]);
+			if (dup2(input->fdin, fd[0]) == -1)
+				return ;
+			close(fd[0]);
+		}
 		execute(input, cmds);
 	}
 	else if (pid > 0)
 	{
-		close(fd[1]);
-		if (dup2(fd[0], input->fdin) == -1)
-			return (ft_cmd_error(input, cmds, "dup_stdout"));
-		close(fd[0]);
+		if (fd)
+		{
+			close(fd[0]);
+			if (dup2(input->fdout, fd[1]) == -1)
+				return ;
+			close(fd[1]);
+		}
 		waitpid(pid, NULL, 0);
+		//wait(&status);
 	}
-	else
-		return (0);
-	return (1);
 }
-/*
-static int	last_exec(t_input *input, t_list *cmds)
-{
-	int	pid;
-	
-	pid = fork();
-	if (pid == 0)
-	{
-		execute(input, cmds);
-	}
-	else if (pid > 0)
-	{
-		waitpid(pid, NULL, 0);
-		kill(pid, SIGTERM);
-	}
-	else
-		return (ft_cmd_error(input, cmds, "exec"));
-	return (1);
-}
-*/
+
 void	ft_pipe(t_input *input)
 {
 	t_list	*tmp;
 	int	count;
+	int	fd[2];
 
 	tmp = input->ast;
 	count = ft_lstsize(tmp);
@@ -88,9 +71,10 @@ void	ft_pipe(t_input *input)
 	}
 	while (count-- > 1)
 	{
-		if (!create_pipe(input, tmp))
+		if (pipe(fd) < 0)
 			return ;
+		create_pipe(input, tmp, fd);
 		tmp = tmp->next;
 	}
-	execute(input, tmp);
+	create_pipe(input, tmp, NULL);
 }
