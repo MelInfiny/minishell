@@ -36,88 +36,101 @@ static void	exec_cmd(t_input *input, t_list *cmds)
 	pid = fork();
 	if (pid < 0)
 		return ;
-	if (pid == 0)				//fiston 
+	if (pid == 0) //fiston
+	{
 		ret = execute(input, cmds);
-	else
-	{	
-		wait(&status);			// papa
-		exit(status);
+		exit(ret);
 	}
-	exit(ret);
+	else
+	{
+		wait(&status);			// papa
+	//	exit(status);
+	}
 }
 
-static int	create_pipe(t_input *input, t_list *cmds, int fd[2])
+static void	create_pipes(t_input *input, t_list *cmds, int *pids)
 {
-	int	pid;
+	int	count;
+	int	fd[2];
 
-	pid = fork();
-	if (pid == 0)			// papa
+	count = -1;
+	while (++count < ft_lstsize(cmds))
 	{
-		if (fd)
+		if (pipe(fd) < 0)
+			return ;
+		pids[count] = fork();
+		print_break(NULL);
+		if (pids[count] == 0) // papa
 		{
-			close(fd[0]);
-			print_break(input);
 			if (dup2(fd[1], STDOUT_FILENO) == -1)
 				return ;
-			print_break(input);
-			close(fd[1]);
+			exec_cmd(input, cmds);
 		}
-		exec_cmd(input, cmds);
-	}
-	else if (pid > 0)		// papy	
-	{
-		if (fd)
+		else if (pids[count] > 0) // papy
 		{
-			close(fd[1]);
-			print_break(input);
+			print_break(NULL);
 			if (dup2(fd[0], STDIN_FILENO) == -1)
 				return ;
-			print_break(input);
-			close(fd[0]);
+		}
+		else
+			return ;
+		cmds = cmds->next;
+	}
+}
+
+static void	wait_pipes(int *pids, size_t size)
+{
+	size_t	count;
+	int	ret;
+
+	while (1)
+	{
+		count = 0;
+		while (count < size)
+		{
+			ret = waitpid(pids[count], NULL, WNOHANG);
+			print_break(NULL);
+			if (ret == 0)
+				count ++;
+			else
+			{
+				if (ret < 0)
+				{
+					//kill(pids[count], SIGINT);
+					return ;
+				}
+				if (ret > 0)
+				{
+					kill(pids[count], SIGTERM);
+				}
+			}
 		}
 	}
-	return (pid);
 }
 
 void	ft_pipe(t_input *input)
 {
-	t_list	*tmp;
-	t_list	*pids;
-	int	count;
-	int	fd[2];
+	t_list	*cmds;
+	int	*pids;
 
-	tmp = input->ast;
-	count = ft_lstsize(tmp);
-	if (!input->paths)
+	cmds = input->ast;
+	pids = (int *) ft_calloc(ft_lstsize(cmds), sizeof(int));
+	if (!pids)
+		return ;
+	print_break(NULL);
+	if (dup2(input->fdin, STDIN_FILENO) == -1)
 	{
-		ft_cmd_error(input, NULL, "path");
+		free(pids);
 		return ;
 	}
-	while (count--)
+	print_break(NULL);
+	create_pipes(input, cmds, pids);
+	wait_pipes(pids, ft_lstsize(cmds));
+	print_break(NULL);
+	if (dup2(input->fdout, STDOUT_FILENO) == -1)
 	{
-		// count = 0 dup stdin
-		// count = lst dup stdout
-		if (pipe(fd) < 0)
-			return ;
-		ft_lstadd(ft_lstnew(create_pipe(input, tmp, fd)));
-		tmp = tmp->next;
+		free(pids);
+		return ;
 	}
-	count = ft_lstsize(tmp);
-	while (1)
-	{
-		while (pids)
-		{
-			ret = waitpid(pids->content, NULL, WNOHANG);
-			if (ret < 0)
-			{
-				perror("pid");
-				// kill
-				return ;
-			}
-			else if (ret > 0)
-				return ;	//kill
-			pids = pids->next;
-		}
-	}	
-	//create_pipe(input, tmp, NULL);
+	print_break(NULL);
 }

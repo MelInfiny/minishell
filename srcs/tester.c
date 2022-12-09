@@ -113,7 +113,10 @@ int	main(int ac, char **argv, char **env)
 			test_lexer(&input);
 			test_ast(&input);
 			ft_redir(&input);
-			ft_pipe(&input);
+			if (input.paths)
+				ft_pipe(&input);
+			else
+				perror("PATH");
 			free_input(&input);
 		}
 		else
