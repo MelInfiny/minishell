@@ -114,7 +114,7 @@ int	main(int ac, char **argv, char **env)
 			test_ast(&input);
 			ft_redir(&input);
 			if (input.paths)
-				ft_pipe(&input);
+				ft_exec(&input);
 			else
 				perror("PATH");
 			free_input(&input);

@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+int	exit_cmd;
+
 static int	execute(t_input *input, t_list *cmds)
 {
 	int	count;
@@ -30,107 +32,111 @@ static void	exec_cmd(t_input *input, t_list *cmds)
 {
 	int	pid;
 	int	status;
-	int	ret;
 
-	ret = -1;
 	pid = fork();
 	if (pid < 0)
+	{
+		ft_cmd_error(input, NULL, "fork");
 		return ;
+	}
 	if (pid == 0) //fiston
 	{
-		ret = execute(input, cmds);
-		exit(ret);
+		execute(input, cmds);
+		exit(1);
 	}
 	else
 	{
 		wait(&status);			// papa
-	//	exit(status);
+		if (WIFEXITED(status))
+			exit_cmd = WEXITSTATUS(status);
 	}
 }
 
-static void	create_pipes(t_input *input, t_list *cmds, int *pids)
+static void	create_pipes(t_input *input, t_list *cmds, int *pids, int count)
 {
-	int	count;
 	int	fd[2];
-
-	count = -1;
-	while (++count < ft_lstsize(cmds))
+	
+	if (pipe(fd) < 0)
+		return ;
+	pids[count] = fork();
+	if (pids[count] < 0)
 	{
-		if (pipe(fd) < 0)
+		ft_cmd_error(NULL, cmds, "pids");
+		return ;
+	}
+	else if (pids[count] == 0) // papa
+	{
+		close(fd[0]);
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			return ;
-		pids[count] = fork();
-		print_break(NULL);
-		if (pids[count] == 0) // papa
-		{
-			if (dup2(fd[1], STDOUT_FILENO) == -1)
-				return ;
-			exec_cmd(input, cmds);
-		}
-		else if (pids[count] > 0) // papy
-		{
-			print_break(NULL);
-			if (dup2(fd[0], STDIN_FILENO) == -1)
-				return ;
-		}
-		else
+		close(fd[1]);
+		exec_cmd(input, cmds);
+		exit(exit_cmd);
+	}
+	else
+	{
+		close(fd[1]);
+		if (dup2(fd[0], STDIN_FILENO) == -1)
 			return ;
-		cmds = cmds->next;
+		close(fd[0]);
 	}
 }
 
 static void	wait_pipes(int *pids, size_t size)
 {
 	size_t	count;
+	int	status;
 	int	ret;
 
-	while (1)
+	count = 0;
+	while (count < size)
 	{
-		count = 0;
-		while (count < size)
+		ret = waitpid(pids[count], &status, 0);
+		if (ret != 0)
 		{
-			ret = waitpid(pids[count], NULL, WNOHANG);
-			print_break(NULL);
-			if (ret == 0)
-				count ++;
-			else
-			{
-				if (ret < 0)
-				{
-					//kill(pids[count], SIGINT);
-					return ;
-				}
-				if (ret > 0)
-				{
-					kill(pids[count], SIGTERM);
-				}
-			}
+			if (WIFEXITED(status))
+				exit_cmd = WEXITSTATUS(status);
 		}
+		count ++;
 	}
 }
 
-void	ft_pipe(t_input *input)
+void	ft_pipe(t_input *input, t_list *cmds, size_t size)
 {
-	t_list	*cmds;
 	int	*pids;
+	size_t	count;
+	int	fd[2];
 
-	cmds = input->ast;
+	fd[0] = dup(input->fdin);
+	fd[1] = dup(input->fdout);
 	pids = (int *) ft_calloc(ft_lstsize(cmds), sizeof(int));
 	if (!pids)
 		return ;
-	print_break(NULL);
-	if (dup2(input->fdin, STDIN_FILENO) == -1)
+	count = 0;
+	while (cmds && count < size - 1)
 	{
-		free(pids);
-		return ;
+		create_pipes(input, cmds, pids, count);
+		close(1);
+		cmds = cmds->next;
+		count ++;
 	}
-	print_break(NULL);
-	create_pipes(input, cmds, pids);
-	wait_pipes(pids, ft_lstsize(cmds));
-	print_break(NULL);
-	if (dup2(input->fdout, STDOUT_FILENO) == -1)
-	{
-		free(pids);
+	if (dup2(fd[0], STDIN_FILENO) == -1)
 		return ;
-	}
-	print_break(NULL);
+	if (dup2(fd[1], STDOUT_FILENO) == -1)
+		return ;
+	exec_cmd(input, cmds);
+	wait_pipes(pids, size);
+}
+
+void	ft_exec(t_input *input)
+{
+	t_list	*cmds;
+	size_t	size;
+
+	cmds = input->ast;
+	size = ft_lstsize(cmds);
+	if (size  == 1)
+		exec_cmd(input, cmds);
+	else if (size > 1)
+		ft_pipe(input, cmds, size);
 }
