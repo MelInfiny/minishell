@@ -117,10 +117,10 @@ int	main(int ac, char **argv, char **env)
 				ft_exec(&input);
 			else
 				perror("PATH");
+			add_history(line);
+			rl_on_new_line();
 			free_input(&input);
 		}
-		else
-			free(line);
 		line = NULL;
 	}
 	return (0);
