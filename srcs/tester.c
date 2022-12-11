@@ -118,7 +118,6 @@ int	main(int ac, char **argv, char **env)
 			else
 				perror("PATH");
 			add_history(line);
-			rl_on_new_line();
 			free_input(&input);
 		}
 		line = NULL;
