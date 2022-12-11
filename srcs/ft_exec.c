@@ -17,7 +17,8 @@ static int  execute(t_input *input, t_list *cmds)
         command = ft_strjoin(input->paths[count++], "/");
         command = ft_strjoin2(command, node->args[0]);
         if (access(command, F_OK | X_OK) == 0)
-        {   
+        {
+            ft_redir(input, cmds);
             if (execve(command, node->args, NULL) == -1)
                 return (ft_cmd_error(input, NULL, node->args[0]));
         }
@@ -41,7 +42,6 @@ static void exec_cmd(t_input *input, t_list *cmds)
     }
     if (pid == 0) //fiston
     {
-	ft_redir(input, cmds);
         execute(input, cmds);
         exit(1);
     }
@@ -53,12 +53,8 @@ static void exec_cmd(t_input *input, t_list *cmds)
     }
 }
 
-static void create_pipes(t_input *input, t_list *cmds, int *pids, int count)
+static void    create_pipes(t_input *input, t_list *cmds, int *pids, size_t count, int fd[2])
 {
-    int fd[2];
-
-    if (cmds->next && pipe(fd) < 0)
-        return ;
     pids[count] = fork();
     if (pids[count] < 0)
     {
@@ -67,19 +63,12 @@ static void create_pipes(t_input *input, t_list *cmds, int *pids, int count)
     }
     else if (pids[count] == 0) // papa
     {
-        close(fd[0]);
-        if (dup2(fd[1], STDOUT_FILENO) == -1)
-            return ;
-        close(fd[1]);
+        if (fd[0] != 0 && dup2(fd[0], STDIN_FILENO) == -1)
+            return;
+        if (fd[1] != 1 && dup2(fd[1], STDOUT_FILENO) == -1)
+            return;
         exec_cmd(input, cmds);
         exit(exit_cmd);
-    }
-    else
-    {
-        close(fd[1]);
-        if (dup2(fd[0], STDIN_FILENO) == -1)
-            return ;
-        close(fd[0]);
     }
 }
 
@@ -124,28 +113,37 @@ static void    wait_pipes(int *pids, size_t size)
 
 void    ft_pipe(t_input *input, t_list *cmds, size_t size)
 {
-    int *pids;
-    size_t  count;
-    int fd[2];
+    int    *pids;
+    size_t    count;
+    int in = 0;
 
-    fd[0] = dup(input->fdin);
-    fd[1] = dup(input->fdout);
     pids = (int *) ft_calloc(ft_lstsize(cmds), sizeof(int));
     if (!pids)
         return ;
     count = 0;
-    while (cmds && count < size - 1)
+
+    while (cmds && count < size)
     {
-        create_pipes(input, cmds, pids, count);
-        close(1);
+        int    fd[2];
+
+        if (cmds->next && pipe(fd) < 0)
+        {
+            return ;
+        }
+        int tmp = fd[0];
+        fd[0] = in;
+        if (count == size - 1)
+            fd[1] = 1;
+
+        create_pipes(input, cmds, pids, count, fd);
+        if (fd[1] != STDOUT_FILENO)
+            close(fd[1]);
+        if (fd[0] != STDIN_FILENO)
+            close(fd[0]);
+        in = tmp;
         cmds = cmds->next;
         count ++;
     }
-    if (dup2(fd[0], STDIN_FILENO) == -1)
-        return ;
-    if (dup2(fd[1], STDOUT_FILENO) == -1)
-        return ;
-    exec_cmd(input, cmds);
     wait_pipes(pids, size);
 }
 
@@ -161,5 +159,5 @@ void    ft_exec(t_input *input)
     else if (size > 1)
         ft_pipe(input, cmds, size);
     else
-	    return ;
+        return ;
 }
