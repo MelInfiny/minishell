@@ -41,6 +41,7 @@ static void exec_cmd(t_input *input, t_list *cmds)
     }
     if (pid == 0) //fiston
     {
+	ft_redir(input, cmds);
         execute(input, cmds);
         exit(1);
     }
@@ -155,8 +156,10 @@ void    ft_exec(t_input *input)
 
     cmds = input->ast;
     size = ft_lstsize(cmds);
-    if (size  == 1)
+    if (size == 1)
         exec_cmd(input, cmds);
     else if (size > 1)
         ft_pipe(input, cmds, size);
+    else
+	    return ;
 }

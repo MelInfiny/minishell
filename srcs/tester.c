@@ -112,13 +112,13 @@ int	main(int ac, char **argv, char **env)
 			init_input(&input, line, env);
 			test_lexer(&input);
 			test_ast(&input);
-			ft_redir(&input);
+			//ft_redir(&input);
 			if (input.paths)
 				ft_exec(&input);
 			else
 				perror("PATH");
-			add_history(line);
 			free_input(&input);
+			//add_history(line);
 		}
 		line = NULL;
 	}

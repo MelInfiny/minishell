@@ -50,7 +50,7 @@ char	*expand_dollar(t_input *input, t_map **map);
 
 // ******************** EXEC ********************
 void	ft_pipe(t_input *input, t_list *cmds, size_t size);
-void	ft_redir(t_input *input);
+void	ft_redir(t_input *input, t_list *cmds);
 void	ft_exec(t_input *input);
 char	**ft_path(char **env);
 

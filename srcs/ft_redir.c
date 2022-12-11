@@ -6,16 +6,19 @@ static void	ft_heredoc(char *file, char *limit)
 	int	heredoc;
 
 	heredoc = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	input = NULL;
 	while (1)
 	{
 		write(1, "> ", 2);
 		input = get_next_line(0);
-		if (!input || !ft_strncmp(input, limit, ft_strlen(limit) + 1))
+		if (input && ft_strncmp(limit, input, ft_strlen(limit)))
+			write(heredoc, input, ft_strlen(input));
+		else
 			break;
-		write(heredoc, input, ft_strlen(input));
 		free(input);
 	}
-	free(input);
+	if (input)
+		free(input);
 	close(heredoc);
 }
 
@@ -91,21 +94,15 @@ static int	ft_redirect(t_input *input, t_node *node, int todup)
 	return (1);
 }
 
-void	ft_redir(t_input *input)
+void	ft_redir(t_input *input, t_list *cmd)
 {
-	t_list	*ast;
 	t_node	*node;
 	int		todup;
 
-	ast = input->ast;
 	todup = 1;
-	while (ast)
-	{
-		node = ast->content;
-		if (!node->args || !node->args[0])
-			todup = 0;
-		if (!ft_redirect(input, node, todup))
-			return ;
-		ast = ast->next;
-	}
+	node = cmd->content;
+	if (!node->args || !node->args[0])
+		todup = 0;
+	if (!ft_redirect(input, node, todup))
+		return ;	
 }
