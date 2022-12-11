@@ -56,13 +56,19 @@ char    *find_in_env(char **env, char *var)
 char	*expand_dollar(t_input *input, t_map **map)
 {
 	t_map	*tmp;
+	int	exit_cmd;
 
+	exit_cmd = 0;
 	tmp = (*map)->next;
 	if (tmp)
 	{
 		*map = tmp;
 		if (tmp->type == WORD && ft_strlen(tmp->content) > 0)
+		{
+			if (!ft_strncmp("?", tmp->content, 2))
+					return (ft_itoa(exit_cmd));
 			return (find_in_env(input->env, tmp->content));
+		}
 		if (is_break(tmp->type))
 			return (ft_strjoin("$", tmp->content));
 	}
