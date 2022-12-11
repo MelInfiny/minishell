@@ -20,7 +20,10 @@ static int  execute(t_input *input, t_list *cmds)
         {
             ft_redir(input, cmds);
             if (execve(command, node->args, NULL) == -1)
+	    {
+		free(command);
                 return (ft_cmd_error(input, NULL, node->args[0]));
+	    }
         }
     }
     if (access(command, F_OK) != 0)
@@ -43,6 +46,7 @@ static void exec_cmd(t_input *input, t_list *cmds)
     if (pid == 0) //fiston
     {
         execute(input, cmds);
+	free_input(input);
         exit(1);
     }
     else
@@ -68,6 +72,8 @@ static void    create_pipes(t_input *input, t_list *cmds, int *pids, size_t coun
         if (fd[1] != 1 && dup2(fd[1], STDOUT_FILENO) == -1)
             return;
         exec_cmd(input, cmds);
+	free(pids);
+	free_input(input);
         exit(exit_cmd);
     }
 }
@@ -105,7 +111,6 @@ static void    wait_pipes(int *pids, size_t size)
             }
             count ++;
         }
-
         if (should_stop)
             return;
     }
@@ -121,7 +126,6 @@ void    ft_pipe(t_input *input, t_list *cmds, size_t size)
     if (!pids)
         return ;
     count = 0;
-
     while (cmds && count < size)
     {
         int    fd[2];
@@ -145,6 +149,7 @@ void    ft_pipe(t_input *input, t_list *cmds, size_t size)
         count ++;
     }
     wait_pipes(pids, size);
+    free(pids);
 }
 
 void    ft_exec(t_input *input)
