@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 17:50:14 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/16 13:01:02 by enolbas          ###   ########.fr       */
+/*   Updated: 2022/12/16 15:29:52 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,47 +107,30 @@ static int	split_redir(t_input *input, char *line, int index, t_type *type)
 	return (status);
 }
 
-int	next_quote(t_input *input, int *start, int index, t_type type);
 static int	split_quote(t_input *input, char *line, int index, t_type type)
 {
 	int		start;
-	start = index++;
-	while (line[index] && line[index] != ' ')
-	{
-		index = next_quote(input, &start, index, type);
-		if (line[index])
-		       type = switch_type(line[index]);
-		if (type != SQUOTE && type != DQUOTE)
-			type = 0;
-		index ++;
-	}
-	if (index == start)
-		map_add(&input->lexer, map_new(ft_strdup(""), WORD));
-	split_delim(input, &start, index - 1, type);
-	return (index);
-}
+	char	c;
 
-int	next_quote(t_input *input, int *start, int index, t_type type)
-{
-	char	*line;
-
-	line = input->raw;
-	if (!type)
-		return (index);
-	while (line[index] && switch_type(line[index]) != type)
+	c = line[index];
+	start = index + 1;
+	while (line[index] && line[++index] != c)
 	{
-		if (switch_type(line[index]) == '\"')
+		if (c == '\"')
 		{
 			if (line[index] == '$')
 			{
-				split_delim(input, start, index, DOLLAR);
-				index = split_dollar(input, start, index, type);
+				split_delim(input, &start, index, DOLLAR);
+				index = split_dollar(input, &start, index, type);
 			}
 		}
-		index ++;
 	}
-	if (switch_type(line[index]) != type)
+	if (line[index] != c)
 		return (lexer_char_error(input,
-			"error syntaxe unexpected token : ` ", line[index]));
-	return (index + 1);
+				"error syntaxe unexpected token : ` ", c));
+	if (index == start)
+		map_add(&input->lexer, map_new(ft_strdup(""), WORD));
+	split_delim(input, &start, index, type);
+	return (index);
 }
+

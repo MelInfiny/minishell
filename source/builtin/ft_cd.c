@@ -46,6 +46,14 @@ void	ft_replace_varenv(char **env, char *var, char *newvar)
 	}
 }
 
+static void	ft_cd_error(char *target, int nb_args)
+{
+	if (!target && nb_args == 1)
+		ft_putstr_fd("cd: HOME not set\n", 2);
+	else if (!target)	
+		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+}
+
 static char	*get_target(t_input *input, char **args, int nb_args)
 {
 	char	*target;
@@ -56,7 +64,11 @@ static char	*get_target(t_input *input, char **args, int nb_args)
 	else if (nb_args == 2)
 	{
 		if (!my_strcmp(args[1], "-"))
+		{
 			target = ft_chr_env(input->env, "OLDPWD");
+			if (target)
+				printf("%s\n", target);
+		}
 		else
 			target = args[1];
 	}
@@ -65,10 +77,7 @@ static char	*get_target(t_input *input, char **args, int nb_args)
 		ft_cderror();
 		return (NULL);
 	}
-	if (!target && nb_args == 1)
-		ft_putstr_fd("cd: HOME not set\n", 2);
-	else if (!target)	
-		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+	ft_cd_error(target, nb_args);
 	return (target);
 }
 

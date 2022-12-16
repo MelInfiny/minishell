@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 13:33:37 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/16 12:59:56 by enolbas          ###   ########.fr       */
+/*   Updated: 2022/12/16 14:55:45 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,91 +18,7 @@ static void     init_struct_sigaction(t_input *input, struct sigaction *ssa);
 static void     prompt(t_input *input);
 
 int     g_status;
-/*
 
-void	print_type(t_type type)
-{
-	printf("\n");
-	if (type == WORD)
-		printf("WORD");
-	if (type == DQUOTE)
-		printf("DQUOTE");
-	if (type == SQUOTE)
-		printf("SQUOTE");
-	if (type == DOLLAR)
-		printf("DOLLAR");
-	if (type == ESPACE)
-		printf("ESPACE");
-	if (type == PIPE)
-		printf("PIPELINE");
-	if (type == GREDIR)
-		printf("GREDIR");
-	if (type == DREDIR)
-		printf("DREDIR");
-	if (type == GRREDIR)
-		printf("GRREDIR");
-	if (type == DRREDIR)
-		printf("DRREDIR");
-}
-
-void	print_map(t_map *map)
-{
-	t_map	*tmp;
-
-	tmp = map;
-	while (tmp)
-	{
-		print_type(tmp->type);
-		printf(" %d: ", tmp->key);
-		printf(" len = %ld: ", ft_strlen(tmp->content));
-		printf("%s\n", tmp->content);
-		tmp = tmp->next;
-	}
-}
-
-void	print_ast(t_list *ast)
-{
-	t_list	*tmp;
-	t_list	*r;
-	t_redir	*redir;
-	t_node	*node;
-
-	tmp = ast;
-	if (!ast)
-		return ;
-	while (tmp)
-	{
-		printf("NEW COMMAND\n");
-		node = tmp->content;
-		r = node->redir;
-		while (r)
-		{
-			redir = r->content;
-			printf("redir : %d ", redir->type);
-			printf("%s\n", redir->file);
-			r = r->next;
-		}
-		for (size_t i = 0; node->args[i]; i++)
-				printf("%ld: %s\n", i, node->args[i]);
-		tmp = tmp->next;
-	}
-}
-
-void	test_lexer(t_input *input)
-{
-	lexer(input, input->raw);
-	check_syntax(input);
-	check_expand(input);
-	print_map(input->lexer);
-}
-
-void	test_ast(t_input *input)
-{
-	parser(input);
-	print_ast(input->ast);
-}
-
-*/
 int     main(int argc, char **argv, char **env)
 {
 		t_input                         input;
@@ -161,12 +77,6 @@ void     first_check(t_input *input)
 		if (!check_syntax(input))
 		{
 			g_status = 2;
-			return ;
-		}
-		
-		if (!check_pipes(input))
-		{
-			g_status = 0;
 			return ;
 		}
 		check_expand(input);

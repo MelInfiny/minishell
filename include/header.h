@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:29:18 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/16 12:57:13 by enolbas          ###   ########.fr       */
+/*   Updated: 2022/12/16 15:08:41 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	ft_strdfree(char **strd);
 int		check_syntax(t_input *input);
 int		check_pipes(t_input *input);
 void	check_expand(t_input *input);
+bool	ft_findstr(char *find, const char *var);
 char	*ft_strjoin_free(char *s1, char const *s2);
 
 /* ************************************************************************** */
@@ -153,7 +154,6 @@ char	*remove_point(char *str);
 int		remove_last(char **copy);
 int		one_point(char **copy, int i);
 int		two_point(char **copy, int i);
-bool		ft_findstr(char *env, const char *find);
 
 /*   EXPORT   *************************************************************** */
 int		ms_export(char *var, t_input *input);
