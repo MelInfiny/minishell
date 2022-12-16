@@ -3,24 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/12 09:42:33 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/28 14:20:42 by enolbas          ###   ########.fr       */
+/*   Created: 2021/12/11 09:15:44 by tda-silv          #+#    #+#             */
+/*   Updated: 2021/12/11 09:59:24 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	int	count;
+	unsigned int	i;
 
-	count = 0;
-	if (!s || !f)
-		return ;
-	while (s[count])
+	i = 0;
+	while (s[i])
 	{
-		f(count, &s[count]);
-		count++;
+		(*f)(i, &s[i]);
+		i++;
 	}
 }
+/*
+#include <stdio.h>
+
+//----------//
+
+void	ft_comp(unsigned int i, char *s)
+{
+	printf("%c %d %s\n", s[i - i], i - i, s);
+	if (s[i - i] >= 'A' && s[i - i] <= 'Z')
+		s[i - i] += 32;
+}
+
+//----------//
+
+int	main(void)
+{
+	char	s[] = "TesT012";
+//	void	(*f)(unsigned int, char);
+	void	(*f)();
+
+	f = ft_comp;
+	ft_striteri(s, f);
+	printf("\n%s\n\n", s);
+	return (0);
+}
+*/

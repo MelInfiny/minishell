@@ -3,57 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/07 19:34:41 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/11 21:27:13 by enolbas          ###   ########.fr       */
+/*   Created: 2021/12/02 11:41:13 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/05 18:59:10 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-size_t	ft_strlen2(char *str);
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	count;
-	size_t	copy;
-	char	*all;
+	char	*s1s2;
+	char	*str;
 
-	count = 0;
-	copy = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	all = (char *) malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
-	if (!all)
-		return (NULL);
-	all[0] = '\0';
-	while (count < ft_strlen(s1))
-		all[copy++] = s1[count++];
-	count = 0;
-	while (count < ft_strlen(s2))
-		all[copy++] = s2[count++];
-	all[copy] = '\0';
-	return (all);
-}
-
-char	*ft_charjoin(char *s1, char c)
-{
-	size_t	count;
-	size_t	len;
-	char	*all;
-
-	count = 0;
-	if (!s1)
-		len = 0;
-	else
-		len = ft_strlen2(s1);
-	all = (char *) ft_calloc(len + 2, sizeof(char));
-	while (s1[count])
+	if (s1 && !s2)
 	{
-		all[count] = s1[count];
-		count ++;
+		str = ft_strdup(s1);
+		if (!str)
+			return (NULL);
+		return (str);
 	}
-	all[count] = c;
-	if (len > 0)
-		free(s1);
-	return (all);
+	if (!s1 && s2)
+	{
+		str = ft_strdup(s2);
+		if (!str)
+			return (NULL);
+		return (str);
+	}
+	if (!s1 && !s2)
+		return (NULL);
+	s1s2 = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!s1s2)
+		return (NULL);
+	ft_strlcpy(s1s2, s1, ft_strlen(s1) + 1);
+	ft_strlcpy(s1s2 + ft_strlen(s1), s2, ft_strlen(s2) + 1);
+	return (s1s2);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	char	s1[] = "Super";
+	char	s2[] = "Test";
+	char	*s1s2 = ft_strjoin(s1, s2);
+
+	printf("\n%s\n%ld\n", s1s2, ft_strlen(s1s2));
+	free(s1s2);
+	return (0);
+}
+*/

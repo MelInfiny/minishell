@@ -3,43 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 16:08:44 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/28 14:37:14 by enolbas          ###   ########.fr       */
+/*   Created: 2021/11/30 17:58:31 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/03/31 14:34:37 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-/*
- * convert ascii string (str) to integer
-*/
-
-int	ft_atoi(const char *str)
+int	ft_atoi(const char *nptr)
 {
-	int		count;
-	int		sign;
-	long	num;
+	unsigned int		i;
+	unsigned int		nb;
+	long long int		final_nb;
+	int					if_is_negative;
 
-	count = 0;
-	sign = 1;
-	num = 0;
-	while (str[count] == 32 || (str[count] >= 9 && str[count] <= 13))
-		count++;
-	if (str[count] == '+' || str[count] == '-')
+	i = 0;
+	nb = 0;
+	if_is_negative = 1;
+	while (nptr[i] == ' ' || (nptr[i] >= '\t' && nptr[i] <= '\r'))
+		i++;
+	if (nptr[i] == '+' || nptr[i] == '-')
 	{
-		if (str[count] == '-')
-			sign *= -1;
-		count++;
+		if (nptr[i] == '-')
+			if_is_negative = -1;
+		i++;
 	}
-	while (str[count] >= '0' && str[count] <= '9')
+	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		if (num * sign > 2147483647)
-			return (-1);
-		else if (num * sign < -2147483648)
-			return (0);
-		num = (num * 10) + str[count] - 48;
-		count++;
+		nb = (nb * 10) + (nptr[i] - 48);
+		i++;
 	}
-	return (num * sign);
+	return (final_nb = nb * if_is_negative);
 }
+/*
+#include <stdio.h>
+#include <stdlib.h>
+
+int	main(int argc, char **argv)
+{
+//	char	tab1[] = "-102";
+	int		t1 = atoi(argv[1]);
+	int		t2 = ft_atoi(argv[1]);
+
+	(void)argc;
+	printf("\n%s : %d | %d\n\n", argv[1], t1, t2);
+	return (0);
+}
+*/

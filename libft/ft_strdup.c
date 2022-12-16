@@ -3,32 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 16:24:10 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/28 14:36:36 by enolbas          ###   ########.fr       */
+/*   Created: 2021/12/01 13:31:35 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/03 21:42:21 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_strdup(const char *s)
 {
-	int		l_src;
-	int		count;
 	char	*copy;
 
-	count = 0;
-	l_src = 0;
-	while (s[l_src])
-		l_src++;
-	copy = (char *) malloc (sizeof(char) * l_src + 1);
+	if (!s)
+		return (NULL);
+	copy = malloc((ft_strlen(s) + 1) * sizeof(char));
 	if (!copy)
 		return (NULL);
-	while (count < l_src)
-	{
-		copy[count] = s[count];
-		count++;
-	}
-	copy[count] = '\0';
+	ft_strlcpy(copy, s, ft_strlen(s) + 1);
 	return (copy);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	char	tab1[] = "";
+	char	*copy1;
+
+	copy1 = ft_strdup(tab1);
+	printf("\n%s\n\n", copy1);
+	return (0);
+}
+*/

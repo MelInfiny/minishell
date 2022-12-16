@@ -3,30 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/28 14:28:33 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/28 14:32:55 by enolbas          ###   ########.fr       */
+/*   Created: 2021/11/29 11:22:50 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/10/24 20:25:50 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/**
- * search the last occurence of a caractere into the string (s)
- * include the null terminating caractere '\0'
- */
-
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int caractere)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	count;
+	int	i;
 
-	count = ft_strlen(s);
-	while (count >= 0)
+	i = ft_strlen(s);
+	if (s)
 	{
-		if (s[count] == (char) caractere)
-			return ((char *)(s + count));
-		count--;
+		while (i >= 0)
+		{
+			if (s[i] == (char)c)
+				return ((char *)s + i);
+			i--;
+		}
 	}
-	return ((void *) 0);
+	return (0);
 }
+/*
+#include <stdio.h>
+#include <string.h>
+#define SEARCH 's'
+
+int main(void)
+{
+    char    tab[] = "saluts";
+    printf("\n-- strrchr :%d", strrchr(tab, SEARCH));
+    printf("\nft_strrchr :%d ", ft_strrchr(tab, SEARCH));
+    strrchr(tab, SEARCH) == ft_strrchr(tab, SEARCH) ? 
+printf("OK\n\n") : printf("NO\n\n");
+    return (0);
+}
+*/

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/11 21:19:43 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/11 21:19:50 by enolbas          ###   ########.fr       */
+/*   Created: 2021/11/23 15:44:26 by tda-silv          #+#    #+#             */
+/*   Updated: 2021/11/23 15:47:16 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-int	ft_isprint(int caractere)
+int	ft_isprint(int c)
 {
-	if (caractere < 32 || caractere > 126)
+	if (c >= 32 && c <= 126)
+		return (1);
+	else
 		return (0);
-	return (caractere);
 }

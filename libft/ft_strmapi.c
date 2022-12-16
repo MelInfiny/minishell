@@ -3,36 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/12 09:27:31 by enolbas           #+#    #+#             */
-/*   Updated: 2022/01/04 17:57:04 by enolas           ###   ########.fr       */
+/*   Created: 2021/12/10 13:18:30 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/03/17 17:47:14 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/**
- * applies the f function to the string s
- * create a new function with the result
- */
 
 #include "libft.h"
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	int		count;
-	char	*str;
+	char	*s_after;
+	size_t	i;
 
-	count = 0;
-	if (!s || !f)
-		return ((void *)0);
-	str = ft_strdup(s);
-	if (!str)
+	s_after = malloc(ft_strlen(s) + 1);
+	if (!s_after)
 		return (NULL);
-	while (s[count])
+	i = 0;
+	while (i < ft_strlen(s))
 	{
-		str[count] = f(count, s[count]);
-		count++;
+		s_after[i] = (*f)(i, s[i]);
+		i++;
 	}
-	str[count] = '\0';
-	return (str);
+	s_after[i] = 0;
+	return (s_after);
 }
+/*
+#include <stdio.h>
+
+// FONCTION FT_ADD A DEPLACER //
+
+char	ft_add(unsigned int nbr, char c)
+{
+	c++;
+	return (c);
+}
+
+//----------------------------//
+
+int	main(void)
+{
+	char	c;
+	c = ft_add(1, 'a');
+	printf("\n%c\n", c);
+
+	char	s[] = "0abcdefghijkklmnopqrstuvwxy0";
+	char	*c3;
+
+	char	(*f)(unsigned int, char);
+	f = ft_add;
+
+	c3 = ft_strmapi(s, f);
+	printf("\n%s\n\n", c3);
+	free(c3);
+	return (0);
+}
+*/

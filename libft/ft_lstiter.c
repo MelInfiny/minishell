@@ -3,21 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/28 13:33:51 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/28 14:37:58 by enolbas          ###   ########.fr       */
+/*   Created: 2022/03/19 11:52:44 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/05 14:02:16 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
 	if (!lst || !f)
 		return ;
-	while (lst)
+	while (lst && f)
 	{
-		f(lst->content);
+		if (f)
+			(*f)(lst->content);
 		lst = lst->next;
 	}
 }
+/*
+#include <stdio.h>
+
+void	f(void *lst)
+{
+	printf("\n%d\n", lst);	
+}
+
+int	main()
+{
+	t_list	*a;
+
+	a = ft_lstnew((int *)5);
+	ft_lstiter(a, f);
+	printf("\n%d\n", a->content);
+	return (0);
+}
+*/

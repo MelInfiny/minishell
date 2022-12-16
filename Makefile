@@ -1,57 +1,163 @@
-NAME		=	minishell
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/10/17 14:32:32 by tda-silv          #+#    #+#              #
+#    Updated: 2022/12/12 21:30:34 by tda-silv         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-SRCS_FOLDER	=	srcs
-OBJS_FOLDER	=	objs
-INC_FOLDER	=	includes
-LIB_FOLDER	=	libft
+NAME		= minishell
 
-CC		:=	cc
-CFLAGS		:=	-Werror -Wextra -Wall -I$(INC_FOLDER) -I$(LIB_FOLDER) $(LDFLAGS)
-LDFLAGS		:=	-g3 -ggdb
-VFLAGS		:=	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --tool=helgrind
+SRC_DIR		= source/
+OBJ_DIR		= object/
+INC_DIR		= include/
+LIB_DIR		= libft/
 
-SRCS_BASE	=	\
-			ft_init		\
-			ft_free		\
-			lexer		\
-			parser		\
-			ast		\
-			ft_str		\
-			ft_strd		\
-			ft_map		\
-			ft_echo		\
-			ft_pwd		\
-			ft_env		\
-			ft_unset	\
-			ft_exec		\
-			ft_redir	\
-			tester		\
-			
-SRCS		=	$(addsuffix .c, $(addprefix $(SRCS_FOLDER)/, $(SRCS_BASE)))
-OBJS		=	$(addsuffix .o, $(addprefix $(OBJS_FOLDER)/, $(SRCS_BASE)))
+CC			= gcc
 
-$(OBJS_FOLDER)/%.o:		$(SRCS_FOLDER)/%.c
-				mkdir -p $(dir $@)
-				$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
+CFLAGS		= -Wall -Wextra -Werror
+LDFLAGS_1	= -fsanitize=address -g
+LDFLAGS_2	= -fsanitize=address -g -static-libasan -fsanitize=leak
 
-$(NAME):			$(OBJS)
-				make -C $(LIB_FOLDER) --silent 
-				$(CC)  -o $(NAME) $(OBJS) -lreadline -L $(LIB_FOLDER) -lft $(LDFLAGS)
+# **************************************************************************** #
+# -I | Chemin du dossier où trouver un .h									   #
+# -L | Chemin du dossier où trouver un .a									   #
+# -l | Nom du .a sans le préfixe "lib"										   #
+# **************************************************************************** #
 
-valgrind:
-		valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline_leaks ./$(NAME)
+I_HEADERS	= -I $(INC_DIR) -I $(LIB_DIR) -I /opt/homebrew/opt/readline/include
+L_LIB		= -L $(LIB_DIR) -l ft -l readline -L /opt/homebrew/opt/readline/lib
+
+################################################################################
+
+HEADERS		= ./include/header.h \
+			  ./include/struct.h \
+
+NAME_FILE	= $(addprefix builtin/,												\
+					$(addprefix	  ms_cd/,										\
+			  							ms_cd									\
+										update_env								\
+										update_env_home							\
+										update_path								\
+										get_oldpwd								\
+										remove_point							\
+										remove_last								\
+										one_point								\
+										two_point								\
+					)															\
+					$(addprefix	  ms_export/,									\
+			  								ms_export							\
+											wrong_name_var						\
+											get_export							\
+											show_export							\
+											update_var							\
+					)															\
+					$(addprefix	  ms_unset/,									\
+			  								ms_unset							\
+											ls_clear_one_export					\
+											del_one_env							\
+					)															\
+								  ms_echo										\
+								  ms_env										\
+								  ms_pwd										\
+								  builtin_chr									\
+								  ms_exit										\
+								  ft_cd										\
+								  ft_clone_redir								\
+																				\
+			  )																	\
+			  $(addprefix t_map/,												\
+			  					map_add											\
+			  					map_last										\
+			  					map_new											\
+								map_delone										\
+								map_clear										\
+			  )																	\
+			  $(addprefix lexer/,												\
+			  				   lexer											\
+							   switch_type										\
+							   is_break											\
+							   lexer_char_error									\
+							   put_in_map										\
+							   split_delim										\
+			  )																	\
+			  $(addprefix parser/,												\
+			  					 parser											\
+								 ft_streplace									\
+								 ft_strdjoin									\
+								 ft_strdlen										\
+								 ft_strdfree									\
+								 check_syntax									\
+								 check_expand									\
+								 ft_strjoin_free								\
+			  )																	\
+			  $(addprefix execute/,												\
+			  					  cmd_path_chr									\
+								  ft_cmd_error									\
+								  ms_redir										\
+								  ms_pipe										\
+								  execute_cmd									\
+								  execute_one_cmd								\
+			  )																	\
+			  $(addprefix start_main/,											\
+			  						 copy_env_in_export							\
+									 copy_env									\
+									 init_input									\
+									 shlvl										\
+			  )																	\
+			  $(addprefix signal/,												\
+			  					 handler_on										\
+								 handler_off									\
+			  )																	\
+			  minishell															\
+			  free_input														\
+			  ms_get_env														\
+			  ms_get_env_start													\
+			  free_all															\
+			  str_chr_start_str													\
+
+SRC			= $(addsuffix .c, $(addprefix $(SRC_DIR), $(NAME_FILE)))
+OBJ			= $(addsuffix .o, $(addprefix $(OBJ_DIR), $(NAME_FILE)))
+
+################################################################################
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(I_HEADERS) -c $< -o $@
+
+all: $(NAME) $(HEADERS)
+
+$(NAME): $(OBJ)
+	@cd libft; make bonus; cd ..
+	$(CC) $(OBJ) $(I_HEADERS) $(L_LIB) -o $(NAME)
+
+################################################################################
+
+valgrind: $(OBJ)
+	valgrind --tool=memcheck --track-origins=yes --leak-check=full --show-leak-kinds=all --suppressions=readline_leaks --track-fds=yes ./$(NAME)
+
+fsanitize1: $(OBJ)
+	@cd libft; make bonus; cd ..
+	$(CC) $(LDFLAGS_1) $(OBJ) $(I_HEADERS) $(L_LIB) -o $(NAME)
+
+fsanitize2: $(OBJ)
+	@cd libft; make bonus; cd ..
+	$(CC) $(LDFLAGS_2) $(OBJ) $(I_HEADERS) $(L_LIB) -o $(NAME)
+
+################################################################################
 
 clean:
-		make -C $(LIB_FOLDER) clean --silent
-		rm -rf $(OBJS_FOLDER)
+	cd libft; make clean
+	rm -rf $(OBJ_DIR)
 
-fclean:		clean
-		make -C $(LIB_FOLDER)	fclean --silent
-		rm -f $(NAME)
+fclean: clean
+	cd libft; make fclean
+	rm -f $(NAME)
 
-all:		$(NAME)
+re: fclean all
 
-re:		fclean
-		$(MAKE) all
-
-.PHONY:		re fclean clean all
+.PHONY: all valgrind fsanitize1 fsanitize2 clean fclean re

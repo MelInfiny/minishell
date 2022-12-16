@@ -3,26 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/12 12:18:05 by enolbas           #+#    #+#             */
-/*   Updated: 2022/01/04 17:47:16 by enolas           ###   ########.fr       */
+/*   Created: 2021/12/01 11:15:35 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/03/16 12:40:36 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-/**
- * allocates space for n objects of size bytes each
- * filled this bytes with zeroes
- */
-
-void	*ft_calloc(size_t n, size_t size)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void	*ptr;
+	void	*tab;
 
-	ptr = (void *) malloc(size * n);
-	if (!ptr)
+	tab = malloc(nmemb * size);
+	if (!tab)
 		return (NULL);
-	ft_memset(ptr, 0, (n * size));
-	return (ptr);
+	ft_bzero(tab, nmemb * size);
+	return (tab);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	int	tab;
+
+	tab = *(int *)ft_calloc(1, sizeof(int));
+	printf("\n%d\n\n", tab);
+	return (0);
+}
+*/

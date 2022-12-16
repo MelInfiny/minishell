@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/28 14:22:04 by enolbas           #+#    #+#             */
-/*   Updated: 2021/12/28 14:22:26 by enolbas          ###   ########.fr       */
+/*   Created: 2022/03/16 10:59:24 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/03/16 17:26:42 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,25 @@
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list	*lstnew;
+	t_list	*ln;
 
-	lstnew = (t_list *) ft_calloc(1, sizeof(t_list));
-	if (!lstnew)
+	ln = malloc(sizeof(t_list));
+	if (!ln)
 		return (NULL);
-	lstnew->content = content;
-	lstnew->next = NULL;
-	return (lstnew);
+	ln->content = content;
+	ln->next = NULL;
+	return (ln);
 }
+/*
+#include <stdio.h>
+
+int	main()
+{
+	t_list *socrate;
+
+	socrate = ft_lstnew((int *)5);
+	printf("\n%d\n", socrate->content);
+	free(socrate);
+	return (0);
+}
+*/

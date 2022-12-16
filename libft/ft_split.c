@@ -3,94 +3,145 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 12:35:03 by enolbas           #+#    #+#             */
-/*   Updated: 2022/01/04 17:54:49 by enolas           ###   ########.fr       */
+/*   Created: 2021/12/03 16:44:13 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/08 12:37:38 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-static int	is_sep(char c, char set)
+static size_t	ft_nbc(char const *s, char c)
 {
-	if (c == set)
-		return (1);
+	unsigned int	i;
+	size_t			j;
+
+	i = 0;
+	j = 1;
+	while (s[i] && s[i] == c)
+		i++;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			j++;
+			while (s[i] && s[i] != c)
+				i++;
+			continue ;
+		}
+		i++;
+	}
+	return (j);
+}
+
+static size_t	ft_skip_o(char const *s, char c, size_t *pos)
+{
+	size_t	i;
+
+	i = 0;
+	if (*(s + *pos) && *(s + *pos) == c)
+		while (*(s + *pos) && *(s + *pos) == c)
+			*pos += 1;
+	while (*(s + *pos) && *(s + *pos) != c)
+	{
+		*pos += 1;
+		i++;
+	}
+	return (i);
+}
+
+static size_t	ft_skip_c(char const *s, char c, size_t *pos)
+{
+	size_t	i;
+
+	i = 0;
+	while (*(s + *pos) && *(s + *pos) == c)
+		*pos += 1;
+	while ((s + *pos)[i] && (s + *pos)[i] != c)
+		i++;
+	return (i);
+}
+
+static void	ft_split_pii(char const *s, char c, size_t x, char **ssplit)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < ft_nbc(s, c) - 1)
+	{
+		ssplit[i] = malloc(ft_skip_o(s, c, &x) + 1);
+		if (!ssplit[i])
+		{
+			while (i-- > 0)
+				free(ssplit[i]);
+			free(ssplit);
+		}
+		i++;
+	}
+	ssplit[ft_nbc(s, c) - 1] = 0;
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**ssplit;
+	size_t	x;
+	size_t	y;
+	size_t	i;
+
+	x = 0;
+	y = 0;
+	i = 0;
+	if (!s || !*s)
+		return (NULL);
+	ssplit = (char **) malloc(sizeof (char *) * ft_nbc(s, c));
+	if (!ssplit)
+		return (NULL);
+	ft_split_pii(s, c, x, ssplit);
+	while (i < ft_nbc(s, c) - 1)
+	{
+		if (*(s + y))
+		{
+			x = ft_skip_c(s, c, &y) + 1;
+			ft_strlcpy(ssplit[i], s + y, x);
+			ft_skip_o(s, c, &y);
+		}
+		i++;
+	}
+	return (ssplit);
+}
+/*
+#include <stdio.h>
+
+int	main(int argc, char **argv)
+{
+//	char	s[] = "";
+	char	**ssplit = NULL;
+
+	(void)argc;
+	ssplit = ft_split(argv[1], argv[2][0]);
+	printf("\n--------------------\n");
+	printf("\ns:%s\nc:%c\n", argv[1], argv[2][0]);
+	printf("\n[0]%s\n", ssplit[0]);
+	
+	int i = 1;
+	while (ssplit[i])
+	{
+		printf("[%d]%s\n", i, ssplit[i]);
+		i++;
+	}
+
+////FREE////
+
+	printf("\n--------------------\n");
+	while (i >= 0)
+	{
+		free(ssplit[i]);
+		printf("\n[%d] is free", i);
+		i--;
+	}
+	printf("\n");
+	free(ssplit);
 	return (0);
 }
-
-static char	*create_word(const char *s, int start, int end)
-{
-	char	*word;
-	int		count;
-
-	count = 0;
-	word = (char *) malloc(sizeof(char) * (end - start) + 1);
-	if (!word)
-		return (NULL);
-	while (start < end)
-	{
-		word[count++] = s[start++];
-	}
-	word[count] = '\0';
-	return (word);
-}
-
-static unsigned int	ft_strslen(const char *s, char set)
-{
-	unsigned int	len;
-	int				count;
-
-	count = 0;
-	len = 0;
-	while (s[count])
-	{
-		while (is_sep(s[count], set) && s[count])
-			count++;
-		if (!is_sep(s[count], set) && s[count])
-		{
-			len++;
-			while (!is_sep(s[count], set) && s[count])
-				count++;
-		}
-	}
-	return (len);
-}
-
-static void	ft_split2(const char *s, char set, char **words)
-{
-	int	start;
-	int	count;
-	int	nbr;
-
-	count = 0;
-	nbr = 0;
-	while (s[count])
-	{
-		while (is_sep(s[count], set) && s[count])
-			count++;
-		if (!is_sep(s[count], set) && s[count])
-		{
-			start = count;
-			while (!is_sep(s[count], set) && s[count])
-				count++;
-			words[nbr++] = create_word(s, start, count);
-		}
-	}
-	words[nbr] = NULL;
-}
-
-char	**ft_split(const char *s, char set)
-{
-	char	**words;
-
-	if (!s)
-		return (NULL);
-	words = (char **) ft_calloc(sizeof(char *), ft_strslen(s, set) + 1);
-	if (!words)
-		return (NULL);
-	if (ft_strslen(s, set) == 0)
-		words[0] = NULL;
-	else
-		ft_split2(s, set, words);
-	return (words);
-}
+*/

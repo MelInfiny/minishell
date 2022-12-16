@@ -3,33 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/28 14:21:51 by enolbas           #+#    #+#             */
-/*   Updated: 2022/01/04 18:03:58 by enolas           ###   ########.fr       */
+/*   Created: 2021/11/29 15:14:02 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/03/16 12:39:58 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *s, const char *find, size_t size)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	count;
-	size_t	search;
+	size_t	i;
+	size_t	j;
 
-	if (find[0] == '\0')
-		return ((char *)s);
-	count = 0;
-	while (s[count] && count < size)
+	i = 0;
+	j = 0;
+	if (*little == 0)
+		return ((char *)big);
+	while (big[i] && i < len)
 	{
-		search = 0;
-		while (((count + search) < size) && (s[count + search] == find[search]))
+		while (big[i + j] == little[j] && i + j < len)
 		{
-			search++;
-			if (find[search] == '\0')
-				return ((char *)s + count);
+			j++;
+			if (little[j] == '\0')
+				return ((char *)big + i);
 		}
-		count++;
+		j = 0;
+		i++;
 	}
-	return ((void *)0);
+	return (0);
 }
+/*
+#include <stdio.h>
+#include <bsd/string.h> // compile with -lbsd
+
+int	main(void)
+{
+	char	big[] = "Une super phrase de test !"; // 26
+	char	little[] = "super";
+	
+	printf("\n%s\n\n", strnstr(big, little, 26));
+	printf("\n%s\n\n", ft_strnstr(big, little, 26));
+	return (0);
+}
+*/

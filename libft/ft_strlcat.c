@@ -3,37 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 15:52:24 by enolbas           #+#    #+#             */
-/*   Updated: 2022/01/04 17:56:06 by enolas           ###   ########.fr       */
+/*   Created: 2021/12/01 09:57:29 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/03/16 12:36:05 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/**
- * concate the string src to the string dest after terminating charactere '\0'
- *
- */
-
 #include "libft.h"
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	unsigned int	c_2;
-	size_t			c_1;
-	size_t			l_src;
-	size_t			l_dest;
+	size_t	i;
+	size_t	j;
+	size_t	size_dst;
 
-	c_2 = 0;
-	c_1 = ft_strlen(dest);
-	l_dest = ft_strlen(dest);
-	l_src = ft_strlen(src);
-	if (size > l_dest)
+	i = 0;
+	j = 0;
+	size_dst = ft_strlen(dst);
+	if (size > size_dst)
 	{
-		while (src[c_2] && (c_1 < size - 1))
-			dest[c_1++] = src[c_2++];
-		dest[c_1] = '\0';
-		return (l_dest + l_src);
+		while (dst[i])
+			i++;
+		while (src[j] && i < size - 1)
+		{
+			dst[i] = src[j];
+			i++;
+			j++;
+		}
+		dst[i] = '\0';
+		return (size_dst + ft_strlen(src));
 	}
-	return (size + l_src);
+	else
+		return (size + ft_strlen(src));
 }
+/*
+#include <stdio.h>
+#include <bsd/string.h>
+
+int	main(void)
+{
+	char	dst1[20] = "Un ,"; // 4
+	char	src1[] = "deux ,"; // 6
+	int		un = strlcat(dst1, src1, 100); // 10 + 1
+
+	printf("\n    | %s\t| return : %d\n", dst1, un);
+
+//----------------------------------------------------------------------------//
+	
+	char	dst11[20] = "Un ,"; // 4
+	char	src11[] = "deux ,"; // 6
+	un = ft_strlcat(dst11, src11, 100); // 10 + 1
+
+	printf("ft_ | %s\t| return : %d\n\n", dst11, un);
+
+	return (0);
+}
+*/
