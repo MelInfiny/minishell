@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/16 01:19:12 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/17 04:16:09 by tda-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
 
-static int      ft_cderror(void)
+static void	error_msg(char *target, int nb_args);
+
+static int	ft_cderror(void)
 {
-        perror("cd");
+	perror("cd");
 	return (1);
 }
 
@@ -12,7 +26,7 @@ static char	*ft_chr_env(char **env, char *var)
 
 	count = 0;
 	if (!env)
-		 return (NULL);
+		return (NULL);
 	while (env[count])
 	{
 		if (ft_findstr(env[count], var))
@@ -24,40 +38,10 @@ static char	*ft_chr_env(char **env, char *var)
 	return (NULL);
 }
 
-void	ft_replace_varenv(char **env, char *var, char *newvar)
-{
-	size_t	count;
-	char	*tmp;
-
-	count = 0;
-	if (!env)
-		return ;
-	while (env[count])
-	{
-		if (ft_findstr(env[count], var))
-		{
-			tmp = ft_strjoin(var, "=");
-			free(env[count]);
-			env[count] = NULL;
-			env[count] = ft_strjoin(tmp, newvar);
-			free(tmp);
-		}
-		count ++;
-	}
-}
-
-static void	ft_cd_error(char *target, int nb_args)
-{
-	if (!target && nb_args == 1)
-		ft_putstr_fd("cd: HOME not set\n", 2);
-	else if (!target)	
-		ft_putstr_fd("cd: OLDPWD not set\n", 2);
-}
-
 static char	*get_target(t_input *input, char **args, int nb_args)
 {
 	char	*target;
-	
+
 	target = NULL;
 	if (nb_args == 1)
 		target = ft_chr_env(input->env, "HOME");
@@ -77,13 +61,21 @@ static char	*get_target(t_input *input, char **args, int nb_args)
 		ft_cderror();
 		return (NULL);
 	}
-	ft_cd_error(target, nb_args);
+	error_msg(target, nb_args);
 	return (target);
 }
 
-int     ft_cd(t_input *input, char **args, int nb_arg)
+static void	error_msg(char *target, int nb_args)
 {
-        char    cdd[PATH_MAX];
+	if (!target && nb_args == 1)
+		ft_putstr_fd("cd: HOME not set\n", 2);
+	else if (!target)
+		ft_putstr_fd("cd: OLDPWD not set\n", 2);
+}
+
+int	ft_cd(t_input *input, char **args, int nb_arg)
+{
+	char	cdd[PATH_MAX];
 	char	*target;
 
 	target = get_target(input, args, nb_arg);
@@ -94,5 +86,5 @@ int     ft_cd(t_input *input, char **args, int nb_arg)
 		return (ft_cderror());
 	ft_replace_varenv(input->env, "OLDPWD", cdd);
 	ft_replace_varenv(input->env, "PWD", getcwd(cdd, PATH_MAX));
-        return (0);
+	return (0);
 }

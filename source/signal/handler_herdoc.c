@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_oldpwd.c                                       :+:      :+:    :+:   */
+/*   handler_herdoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/22 18:17:46 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/12 18:34:12 by tda-silv         ###   ########.fr       */
+/*   Created: 2022/12/11 11:10:02 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/15 16:48:22 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.h>
 
-int	get_oldpwd(char *str, t_input *input)
+/* ************************************************************************** */
+/*																			  */
+/*   sig == 2 | SIGINT	| ctrl+c											  */
+/*   sig == 3 | SIGQUIT	| ctrl+\											  */
+/*																			  */
+/* ************************************************************************** */
+void	handler_herdoc(int sig)
 {
-	char	*stock;
+	int	return_write;
 
-	stock = ft_strjoin("OLDPWD=", str);
-	if (ms_export(stock, input))
-	{
-		free(stock);
-		return (1);
-	}
-	free(stock);
-	return (0);
+	return_write = 0;
+	(void) return_write;
+	if (sig == 2)
+		close(0);
 }

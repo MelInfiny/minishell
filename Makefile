@@ -6,7 +6,7 @@
 #    By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/17 14:32:32 by tda-silv          #+#    #+#              #
-#    Updated: 2022/12/12 21:30:34 by tda-silv         ###   ########.fr        #
+#    Updated: 2022/12/17 04:44:06 by tda-silv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,17 +38,6 @@ HEADERS		= ./include/header.h \
 			  ./include/struct.h \
 
 NAME_FILE	= $(addprefix builtin/,												\
-					$(addprefix	  ms_cd/,										\
-			  							ms_cd									\
-										update_env								\
-										update_env_home							\
-										update_path								\
-										get_oldpwd								\
-										remove_point							\
-										remove_last								\
-										one_point								\
-										two_point								\
-					)															\
 					$(addprefix	  ms_export/,									\
 			  								ms_export							\
 											wrong_name_var						\
@@ -66,8 +55,9 @@ NAME_FILE	= $(addprefix builtin/,												\
 								  ms_pwd										\
 								  builtin_chr									\
 								  ms_exit										\
-								  ft_cd										\
+								  ft_cd											\
 								  ft_clone_redir								\
+								  ft_replace_varenv								\
 																				\
 			  )																	\
 			  $(addprefix t_map/,												\
@@ -84,6 +74,7 @@ NAME_FILE	= $(addprefix builtin/,												\
 							   lexer_char_error									\
 							   put_in_map										\
 							   split_delim										\
+							   p_iii											\
 			  )																	\
 			  $(addprefix parser/,												\
 			  					 parser											\
@@ -94,6 +85,8 @@ NAME_FILE	= $(addprefix builtin/,												\
 								 check_syntax									\
 								 check_expand									\
 								 ft_strjoin_free								\
+								 ft_findstr										\
+								 unquoted										\
 			  )																	\
 			  $(addprefix execute/,												\
 			  					  cmd_path_chr									\
@@ -102,6 +95,7 @@ NAME_FILE	= $(addprefix builtin/,												\
 								  ms_pipe										\
 								  execute_cmd									\
 								  execute_one_cmd								\
+								  ret_er										\
 			  )																	\
 			  $(addprefix start_main/,											\
 			  						 copy_env_in_export							\
@@ -112,6 +106,7 @@ NAME_FILE	= $(addprefix builtin/,												\
 			  $(addprefix signal/,												\
 			  					 handler_on										\
 								 handler_off									\
+								 handler_herdoc									\
 			  )																	\
 			  minishell															\
 			  free_input														\

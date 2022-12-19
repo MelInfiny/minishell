@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update_env.c                                       :+:      :+:    :+:   */
+/*   ft_replace_varenv.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/23 18:07:29 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/15 09:31:58 by tda-silv         ###   ########.fr       */
+/*   Created: 2022/12/17 04:15:58 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/17 04:16:19 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.h>
 
-int	update_env(const char *str, t_input *input)
+void	ft_replace_varenv(char **env, char *var, char *newvar)
 {
-	char	*stock;
-	char	pwd[PATH_MAX];
+	size_t	count;
+	char	*tmp;
 
-	pwd[0] = 0;
-	if (!getcwd(pwd, PATH_MAX))
+	count = 0;
+	if (!env)
+		return ;
+	while (env[count])
 	{
-		perror("getcwd");
-		return (1);
+		if (ft_findstr(env[count], var))
+		{
+			tmp = ft_strjoin(var, "=");
+			free(env[count]);
+			env[count] = NULL;
+			env[count] = ft_strjoin(tmp, newvar);
+			free(tmp);
+		}
+		count ++;
 	}
-	stock = ft_strjoin("PWD=", pwd);
-	if (ms_export(stock, input))
-	{
-		free(stock);
-		return (1);
-	}
-	(void) str;
-	free(stock);
-	return (0);
 }

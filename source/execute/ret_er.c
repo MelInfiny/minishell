@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update_env_home.c                                  :+:      :+:    :+:   */
+/*   ret_er.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/23 18:08:39 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/12 18:33:49 by tda-silv         ###   ########.fr       */
+/*   Created: 2022/12/17 04:28:25 by tda-silv          #+#    #+#             */
+/*   Updated: 2022/12/17 04:28:45 by tda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.h>
 
-int	update_env_home(const char *str, t_input *input)
+int	ret_er(t_redir *redir, int res)
 {
-	char	*stock;
-
-	stock = ft_strjoin("PWD=", str);
-	if (ms_export(stock, input))
+	if (res < 0)
 	{
-		free(stock);
-		return (1);
+		perror(redir->file);
+		return (-1);
 	}
-	free(stock);
 	return (0);
 }
