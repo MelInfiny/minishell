@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:40:40 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/16 01:18:32 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/11 14:30:01 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,11 @@ static void	part_three(t_node *node, t_input *input, int builtin)
 			g_status = ms_echo(node->args);
 	if (builtin == 7)
 	{
-		ms_exit(input, 0);
-		g_status = 0;
+		if (node->args[1])
+			i = ft_atoi(node->args[1]);
+		else
+			i = 0;
+		ms_exit(input, i);
+		g_status = i;
 	}
 }

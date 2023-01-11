@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 12:00:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/16 16:37:07 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:33:10 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,9 @@ void	wait_exec(void)
 			ft_putstr_fd("Quit (core dumped)\n", 2);
 		g_status = WTERMSIG(status) + 128;
 	}
-	else if (WEXITSTATUS(status) == 1)
-		g_status = 1;
-	else
-		g_status = 0;
+	if (WIFEXITED(status) == 1)
+		g_status = WEXITSTATUS(status);
 }
-
 static int	ft_execve(t_input *input, t_list *cmds, char *command)
 {
 	t_node	*node;

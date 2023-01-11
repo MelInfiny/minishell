@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 08:41:02 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/17 05:07:21 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:16:30 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ char	*replace_dollar(t_input *input, char *word, int *start, t_type type)
 
 	tmp = NULL;
 	count = *start;
-	while (word[count] && word[count + 1])
+	while (word[count + 1])
 	{
 		if ((switch_type(word[count + 1]) == type
 				|| word[count + 1] == ' '
 				|| word[count + 1] == '$'
-				|| (type == DOLLAR && (word[count + 1] == '\''
-						|| word[count + 1] == '\"'))))
+				|| word[count + 1] == '\''
+				|| word[count + 1] == '\"'))
 			break ;
 		count++;
 	}

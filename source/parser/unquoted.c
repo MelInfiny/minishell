@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 04:42:01 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/17 05:09:19 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:15:08 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*remove_quote_in_word(t_input *input,
 		if (type == DQUOTE && line[index] == '$')
 		{
 			if (index > *start + 1)
-				tmp = extend_line(ft_substr(line, *start, index), tmp);
+				tmp = extend_line(ft_substr(line, *start + 1, index - 1), tmp);
 			tmp = extend_line(replace_dollar(input, line, &index, type), tmp);
 			*start = index;
 		}
