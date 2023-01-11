@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 12:00:55 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/01/11 18:33:10 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/11 19:17:13 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	wait_exec(void)
 	if (WIFEXITED(status) == 1)
 		g_status = WEXITSTATUS(status);
 }
+
 static int	ft_execve(t_input *input, t_list *cmds, char *command)
 {
 	t_node	*node;

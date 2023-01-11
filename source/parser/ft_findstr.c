@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 04:33:41 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/17 05:07:08 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/11 19:15:08 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,22 @@ void	ft_replace_quote(t_input *input)
 
 char	*find_in_env(char **env, char *var)
 {
-	int	count;
+	int		count;
+	size_t	len;
 
 	count = 0;
+	len = ft_strlen(var);
 	while (env[count])
 	{
 		if (ft_findstr(env[count], var))
+		{
+			free(var);
 			return (ft_substr(env[count],
-					ft_strlen(var) + 1, ft_strlen(env[count])));
+					len + 1, ft_strlen(env[count])));
+		}
 		count ++;
 	}
+	free(var);
 	return (ft_strdup(""));
 }
 
