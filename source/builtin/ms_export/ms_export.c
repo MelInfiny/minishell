@@ -92,9 +92,9 @@ static int	print_error(char *var, int nb_error)
 	if (nb_error == -1)
 	{
 		if (var && *var)
-			printf("export: `%s': not a valid identifier\n", var);
+			ft_printf("export: `%s': not a valid identifier\n", var);
 		else
-			printf("export: `': not a valid identifier\n");
+			ft_printf("export: `': not a valid identifier\n");
 	}
 	else
 	{

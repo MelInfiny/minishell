@@ -24,6 +24,6 @@ int	ms_pwd(void)
 	}
 	if (!*pwd)
 		return (1);
-	printf("%s\n", pwd);
+	ft_printf("%s\n", pwd);
 	return (0);
 }

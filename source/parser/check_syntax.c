@@ -42,10 +42,10 @@ int	check_syntax(t_input *input)
 
 static int	lexer_str_error(t_input *input, char *message, char *content)
 {
-	printf("%s", message);
+	ft_printf("%s", message);
 	if (content)
-		printf("%s", content);
-	printf("\n");
+		ft_printf("%s", content);
+	ft_printf("\n");
 	(void) input;
 	return (0);
 }

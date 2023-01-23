@@ -30,12 +30,12 @@ int	show_export(t_input *input)
 		if (pos > -1)
 		{
 			copy->content_one[pos] = 0;
-			printf("export %s=", copy->content_one);
+			ft_printf("export %s=", copy->content_one);
 			copy->content_one[pos] = '=';
-			printf("\"%s\"\n", after_equal);
+			ft_printf("\"%s\"\n", after_equal);
 		}
 		else
-			printf("export %s\n", copy->content_one);
+			ft_printf("export %s\n", copy->content_one);
 		copy = copy->next;
 	}
 	return (0);

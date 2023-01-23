@@ -19,6 +19,6 @@ int	ms_env(t_input *input)
 	i = 0;
 	if (input->env)
 		while ((input->env)[i])
-			printf("%s\n", (input->env)[i++]);
+			ft_printf("%s\n", (input->env)[i++]);
 	return (0);
 }

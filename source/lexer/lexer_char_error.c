@@ -14,10 +14,10 @@
 
 int	lexer_char_error(t_input *input, char *message, char content)
 {
-	printf("%s", message);
+	ft_printf("%s", message);
 	if (content)
-		printf("%c", content);
-	printf("\n");
+		ft_printf("%c", content);
+	ft_printf("\n");
 	(void) input;
 	return (-1);
 }

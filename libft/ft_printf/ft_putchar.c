@@ -6,7 +6,7 @@
 /*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 17:37:41 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/04/01 17:05:51 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:00:09 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	ft_putchar(char c, t_data *data)
 {
-	write (1, &c, 1);
-	data->nbr_return += 1;
+	if (write (1, &c, 1) != -1)
+		data->nbr_return += 1;
 }

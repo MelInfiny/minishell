@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:46:28 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/01/23 12:01:11 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:21:17 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,16 @@ int	ms_echo(char **argv)
 		else
 		{
 			print_argv(argv, i);
-			printf("\n");
+			if (write(1, "\n", 1) < 0)
+				perror("echo: write error");
 		}
 	}
 	else
-		printf("\n");
+	{
+		dprintf(2, "coucou\n");
+		if (write(1, "\n", 1) < 0)
+			perror("echo: write error");
+	}
 	return (0);
 }
 
@@ -80,8 +85,12 @@ static void	print_argv(char **argv, int i)
 {
 	while (argv[i])
 	{
-		printf("%s", argv[i++]);
+		if (ft_printf("%s", argv[i++]) == 0)
+		{
+			perror("echo: write error");
+			break;
+		}
 		if (argv[i])
-			printf(" ");
+			ft_printf(" ");
 	}
 }

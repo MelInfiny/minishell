@@ -30,8 +30,10 @@ void	ft_convselect(const char *s, t_data *data, va_list *ellipse)
 		ft_idconv_x_cap(data, ellipse);
 	else if (s[data->pos] == '%')
 	{
-		write(1, "%%", 1);
-		data->pos += 1;
-		data->nbr_return += 1;
+		if (write(1, "%%", 1) != -1)
+		{
+			data->pos += 1;
+			data->nbr_return += 1;
+		}
 	}
 }

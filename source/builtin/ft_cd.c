@@ -51,7 +51,7 @@ static char	*get_target(t_input *input, char **args, int nb_args)
 		{
 			target = ft_chr_env(input->env, "OLDPWD");
 			if (target)
-				printf("%s\n", target);
+				ft_printf("%s\n", target);
 		}
 		else
 			target = args[1];

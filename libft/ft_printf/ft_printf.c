@@ -6,11 +6,12 @@
 /*   By: tda-silv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:17:02 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/04/01 17:05:30 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:20:36 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 int	ft_printf(const char *s, ...)
 {
