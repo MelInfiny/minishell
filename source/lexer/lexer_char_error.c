@@ -12,12 +12,11 @@
 
 #include <header.h>
 
-int	lexer_char_error(t_input *input, char *message, char content)
+int	lexer_char_error(char content)
 {
-	ft_printf("%s", message);
+	ft_printf("error syntaxe unexpected token : `, ");
 	if (content)
 		ft_printf("%c", content);
 	ft_printf("\n");
-	(void) input;
 	return (-1);
 }

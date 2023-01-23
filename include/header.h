@@ -97,19 +97,20 @@ int		ret_er(t_redir *redir, int res);
 /*																			  */
 /* ************************************************************************** */
 
-int		lexer(t_input *input, char *line);
 t_type	switch_type(char c);
-int		is_break(t_type type);
-int		lexer_char_error(t_input *input, char *message, char content);
-void	put_in_map(t_input *input, char *line, int count, int start);
 void	split_delim(t_input *input, int *start, int index, t_type type);
-void	p_iii(t_input *input, t_type *type, int *count, char *line);
+int		split_redir(t_input *input, char *line, int index, t_type type);
+int		split_quote(char *line, int index);
+int		split_dollar(t_input *input, int index);
+int		lexer_char_error(char content);
+int		lexer(t_input *input, char *line);
 
 /* ************************************************************************** */
 /*																			  */
 /*   ../source/parser/            	                 						  */
 /*																			  */
 /* ************************************************************************** */
+int		is_break(t_type type);
 
 void	parser(t_input *input);
 char	*ft_streplace(char *oldstr, char *newstr);

@@ -17,7 +17,7 @@ OBJ_DIR		= object/
 INC_DIR		= include/
 LIB_DIR		= libft/
 
-CC			= gcc
+CC			= cc
 
 CFLAGS		= -Wall -Wextra -Werror
 LDFLAGS_1	= -fsanitize=address -g
@@ -69,12 +69,9 @@ NAME_FILE	= $(addprefix builtin/,												\
 			  )																	\
 			  $(addprefix lexer/,												\
 			  				   lexer											\
-							   switch_type										\
 							   is_break											\
 							   lexer_char_error									\
-							   put_in_map										\
-							   split_delim										\
-							   p_iii											\
+							   splits											\
 			  )																	\
 			  $(addprefix parser/,												\
 			  					 parser											\
