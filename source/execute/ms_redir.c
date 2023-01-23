@@ -31,6 +31,7 @@ static int	d_redir(char *file, int status)
 {
 	int	outfile;
 
+	outfile = -1;
 	if (status == 22)
 		outfile = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (status == 2)

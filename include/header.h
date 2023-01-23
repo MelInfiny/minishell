@@ -66,11 +66,17 @@ int		shlvl(t_input *input);
 /*																			  */
 /* ************************************************************************** */
 
-void	map_add(t_map **lst, t_map *new);
 t_map	*map_last(t_map *lst);
 t_map	*map_new(char *content, t_type type);
+void	map_add(t_map **lst, t_map *new);
 void	map_delone(t_map *lst, void (*del)(void*));
 void	map_clear(t_map **lst, void (*del)(void *));
+
+size_t	ft_strdlen(char **strd);
+void	ft_strdfree(char **strd);
+char	**ft_strdjoin(char **strd, char *s);
+char	*ft_streplace(char *oldstr, char *newstr);
+char	*ft_strjoin_free(char *s1, char const *s2);
 
 /* ************************************************************************** */
 /*																			  */

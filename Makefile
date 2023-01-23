@@ -60,12 +60,9 @@ NAME_FILE	= $(addprefix builtin/,												\
 								  ft_replace_varenv								\
 																				\
 			  )																	\
-			  $(addprefix t_map/,												\
-			  					map_add											\
-			  					map_last										\
-			  					map_new											\
-								map_delone										\
-								map_clear										\
+			  $(addprefix utils/,												\
+			  					map_utils										\
+			  					str_utils										\
 			  )																	\
 			  $(addprefix lexer/,												\
 			  				   lexer											\
@@ -75,13 +72,8 @@ NAME_FILE	= $(addprefix builtin/,												\
 			  )																	\
 			  $(addprefix parser/,												\
 			  					 parser											\
-								 ft_streplace									\
-								 ft_strdjoin									\
-								 ft_strdlen										\
-								 ft_strdfree									\
 								 check_syntax									\
 								 check_expand									\
-								 ft_strjoin_free								\
 								 ft_findstr										\
 								 unquoted										\
 			  )																	\

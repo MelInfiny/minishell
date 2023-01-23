@@ -17,7 +17,7 @@ void	ms_exit(t_input *input, int exit_status)
 	ft_putstr_fd("exit\n", 2);
 	free_input(input);
 	free_all(input);
-	if (exit_status > 0 || exit_status < 255)
+	if (exit_status > 0 && exit_status < 255)
 		exit(exit_status);
 	else
 		exit(0);
