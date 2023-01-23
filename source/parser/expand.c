@@ -12,24 +12,6 @@
 
 #include <header.h>
 
-void	check_expand(t_input *input)
-{
-	t_map	*tmp;
-	char	*s;
-
-	s = NULL;
-	tmp = input->lexer;
-	while (tmp)
-	{
-		if (tmp->type == WORD || is_break(tmp->type))
-		{
-			s = ft_strdup(tmp->content);
-			map_add(&input->parser, map_new(s, tmp->type));
-		}
-		tmp = tmp->next;
-	}
-}
-
 char	*replace_dollar(t_input *input, char *word, int *start, t_type type)
 {
 	int		count;
@@ -57,4 +39,25 @@ char	*replace_dollar(t_input *input, char *word, int *start, t_type type)
 			return (find_in_env(input->env, tmp));
 	}
 	return (ft_strdup("$"));
+}
+
+char	*find_in_env(char **env, char *var)
+{
+	int		count;
+	size_t	len;
+
+	count = 0;
+	len = ft_strlen(var);
+	while (env[count])
+	{
+		if (!ft_strncmp(var, env[count], len) && env[count][len] == '=')
+		{
+			free(var);
+			return (ft_substr(env[count],
+					len + 1, ft_strlen(env[count])));
+		}
+		count ++;
+	}
+	free(var);
+	return (ft_strdup(""));
 }

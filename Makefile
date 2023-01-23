@@ -62,20 +62,17 @@ NAME_FILE	= $(addprefix builtin/,												\
 			  )																	\
 			  $(addprefix utils/,												\
 			  					map_utils										\
+			  					ast_utils										\
 			  					str_utils										\
-			  )																	\
-			  $(addprefix lexer/,												\
-			  				   lexer											\
-							   is_break											\
-							   lexer_char_error									\
-							   splits											\
 			  )																	\
 			  $(addprefix parser/,												\
 			  					 parser											\
 								 check_syntax									\
-								 check_expand									\
-								 ft_findstr										\
-								 unquoted										\
+								 syntax_error									\
+								 expand											\
+								 lexer											\
+								 splits											\
+								 unquote										\
 			  )																	\
 			  $(addprefix execute/,												\
 			  					  cmd_path_chr									\

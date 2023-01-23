@@ -70,28 +70,28 @@ char	**ft_strdjoin(char **strd, char *s)
 	return (newd);
 }
 
-char	*ft_strjoin_free(char *s1, char const *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	size_t	count;
 	size_t	copy;
-	size_t	len;
 	char	*all;
 
 	count = 0;
 	copy = 0;
-	len = ft_strlen(s1);
 	if (!s1 && !s2)
 		return (NULL);
-	all = (char *) ft_calloc(len + ft_strlen(s2) + 1, sizeof(char));
+	all = (char *) ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
 	if (!all)
 		return (NULL);
-	while (count < len)
+	while (count < ft_strlen(s1))
 		all[copy++] = s1[count++];
 	count = 0;
 	while (count < ft_strlen(s2))
 		all[copy++] = s2[count++];
 	all[copy] = '\0';
-	if (len > 0)
+	if (s1 > 0)
 		free(s1);
+	if (s2)
+		free(s2);
 	return (all);
 }

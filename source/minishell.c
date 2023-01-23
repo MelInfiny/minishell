@@ -81,7 +81,6 @@ void	first_check(t_input *input)
 		g_status = 2;
 		return ;
 	}
-	check_expand(input);
 	parser(input);
 	ft_replace_quote(input);
 	change_handler_and_start_execute(input);

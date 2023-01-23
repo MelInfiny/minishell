@@ -12,16 +12,14 @@
 
 #include <header.h>
 
-static t_node	*new_node(void);
 static int		set_redir(t_type type);
-static t_redir	*new_redir(int status, char *file);
 
 void	parser(t_input *input)
 {
 	t_map	*tmp;
 	t_node	*node;
 
-	tmp = input->parser;
+	tmp = input->lexer;
 	ft_lstadd_back(&input->ast, ft_lstnew(new_node()));
 	while (tmp)
 	{
@@ -44,17 +42,6 @@ void	parser(t_input *input)
 	}
 }
 
-static t_node	*new_node(void)
-{
-	t_node	*node;
-
-	node = (t_node *) ft_calloc(1, sizeof(t_node));
-	if (!node)
-		return (NULL);
-	node->redir = NULL;
-	return (node);
-}
-
 static int	set_redir(t_type type)
 {
 	if (type == GREDIR)
@@ -66,16 +53,4 @@ static int	set_redir(t_type type)
 	if (type == DRREDIR)
 		return (22);
 	return (0);
-}
-
-static t_redir	*new_redir(int status, char *file)
-{
-	t_redir	*redir;
-
-	redir = (t_redir *) ft_calloc(1, sizeof(t_redir));
-	if (!redir)
-		return (NULL);
-	redir->type = status;
-	redir->file = file;
-	return (redir);
 }

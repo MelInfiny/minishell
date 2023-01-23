@@ -14,18 +14,6 @@
 
 static void	ft_replace_redir(t_input *input, t_node *node);
 
-bool	ft_findstr(char *str, const char *find)
-{
-	size_t	len;
-
-	len = ft_strlen(find);
-	if (ft_strncmp(str, find, len))
-		return (false);
-	if (str[len] != '=')
-		return (false);
-	return (true);
-}
-
 void	ft_replace_quote(t_input *input)
 {
 	t_list	*ast;
@@ -55,27 +43,6 @@ void	ft_replace_quote(t_input *input)
 	}
 }
 
-char	*find_in_env(char **env, char *var)
-{
-	int		count;
-	size_t	len;
-
-	count = 0;
-	len = ft_strlen(var);
-	while (env[count])
-	{
-		if (ft_findstr(env[count], var))
-		{
-			free(var);
-			return (ft_substr(env[count],
-					len + 1, ft_strlen(env[count])));
-		}
-		count ++;
-	}
-	free(var);
-	return (ft_strdup(""));
-}
-
 static void	ft_replace_redir(t_input *input, t_node *node)
 {
 	t_list	*r;
@@ -95,4 +62,55 @@ static void	ft_replace_redir(t_input *input, t_node *node)
 		}
 		r = r->next;
 	}
+}
+
+char	*unquoted(t_input *input, char *word)
+{
+	t_type	type;
+	char	*q;
+	char	*tmp;
+	int		count;
+
+	count = 0;
+	q = NULL;
+	while (word[count])
+	{
+		type = switch_type(word[count]);
+		if (type == DQUOTE || type == SQUOTE)
+			tmp = remove_quote_in_word(input, word, type, &count);
+		else if (type == DOLLAR)
+			tmp = replace_dollar(input, word, &count, type);
+		else
+			tmp = ft_substr(word, count, 1);
+		q = ft_strjoin_free(q, tmp);
+		count++;
+	}
+	return (q);
+}
+
+char	*remove_quote_in_word(t_input *input,
+			char *line, t_type type, int *start)
+{
+	int		index;
+	char	*tmp;
+
+	tmp = NULL;
+	index = *start + 1;
+	while (line[index] && switch_type(line[index]) != type)
+	{
+		if (type == DQUOTE && line[index] == '$')
+		{
+			if (index > *start + 1)
+				tmp = ft_strjoin_free(ft_substr(line, *start + 1, index - 1), tmp);
+			tmp = ft_strjoin_free(replace_dollar(input, line, &index, type), tmp);
+			*start = index;
+		}
+		if (line[index])
+			index++;
+	}
+	if (line[index] && switch_type(line[index]) == type)
+		tmp = ft_strjoin_free(
+				ft_substr(line, *start + 1, index - (*start + 1)), tmp);
+	*start = index;
+	return (tmp);
 }

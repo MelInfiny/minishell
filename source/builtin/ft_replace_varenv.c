@@ -15,14 +15,16 @@
 void	ft_replace_varenv(char **env, char *var, char *newvar)
 {
 	size_t	count;
+	size_t	len;
 	char	*tmp;
 
 	count = 0;
+	len = ft_strlen(var);
 	if (!env)
 		return ;
 	while (env[count])
 	{
-		if (ft_findstr(env[count], var))
+		if (!ft_strncmp(var, env[count], len) && env[count][len] == '=')
 		{
 			tmp = ft_strjoin(var, "=");
 			free(env[count]);

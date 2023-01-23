@@ -12,8 +12,15 @@
 
 #include <header.h>
 
-static int	lexer_str_error(t_input *input, char *message, char *content);
 static int	is_next_valid(t_type type);
+
+int	is_break(t_type type)
+{
+	if (type == PIPE || type == GREDIR
+		|| type == GRREDIR || type == DREDIR || type == DRREDIR)
+		return (1);
+	return (0);
+}
 
 int	check_syntax(t_input *input)
 {
@@ -27,27 +34,14 @@ int	check_syntax(t_input *input)
 			if (tmp->next)
 			{
 				if (!is_next_valid(tmp->next->type))
-					return (lexer_str_error(input,
-							"error : unexpeted token : ` ",
-							tmp->next->content));
+					return (lexer_str_error(tmp->next->content));
 			}
 			else
-				return (lexer_str_error(input,
-						"error : unexpeted token : << newline >>", NULL));
+				return (lexer_str_error("<< newline >>"));
 		}
 		tmp = tmp->next;
 	}
 	return (1);
-}
-
-static int	lexer_str_error(t_input *input, char *message, char *content)
-{
-	ft_printf("%s", message);
-	if (content)
-		ft_printf("%s", content);
-	ft_printf("\n");
-	(void) input;
-	return (0);
 }
 
 static int	is_next_valid(t_type type)
@@ -57,24 +51,4 @@ static int	is_next_valid(t_type type)
 	if (type == DQUOTE || SQUOTE)
 		return (1);
 	return (0);
-}
-
-int	check_pipes(t_input *input)
-{
-	t_map	*tmp;
-
-	tmp = input->lexer;
-	while (tmp && tmp->type == ESPACE)
-			tmp = tmp->next;
-	if (tmp)
-	{
-		if (tmp->type == PIPE)
-		{
-			return (lexer_str_error(input,
-					"unexpeted token : ` ", tmp->content));
-		}
-	}
-	else
-		return (0);
-	return (1);
 }

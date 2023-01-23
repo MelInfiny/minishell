@@ -23,15 +23,17 @@ static int	ft_cderror(void)
 static char	*ft_chr_env(char **env, char *var)
 {
 	size_t	count;
+	size_t	len;
 
 	count = 0;
 	if (!env)
 		return (NULL);
+	len = ft_strlen(var);
 	while (env[count])
 	{
-		if (ft_findstr(env[count], var))
+		if (!ft_strncmp(var, env[count], len) && env[count][len] == '=')
 		{
-			return (env[count] + ft_strlen(var) + 1);
+			return (env[count] + len + 1);
 		}
 		count ++;
 	}

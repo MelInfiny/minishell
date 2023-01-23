@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_break.c                                         :+:      :+:    :+:   */
+/*   lexer_error.c	                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 21:17:10 by enolbas           #+#    #+#             */
-/*   Updated: 2022/11/29 21:17:35 by enolbas          ###   ########.fr       */
+/*   Created: 2022/11/29 21:18:37 by enolbas           #+#    #+#             */
+/*   Updated: 2022/12/12 11:15:24 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.h>
 
-int	is_break(t_type type)
+int	lexer_char_error(char content)
 {
-	if (type == PIPE || type == GREDIR
-		|| type == GRREDIR || type == DREDIR || type == DRREDIR)
-		return (1);
-	return (0);
+	ft_printf("error syntaxe unexpected token : `, ");
+	if (content)
+		ft_printf("%c", content);
+	ft_printf("\n");
+	return (-1);
+}
+
+int	lexer_str_error(char *content)
+{
+	ft_printf("error syntaxe unexpected token : `, ");
+	if (content)
+		ft_printf("%s", content);
+	ft_printf("\n");
+	return (-1);
 }

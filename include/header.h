@@ -62,7 +62,7 @@ int		shlvl(t_input *input);
 
 /* ************************************************************************** */
 /*																			  */
-/*   ../source/t_map/                            							  */
+/*   ../source/utils/                            							  */
 /*																			  */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ size_t	ft_strdlen(char **strd);
 void	ft_strdfree(char **strd);
 char	**ft_strdjoin(char **strd, char *s);
 char	*ft_streplace(char *oldstr, char *newstr);
-char	*ft_strjoin_free(char *s1, char const *s2);
+char	*ft_strjoin_free(char *s1, char *s2);
+
+t_redir	*new_redir(int status, char *file);
+t_node	*new_node(void);
 
 /* ************************************************************************** */
 /*																			  */
@@ -99,7 +102,7 @@ int		ret_er(t_redir *redir, int res);
 
 /* ************************************************************************** */
 /*																			  */
-/*   ../source/lexer/            	                 						  */
+/*   ../source/parser/            	                 						  */
 /*																			  */
 /* ************************************************************************** */
 
@@ -109,25 +112,13 @@ int		split_redir(t_input *input, char *line, int index, t_type type);
 int		split_quote(char *line, int index);
 int		split_dollar(t_input *input, int index);
 int		lexer_char_error(char content);
+int		lexer_str_error(char *content);
 int		lexer(t_input *input, char *line);
 
-/* ************************************************************************** */
-/*																			  */
-/*   ../source/parser/            	                 						  */
-/*																			  */
-/* ************************************************************************** */
 int		is_break(t_type type);
 
 void	parser(t_input *input);
-char	*ft_streplace(char *oldstr, char *newstr);
-char	**ft_strdjoin(char **strd, char *s);
-size_t	ft_strdlen(char **strd);
-void	ft_strdfree(char **strd);
 int		check_syntax(t_input *input);
-int		check_pipes(t_input *input);
-void	check_expand(t_input *input);
-bool	ft_findstr(char *find, const char *var);
-char	*ft_strjoin_free(char *s1, char const *s2);
 void	ft_replace_quote(t_input *input);
 char	*unquoted(t_input *input, char *word);
 char	*remove_quote_in_word(t_input *input,
