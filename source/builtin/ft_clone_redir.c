@@ -6,11 +6,28 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 21:28:30 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/16 16:34:10 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:55:33 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <header.h>
+
+int	close_redir(t_input *input)
+{
+	if (input->fdin != -1)
+	{
+		if (dup2(input->fdin, STDIN_FILENO) != -1)
+			close(input->fdin);
+		input->fdin = -1;
+	}
+	if (input->fdout != -1)
+	{
+		if (dup2(input->fdout, STDOUT_FILENO) != -1)
+			close(input->fdout);
+		input->fdout = -1;
+	}
+	return (-1);
+}
 
 int	save_redir(t_node *node, t_input *input)
 {
@@ -22,7 +39,7 @@ int	save_redir(t_node *node, t_input *input)
 		input->fdout = dup(1);
 		redir = ms_redir(node);
 		if (redir < 0)
-			return (0);
+			return (close_redir(input));
 		return (redir);
 	}
 	return (0);
@@ -31,20 +48,19 @@ int	save_redir(t_node *node, t_input *input)
 void	restore_redir(t_input *input, int redir)
 {
 	if (redir < 0)
+	{
+		close_redir(input);
 		return ;
-	if (redir == 0 || redir == 2)
-	{
-		if (dup2(input->fdin, STDIN_FILENO) == -1)
-			return ;
-		close(input->fdin);
-		input->fdin = -1;
 	}
-	if (redir == 1 || redir == 2)
+	if (redir == 1 || redir == 3)
 	{
-		if (dup2(input->fdout, STDOUT_FILENO) == -1)
-			return ;
-		close(input->fdout);
-		input->fdout = -1;
+		if (dup2(input->fdin, STDIN_FILENO) != -1)
+			close_redir(input);
+	}
+	if (redir == 2 || redir == 4)
+	{
+		if (dup2(input->fdout, STDOUT_FILENO) != -1)
+			close_redir(input);
 	}
 }
 

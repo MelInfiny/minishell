@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:18:20 by tda-silv          #+#    #+#             */
-/*   Updated: 2022/12/17 04:31:28 by tda-silv         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:48:56 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,14 @@ static int	ft_redirect_in(t_node *node)
 	{
 		redir = r->content;
 		if (redir->type == 1 || redir->type == 11)
+		{
 			res = g_redir(redir, redir->type);
-		if (ret_er(redir, res))
-			return (-1);
+			if (res > 0 && dup2(res, STDIN_FILENO) != -1)
+				close(res);
+			else if (ret_er(redir, res))
+				return (-1);
+		}
 		r = r->next;
-	}
-	if (res > 0 && dup2(res, STDIN_FILENO) == -1)
-		return (-1);
-	if (res != 0)
-	{
-		close(res);
-		return (1);
 	}
 	return (0);
 }
@@ -77,17 +74,14 @@ static int	ft_redirect_out(t_node *node)
 	{
 		redir = r->content;
 		if (redir->type == 2 || redir->type == 22)
+		{
 			res = d_redir(redir->file, redir->type);
-		if (ret_er(redir, res))
-			return (-1);
+			if (res > 0 && dup2(res, STDOUT_FILENO) != -1)
+				close(res);
+			else if (ret_er(redir, res))
+				return (-1);
+		}
 		r = r->next;
-	}
-	if (res > 0 && dup2(res, STDOUT_FILENO) == -1)
-		return (-1);
-	if (res != 0)
-	{
-		close(res);
-		return (1);
 	}
 	return (0);
 }
@@ -96,7 +90,7 @@ int	ms_redir(t_node *node)
 {
 	int	res;
 
-	res = -1;
+	res = 0;
 	if (ft_redirect_in(node) < 0)
 		return (-1);
 	else

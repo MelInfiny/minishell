@@ -6,7 +6,7 @@
 /*   By: tda-silv <tda-silv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:40:40 by tda-silv          #+#    #+#             */
-/*   Updated: 2023/01/11 14:30:01 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/23 11:51:17 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,14 @@ static void	exec_builtins(t_node *node, t_input *input, int builtin)
 	size_t	size_argv;
 	int		redir;
 
-	redir = -1;
+	redir = 0;
 	size_argv = my_strdlen(node->args);
 	if (node->redir)
+	{
 		redir = save_redir(node, input);
+		if (redir < 0)
+			return ;
+	}
 	if (builtin == 1 || builtin == 2)
 	{
 		if (size_argv > 1)
