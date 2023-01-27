@@ -1,0 +1,5 @@
+
+[36mThe default interactive shell is now [36;01mminishell.[00m
+$> echo salut
+salut
+$> exit
