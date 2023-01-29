@@ -1,0 +1,16 @@
+cd\npwd
+cd -\npwd
+cd ../\npwd
+cd ./../.\npwd
+mkdir dtmp\nchmod 0 dtmp\ncd dtmp\n
+mkdir dtmp\ncd dtmp\npwd
+mkdir dtmp\ncd dtmp\nrm -rf ../dtmp\npwd
+unset PWD\npwd
+unset PWD\ncd\npwd
+unset PWD\ncd -\npwd
+unset PWD\ncd ..\npwd
+unset OLDPWD\npwd
+unset OLDPWD\ncd\npwd
+unset OLDPWD\ncd -\npwd
+unset OLDPWD\ncd ..\npwd
+

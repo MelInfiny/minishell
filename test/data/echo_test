@@ -11,3 +11,10 @@ echo"bonjour"2
 "echo"bonjour6
 'echo bonjour7'
 "echo bonjour8"
+echo $SHELL
+echo $SHEL
+echo '$SHELL'
+echo "$SHELLL"
+echo '"$SHELL"'
+echo '"'$SHELL'"'
+echo '"'A--$SHELL--A'"'

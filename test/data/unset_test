@@ -1,0 +1,9 @@
+export test=ok\nunset test\nenv | grep test
+export test=ok\nunset test\nenv | grep test
+export test=bonjour\nunset test\nenv | grep test
+export test=bonj\nunset test\nenv | grep test
+export test\nunset test\nenv | grep test
+export rererere=$test\nunset rererere\nenv | grep rererere
+export $test\nunset test\nexport | grep $test
+export $test=no\nunset test\nenv | grep no
+export $PWD=ici\nunset PWD\nenv | grep PWD

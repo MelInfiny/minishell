@@ -1,0 +1,8 @@
+export test=ok\nenv | grep test
+export test=bonjour\nenv | grep test
+export test=bonj\nenv | grep test
+export test\nexport | grep test
+export rererere=$test\nenv | grep rererere
+export $test\nexport | grep $test
+export $test=no\nenv | grep no
+export $SHLVL=5\nenv | grep SHLVL
