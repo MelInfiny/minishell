@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:46:28 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/23 13:21:17 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/29 16:15:45 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,13 @@ int	ms_echo(char **argv)
 		{
 			print_argv(argv, i);
 			if (write(1, "\n", 1) < 0)
-				perror("echo: write error");
+				perror("echo: write error1");
 		}
 	}
 	else
 	{
-		dprintf(2, "coucou\n");
 		if (write(1, "\n", 1) < 0)
-			perror("echo: write error");
+			perror("echo: write error2");
 	}
 	return (0);
 }
@@ -85,12 +84,10 @@ static void	print_argv(char **argv, int i)
 {
 	while (argv[i])
 	{
-		if (ft_printf("%s", argv[i++]) == 0)
-		{
-			perror("echo: write error");
+		if (ft_printf("%s", argv[i]) == 0)
 			break;
-		}
 		if (argv[i])
 			ft_printf(" ");
+		i++;
 	}
 }

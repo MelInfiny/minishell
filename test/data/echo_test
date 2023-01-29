@@ -1,3 +1,13 @@
-echo bonjour
-echo coucou
-echo salut
+echo bonjour0
+echo ""
+echo ''
+echo
+echo                        
+echo "bon"our1
+echo"bonjour"2
+"echo" bonjour3
+'echo' bonjour4
+'echo'bonjour5
+"echo"bonjour6
+'echo bonjour7'
+"echo bonjour8"

@@ -54,15 +54,15 @@ function check_result() {
 }
 
 function check_leaks() {
-	echo $@valgrind --leak-check=full  --show-leak-kinds=all --track-fds=yes ../minishell > leaks 2>&1
+	echo $@ | valgrind --leak-check=full  --show-leak-kinds=all --track-fds=yes ../minishell > leaks 2>&1
 	sed -r -n '/^(={2})([0-9]{4,})\1[ ]\LEAK SUMMARY:/,+3p' out | grep -E '[^0] bytes' >> $LEAKS$compteur
 	if [[ -s $LEAKS$compteur ]]; then
 		echo -e "${rouge}leaks found.${reset}"
 	else
 		echo -e "${vert}no leaks.${reset}"
-		rm -f $LEAKS$compteur
+	rm -f $LEAKS$compteur
 	fi
-	rm -f leaks
+#rm -f leaks
 }
 
 clear

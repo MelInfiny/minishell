@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 13:33:37 by enolbas           #+#    #+#             */
-/*   Updated: 2022/12/17 01:16:46 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/29 16:05:47 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	first_check(t_input *input)
 		g_status = 2;
 		return ;
 	}
-	if (!check_syntax(input))
+	if (check_syntax(input) < 0)
 	{
 		g_status = 2;
 		return ;
