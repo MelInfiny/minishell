@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:18:20 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/23 11:48:56 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 14:53:45 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ static int	g_redir(t_redir *redir, int status)
 
 	infile = -1;
 	if (status == 11)
-	{
-		ft_heredoc("/tmp/heredoc", redir->file);
 		infile = open("/tmp/heredoc", O_RDONLY);
-	}
 	else if (status == 1)
 		infile = open(redir->file, O_RDONLY);
 	return (infile);

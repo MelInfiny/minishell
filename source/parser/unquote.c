@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_findstr.c                                       :+:      :+:    :+:   */
+/*   unquote.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 04:33:41 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/11 19:15:08 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 15:02:20 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	ft_replace_quote(t_input *input)
 		count = 0;
 		while (node->args && node->args[count])
 		{
+			ft_replace_redir(input, node);
 			tmp = unquoted(input, node->args[count]);
 			if (tmp != NULL)
 			{
@@ -36,7 +37,6 @@ void	ft_replace_quote(t_input *input)
 				node->args[count] = NULL;
 				node->args[count] = tmp;
 			}
-			ft_replace_redir(input, node);
 			count++;
 		}
 		ast = ast->next;
@@ -60,6 +60,8 @@ static void	ft_replace_redir(t_input *input, t_node *node)
 			redir->file = NULL;
 			redir->file = tmp;
 		}
+		if (redir->type == 11)
+			ft_heredoc("/tmp/heredoc", redir->file);
 		r = r->next;
 	}
 }

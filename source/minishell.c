@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 13:33:37 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/29 16:05:47 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 14:33:28 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,12 @@ int	main(int argc, char **argv, char **env)
 	t_input				input;
 	struct sigaction	ssa;
 
-	(void) argc;
 	(void) argv;
+	if (argc > 1)
+	{
+		ft_printf("minishell: %s: No such file or directory\n", argv[1]);
+		return (0);
+	}
 	g_status = 0;
 	init_struct_sigaction(&input, &ssa);
 	if (copy_env(env, &input) || copy_env_in_export(&input) || shlvl(&input))
