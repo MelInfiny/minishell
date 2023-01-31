@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:46:28 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/31 16:42:41 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 18:08:05 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ int	ms_echo(char **argv)
 		{
 			print_argv(argv, i);
 			if (write(1, "\n", 1) < 0)
-				perror("echo: write error1");
+				perror("echo: write error");
 		}
 	}
 	else
 	{
 		if (write(1, "\n", 1) < 0)
-			perror("echo: write error2");
+			perror("echo: write error");
 	}
 	return (0);
 }
@@ -86,8 +86,7 @@ static void	print_argv(char **argv, int i)
 	{
 		if (ft_printf("%s", argv[i]) == 0)
 			break ;
-		if (argv[i])
+		if (argv[i++])
 			ft_printf(" ");
-		i++;
 	}
 }
