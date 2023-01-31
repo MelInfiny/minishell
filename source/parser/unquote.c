@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 04:33:41 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/31 15:51:23 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:35:04 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,16 +108,16 @@ char	*remove_quote_in_word(t_input *input,
 		if (input && type == DQUOTE && line[index] == '$')
 		{
 			if (index > *start + 1)
-				tmp = ft_strjoin_free(ft_substr(line, *start + 1, index - 1), tmp);
-			tmp = ft_strjoin_free(replace_dollar(input, line, &index, type), tmp);
+				tmp = ft_strjoin_free(tmp, ft_substr(line, *start + 1, index - 1));
+			tmp = ft_strjoin_free(tmp, replace_dollar(input, line, &index, type));
 			*start = index;
 		}
 		if (line[index])
 			index++;
 	}
 	if (line[index] && switch_type(line[index]) == type)
-		tmp = ft_strjoin_free(
-				ft_substr(line, *start + 1, index - (*start + 1)), tmp);
+		tmp = ft_strjoin_free(tmp,
+				ft_substr(line, *start + 1, index - (*start + 1)));
 	*start = index;
 	return (tmp);
 }
