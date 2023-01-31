@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 18:46:28 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/29 16:15:45 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:42:41 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void	print_argv(char **argv, int i)
 	while (argv[i])
 	{
 		if (ft_printf("%s", argv[i]) == 0)
-			break;
+			break ;
 		if (argv[i])
 			ft_printf(" ");
 		i++;

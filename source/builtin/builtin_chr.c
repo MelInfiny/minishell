@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:40:40 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/23 11:51:17 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:44:15 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,6 @@ static void	exec_builtins(t_node *node, t_input *input, int builtin)
 		else if (builtin == 2)
 			g_status = ms_pwd();
 	}
-	else if (builtin == 3)
-	{
-		if (size_argv > 2)
-			print_error(node->args[0], -1);
-		else
-			g_status = ft_cd(input, node->args, ft_strdlen(node->args));
-	}
 	exec_builtins_two(node, input, builtin, redir);
 }
 
@@ -79,6 +72,13 @@ static void	exec_builtins_two(t_node *node, t_input *input,
 	int	i;
 
 	i = 1;
+	if (builtin == 3)
+	{
+		if (size_argv > 2)
+			print_error(node->args[0], -1);
+		else
+			g_status = ft_cd(input, node->args, ft_strdlen(node->args));
+	}
 	if (builtin == 4)
 	{
 		if (node->args[1])

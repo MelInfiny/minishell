@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 04:33:41 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/31 16:35:04 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:49:40 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,29 +95,28 @@ char	*unquoted(t_input *input, char *word, int status)
 	return (q);
 }
 
-char	*remove_quote_in_word(t_input *input,
-			char *line, t_type type, int *start)
+char	*remove_quote_in_word(t_input *input, char *line, t_type t, int *s)
 {
 	int		index;
 	char	*tmp;
 
 	tmp = NULL;
-	index = *start + 1;
-	while (line[index] && switch_type(line[index]) != type)
+	index = *s + 1;
+	while (line[index] && switch_type(line[index]) != t)
 	{
-		if (input && type == DQUOTE && line[index] == '$')
+		if (input && t == DQUOTE && line[index] == '$')
 		{
-			if (index > *start + 1)
-				tmp = ft_strjoin_free(tmp, ft_substr(line, *start + 1, index - 1));
-			tmp = ft_strjoin_free(tmp, replace_dollar(input, line, &index, type));
-			*start = index;
+			if (index > *s + 1)
+				tmp = ft_strjoin_free(tmp, ft_substr(line, *s + 1, index - 1));
+			tmp = ft_strjoin_free(tmp, replace_dollar(input, line, &index, t));
+			*s = index;
 		}
 		if (line[index])
 			index++;
 	}
-	if (line[index] && switch_type(line[index]) == type)
+	if (line[index] && switch_type(line[index]) == t)
 		tmp = ft_strjoin_free(tmp,
-				ft_substr(line, *start + 1, index - (*start + 1)));
-	*start = index;
+				ft_substr(line, *s + 1, index - (*s + 1)));
+	*s = index;
 	return (tmp);
 }

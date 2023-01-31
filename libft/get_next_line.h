@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/30 13:11:33 by enolbas           #+#    #+#             */
-/*   Updated: 2022/11/11 23:27:41 by enolbas          ###   ########.fr       */
+/*   Created: 2023/01/31 16:48:33 by enolbas           #+#    #+#             */
+/*   Updated: 2023/01/31 16:51:31 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -19,7 +19,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 40 
+#  define BUFFER_SIZE 40
 # endif
 
 size_t	ft_strlen2(const char *s);
