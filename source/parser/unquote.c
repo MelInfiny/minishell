@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 04:33:41 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/31 15:02:20 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 15:51:23 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_replace_quote(t_input *input)
 		while (node->args && node->args[count])
 		{
 			ft_replace_redir(input, node);
-			tmp = unquoted(input, node->args[count]);
+			tmp = unquoted(input, node->args[count], 1);
 			if (tmp != NULL)
 			{
 				free(node->args[count]);
@@ -53,7 +53,7 @@ static void	ft_replace_redir(t_input *input, t_node *node)
 	while (r)
 	{
 		redir = r->content;
-		tmp = unquoted(input, redir->file);
+		tmp = unquoted(input, redir->file, 0);
 		if (tmp != NULL)
 		{
 			free(redir->file);
@@ -66,7 +66,7 @@ static void	ft_replace_redir(t_input *input, t_node *node)
 	}
 }
 
-char	*unquoted(t_input *input, char *word)
+char	*unquoted(t_input *input, char *word, int status)
 {
 	t_type	type;
 	char	*q;
@@ -79,8 +79,13 @@ char	*unquoted(t_input *input, char *word)
 	{
 		type = switch_type(word[count]);
 		if (type == DQUOTE || type == SQUOTE)
-			tmp = remove_quote_in_word(input, word, type, &count);
-		else if (type == DOLLAR)
+		{
+			if (status)
+				tmp = remove_quote_in_word(input, word, type, &count);
+			else
+				tmp = remove_quote_in_word(NULL, word, type, &count);
+		}
+		else if (status && type == DOLLAR)
 			tmp = replace_dollar(input, word, &count, type);
 		else
 			tmp = ft_substr(word, count, 1);
@@ -100,7 +105,7 @@ char	*remove_quote_in_word(t_input *input,
 	index = *start + 1;
 	while (line[index] && switch_type(line[index]) != type)
 	{
-		if (type == DQUOTE && line[index] == '$')
+		if (input && type == DQUOTE && line[index] == '$')
 		{
 			if (index > *start + 1)
 				tmp = ft_strjoin_free(ft_substr(line, *start + 1, index - 1), tmp);

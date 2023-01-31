@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:29:18 by enolbas           #+#    #+#             */
-/*   Updated: 2022/12/17 05:05:58 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 15:49:46 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int		is_break(t_type type);
 void	parser(t_input *input);
 int		check_syntax(t_input *input);
 void	ft_replace_quote(t_input *input);
-char	*unquoted(t_input *input, char *word);
+char	*unquoted(t_input *input, char *word, int status);
 char	*remove_quote_in_word(t_input *input,
 			char *line, t_type type, int *start);
 char	*replace_dollar(t_input *input, char *word, int *start, t_type type);
