@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 04:15:58 by enolbas           #+#    #+#             */
-/*   Updated: 2022/12/17 04:16:19 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 17:01:32 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_replace_varenv(char **env, char *var, char *newvar)
 
 	count = 0;
 	len = ft_strlen(var);
-	if (!env)
+	if (!env || !newvar)
 		return ;
 	while (env[count])
 	{

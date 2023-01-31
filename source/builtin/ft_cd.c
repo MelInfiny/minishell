@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 01:19:12 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/31 16:43:13 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 17:00:58 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	ft_cd(t_input *input, char **args, int nb_arg)
 	if (!target)
 		return (1);
 	getcwd(cdd, PATH_MAX);
-	if (chdir(target))
+	if (chdir(target) != 0)
 		return (ft_cderror());
 	ft_replace_varenv(input->env, "OLDPWD", cdd);
 	ft_replace_varenv(input->env, "PWD", getcwd(cdd, PATH_MAX));

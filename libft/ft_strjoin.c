@@ -6,51 +6,31 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 11:41:13 by enolbas           #+#    #+#             */
-/*   Updated: 2022/12/05 18:59:10 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 17:06:59 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
-	char	*s1s2;
-	char	*str;
+	size_t	slen;
+	size_t	jlen;
+	size_t	i;
+	size_t	j;
+	char	*res;
 
-	if (s1 && !s2)
-	{
-		str = ft_strdup(s1);
-		if (!str)
-			return (NULL);
-		return (str);
-	}
-	if (!s1 && s2)
-	{
-		str = ft_strdup(s2);
-		if (!str)
-			return (NULL);
-		return (str);
-	}
-	if (!s1 && !s2)
+	slen = ft_strlen(s1);
+	jlen = ft_strlen(s2);
+	res = (char *) malloc((slen + jlen + 1) * sizeof(char));
+	if (!res)
 		return (NULL);
-	s1s2 = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!s1s2)
-		return (NULL);
-	ft_strlcpy(s1s2, s1, ft_strlen(s1) + 1);
-	ft_strlcpy(s1s2 + ft_strlen(s1), s2, ft_strlen(s2) + 1);
-	return (s1s2);
+	i = -1;
+	while (++i < slen)
+		res[i] = s1[i];
+	j = -1;
+	while (++j < jlen)
+		res[i++] = s2[j];
+	res[i] = '\0';
+	return (res);
 }
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char	s1[] = "Super";
-	char	s2[] = "Test";
-	char	*s1s2 = ft_strjoin(s1, s2);
-
-	printf("\n%s\n%ld\n", s1s2, ft_strlen(s1s2));
-	free(s1s2);
-	return (0);
-}
-*/

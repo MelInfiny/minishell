@@ -6,7 +6,7 @@
 /*   By: enolbas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:40:40 by enolbas           #+#    #+#             */
-/*   Updated: 2023/01/31 16:44:15 by enolbas          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:54:18 by enolbas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ static void	exec_builtins(t_node *node, t_input *input, int builtin)
 static void	exec_builtins_two(t_node *node, t_input *input,
 				int builtin, int redir)
 {
+	size_t	size_argv;
 	int	i;
 
 	i = 1;
+	size_argv = my_strdlen(node->args);
 	if (builtin == 3)
 	{
 		if (size_argv > 2)
