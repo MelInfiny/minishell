@@ -84,9 +84,9 @@ static void	print_argv(char **argv, int i)
 {
 	while (argv[i])
 	{
-		if (ft_printf("%s", argv[i]) == 0)
+		if (ft_printf("%s", argv[i++]) == 0)
 			break ;
-		if (argv[i++])
+		if (argv[i])
 			ft_printf(" ");
 	}
 }

@@ -43,11 +43,9 @@ int	builtin_chr(t_node *node, t_input *input)
 
 static void	exec_builtins(t_node *node, t_input *input, int builtin)
 {
-	size_t	size_argv;
 	int		redir;
 
 	redir = 0;
-	size_argv = my_strdlen(node->args);
 	if (node->redir)
 	{
 		redir = save_redir(node, input);
@@ -56,7 +54,7 @@ static void	exec_builtins(t_node *node, t_input *input, int builtin)
 	}
 	if (builtin == 1 || builtin == 2)
 	{
-		if (size_argv > 1)
+		if (my_strdlen(node->args) > 1)
 			print_error(node->args[0], -1);
 		else if (builtin == 1)
 			g_status = ms_env(input);
@@ -69,14 +67,12 @@ static void	exec_builtins(t_node *node, t_input *input, int builtin)
 static void	exec_builtins_two(t_node *node, t_input *input,
 				int builtin, int redir)
 {
-	size_t	size_argv;
 	int		i;
 
 	i = 1;
-	size_argv = my_strdlen(node->args);
 	if (builtin == 3)
 	{
-		if (size_argv > 2)
+		if (my_strdlen(node->args) > 2)
 			print_error(node->args[0], -1);
 		else
 			g_status = ft_cd(input, node->args, ft_strdlen(node->args));
@@ -127,7 +123,7 @@ static void	part_three(t_node *node, t_input *input, int builtin)
 			i = ft_atoi(node->args[1]);
 		else
 			i = 0;
-		ms_exit(input, i);
 		g_status = i;
+		ms_exit(input, i);
 	}
 }

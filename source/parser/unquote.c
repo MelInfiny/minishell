@@ -27,9 +27,9 @@ void	ft_replace_quote(t_input *input)
 	{
 		node = ast->content;
 		count = 0;
+		ft_replace_redir(input, node);
 		while (node->args && node->args[count])
 		{
-			ft_replace_redir(input, node);
 			tmp = unquoted(input, node->args[count], 1);
 			if (tmp != NULL)
 			{
@@ -59,9 +59,9 @@ static void	ft_replace_redir(t_input *input, t_node *node)
 			free(redir->file);
 			redir->file = NULL;
 			redir->file = tmp;
+			if (redir->type == 11)
+				ft_heredoc("/tmp/heredoc", redir->file);
 		}
-		if (redir->type == 11)
-			ft_heredoc("/tmp/heredoc", redir->file);
 		r = r->next;
 	}
 }
@@ -107,7 +107,7 @@ char	*remove_quote_in_word(t_input *input, char *line, t_type t, int *s)
 		if (input && t == DQUOTE && line[index] == '$')
 		{
 			if (index > *s + 1)
-				tmp = ft_strjoin_free(tmp, ft_substr(line, *s + 1, index - 1));
+				tmp = ft_strjoin_free(tmp, ft_substr(line, *s + 1, index - *s - 1));
 			tmp = ft_strjoin_free(tmp, replace_dollar(input, line, &index, t));
 			*s = index;
 		}
